@@ -1,5 +1,6 @@
 import React from 'react';
 import { SafeAreaView, View, StyleSheet } from 'react-native';
+import { useHistory } from 'react-router-native';
 // components
 import Text from '../components/Text';
 import SignInWith from '../components/SignInWith';
@@ -13,6 +14,8 @@ import FacebookIcon from '../assets/icons/iconFacebook.svg';
 import AppleIcon from '../assets/icons/iconApple.svg';
 
 const Login = () => {
+  const history = useHistory();
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -53,6 +56,7 @@ const Login = () => {
           text="Continue with phone number"
           rounded={8}
           style={styles.button}
+          onPress={() => history.push('/home')}
         />
       </View>
       <View style={styles.footer}>
