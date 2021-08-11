@@ -1,5 +1,6 @@
 export const text = '#243443';
 export const background = '#F7F7F9';
+export const line = '#58616A';
 
 export const primary = '#377DFF';
 export const lightPrimary = '#E5F1FF';
