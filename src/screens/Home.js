@@ -1,11 +1,21 @@
 import React, { useEffect } from 'react';
-import { BackHandler, SafeAreaView, StyleSheet } from 'react-native';
+import {
+  BackHandler,
+  SafeAreaView,
+  View,
+  Image,
+  StyleSheet,
+} from 'react-native';
 import { useHistory } from 'react-router-native';
 // components
 import Text from '../components/Text';
 // utils
 import { normalize } from '../utils/normalize';
 import * as Theme from '../utils/theme';
+// icons
+import SearchIcon from '../assets/icons/iconSearch.svg';
+// images
+import Avatar from '../assets/images/avatar.png';
 
 const Home = () => {
   const history = useHistory();
@@ -23,6 +33,10 @@ const Home = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <View style={styles.header}>
+        <Image source={Avatar} />
+        <SearchIcon width={28} height={28} />
+      </View>
       <Text>Home</Text>
     </SafeAreaView>
   );
@@ -33,6 +47,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Theme.background,
     paddingHorizontal: normalize(32),
+    paddingTop: normalize(16),
+  },
+  // header
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
 });
 
