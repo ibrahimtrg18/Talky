@@ -10,6 +10,7 @@ import {
 import Text from '../components/Text';
 import SignInWith from '../components/SignInWith';
 import Line from '../components/Line';
+import { useDispatch } from 'react-redux';
 // utils
 import { normalize } from '../utils/normalize';
 import * as Theme from '../utils/theme';
@@ -18,69 +19,72 @@ import { googleSigninConfig } from '../utils/googleSigninConfig';
 import GoogleIcon from '../assets/icons/iconGoogle.svg';
 import FacebookIcon from '../assets/icons/iconFacebook.svg';
 import AppleIcon from '../assets/icons/iconApple.svg';
+// actions
+import { userLogin } from '../redux/actions/auth';
 
 const Login = () => {
   const history = useHistory();
-  const [user, setUser] = useState();
+  const dispatch = useDispatch();
+  // const [user, setUser] = useState();
 
-  useEffect(() => {
-    GoogleSignin.configure(googleSigninConfig);
-    isSignedIn();
-  }, []);
+  // useEffect(() => {
+  //   GoogleSignin.configure(googleSigninConfig);
+  //   isSignedIn();
+  // }, []);
 
-  const signIn = async () => {
-    try {
-      await GoogleSignin.hasPlayServices();
-      const userInfo = await GoogleSignin.signIn();
-      console.log(userInfo);
-      setUser(userInfo);
-    } catch (error) {
-      console.log('Message', error.message);
-      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-        console.log('User Cancelled the Login Flow');
-      } else if (error.code === statusCodes.IN_PROGRESS) {
-        console.log('Signing In');
-      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-        console.log('Play Services Not Available or Outdated');
-      } else {
-        console.log('Some Other Error Happened');
-      }
-    }
-  };
+  // const signIn = async () => {
+  //   try {
+  //     await GoogleSignin.hasPlayServices();
+  //     const userInfo = await GoogleSignin.signIn();
+  //     console.log(userInfo);
+  //     setUser(userInfo);
+  //   } catch (error) {
+  //     console.log('Message', error.message);
+  //     if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+  //       console.log('User Cancelled the Login Flow');
+  //     } else if (error.code === statusCodes.IN_PROGRESS) {
+  //       console.log('Signing In');
+  //     } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+  //       console.log('Play Services Not Available or Outdated');
+  //     } else {
+  //       console.log('Some Other Error Happened');
+  //     }
+  //   }
+  // };
 
-  const isSignedIn = async () => {
-    const isSignedIn = await GoogleSignin.isSignedIn();
-    if (!!isSignedIn) {
-      getCurrentUserInfo();
-    } else {
-      console.log('Please Login');
-    }
-  };
+  // const isSignedIn = async () => {
+  //   const isSignedIn = await GoogleSignin.isSignedIn();
+  //   if (!!isSignedIn) {
+  //     getCurrentUserInfo();
+  //   } else {
+  //     console.log('Please Login');
+  //   }
+  // };
 
-  const getCurrentUserInfo = async () => {
-    try {
-      const userInfo = await GoogleSignin.signInSilently();
-      setUser(userInfo);
-    } catch (error) {
-      if (error.code === statusCodes.SIGN_IN_REQUIRED) {
-        alert('User has not signed in yet');
-        console.log('User has not signed in yet');
-      } else {
-        alert("Something went wrong. Unable to get user's info");
-        console.log("Something went wrong. Unable to get user's info");
-      }
-    }
-  };
+  // const getCurrentUserInfo = async () => {
+  //   try {
+  //     const userInfo = await GoogleSignin.signInSilently();
+  //     setUser(userInfo);
+  //   } catch (error) {
+  //     if (error.code === statusCodes.SIGN_IN_REQUIRED) {
+  //       alert('User has not signed in yet');
+  //       console.log('User has not signed in yet');
+  //     } else {
+  //       alert("Something went wrong. Unable to get user's info");
+  //       console.log("Something went wrong. Unable to get user's info");
+  //     }
+  //   }
+  // };
 
-  const signOut = async () => {
-    try {
-      await GoogleSignin.revokeAccess();
-      await GoogleSignin.signOut();
-      setUser({}); // Remember to remove the user from your app's state as well
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  // const signOut = async () => {
+  //   try {
+  //     await GoogleSignin.revokeAccess();
+  //     await GoogleSignin.signOut();
+  //     setUser({}); // Remember to remove the user from your app's state as well
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -100,7 +104,7 @@ const Login = () => {
           text="Sign in with Google"
           rounded={8}
           style={styles.button}
-          onPress={signIn}
+          onPress={() => dispatch(userLogin())}
         />
         <SignInWith
           Icon={FacebookIcon}

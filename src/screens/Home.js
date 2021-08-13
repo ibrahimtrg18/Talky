@@ -6,7 +6,9 @@ import {
   Image,
   StyleSheet,
 } from 'react-native';
+// libraries
 import { useHistory } from 'react-router-native';
+import { useSelector } from 'react-redux';
 // components
 import Text from '../components/Text';
 // utils
@@ -19,6 +21,8 @@ import Avatar from '../assets/images/avatar.png';
 
 const Home = () => {
   const history = useHistory();
+
+  const user = useSelector((state) => state.user);
 
   useEffect(() => {
     BackHandler.addEventListener('hardwareBackPress', handleBack);
