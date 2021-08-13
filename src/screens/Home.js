@@ -1,13 +1,6 @@
-import React, { useEffect } from 'react';
-import {
-  BackHandler,
-  SafeAreaView,
-  View,
-  Image,
-  StyleSheet,
-} from 'react-native';
+import React from 'react';
+import { SafeAreaView, View, Image, StyleSheet } from 'react-native';
 // libraries
-import { useHistory } from 'react-router-native';
 import { useSelector } from 'react-redux';
 // components
 import Text from '../components/Text';
@@ -20,20 +13,7 @@ import SearchIcon from '../assets/icons/iconSearch.svg';
 import Avatar from '../assets/images/avatar.png';
 
 const Home = () => {
-  const history = useHistory();
-
   const user = useSelector((state) => state.user);
-
-  useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', handleBack);
-    return () =>
-      BackHandler.removeEventListener('hardwareBackPress', handleBack);
-  }, []);
-
-  const handleBack = () => {
-    history.goBack();
-    return true;
-  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -41,7 +21,7 @@ const Home = () => {
         <Image source={Avatar} />
         <SearchIcon width={28} height={28} />
       </View>
-      <Text>Home</Text>
+      <Text>{user.idToken}</Text>
     </SafeAreaView>
   );
 };

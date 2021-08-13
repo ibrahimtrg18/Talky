@@ -1,4 +1,7 @@
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import {
+  GoogleSignin,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
 import { googleSigninConfig } from '../../utils/googleSigninConfig';
 
 export const LOGIN = 'LOGIN';
@@ -6,8 +9,7 @@ export const LOGIN = 'LOGIN';
 const signIn = async () => {
   try {
     await GoogleSignin.hasPlayServices();
-    const userInfo = await GoogleSignin.signIn();
-    return userInfo;
+    return await GoogleSignin.signIn();
   } catch (error) {
     if (error.code === statusCodes.SIGN_IN_CANCELLED) {
       console.log('User Cancelled the Login Flow');
@@ -33,7 +35,6 @@ const isSignedIn = async () => {
 const getCurrentUserInfo = async () => {
   try {
     const userInfo = await GoogleSignin.signInSilently();
-    setUser(userInfo);
   } catch (error) {
     if (error.code === statusCodes.SIGN_IN_REQUIRED) {
       alert('User has not signed in yet');
@@ -49,7 +50,6 @@ const signOut = async () => {
   try {
     await GoogleSignin.revokeAccess();
     await GoogleSignin.signOut();
-    setUser({}); // Remember to remove the user from your app's state as well
   } catch (error) {
     console.error(error);
   }

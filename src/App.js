@@ -1,15 +1,28 @@
 import React from 'react';
-import { NativeRouter, Route, Link } from 'react-router-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 // screen
 import Login from './screens/Login';
 import Home from './screens/Home';
 
+const Stack = createNativeStackNavigator();
+
 const App = () => {
   return (
-    <NativeRouter>
-      <Route exact path="/" component={Login} />
-      <Route path="/home" component={Home} />
-    </NativeRouter>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Login">
+        <Stack.Screen
+          name="Home"
+          component={Home}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Login"
+          component={Login}
+          options={{ headerShown: false }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 

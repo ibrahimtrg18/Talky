@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableHighlight, View, StyleSheet } from 'react-native';
+import { TouchableHighlight, View, StyleSheet, Platform } from 'react-native';
 // components
 import Text from './Text';
 // utils
