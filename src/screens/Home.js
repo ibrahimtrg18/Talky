@@ -19,9 +19,9 @@ const Home = () => {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <Image source={Avatar} />
+        <Text>{user.user.name}</Text>
         <SearchIcon width={28} height={28} />
       </View>
-      <Text>{user.idToken}</Text>
     </SafeAreaView>
   );
 };
