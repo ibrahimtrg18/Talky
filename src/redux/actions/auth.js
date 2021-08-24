@@ -3,8 +3,10 @@ import {
   statusCodes,
 } from '@react-native-google-signin/google-signin';
 import { googleSigninConfig } from '../../utils/googleSigninConfig';
+import { storeData, deleteData } from '../../utils/store';
 
 export const LOGIN = 'LOGIN';
+export const LOGOUT = 'LOGOUT';
 
 const signIn = async () => {
   try {
@@ -60,4 +62,10 @@ export const userLogin = () => async (dispatch) => {
   const user = await signIn();
 
   dispatch({ type: LOGIN, payload: user });
+};
+
+export const userLogout = () => async (dispatch) => {
+  const user = await signOut();
+
+  dispatch({ type: LOGOUT, payload: user });
 };

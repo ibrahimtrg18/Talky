@@ -1,11 +1,11 @@
 import React from 'react';
 import { SafeAreaView, View, StyleSheet } from 'react-native';
 // libraries
+import { useDispatch } from 'react-redux';
 // components
 import Text from '../components/Text';
 import SignInWith from '../components/SignInWith';
 import Line from '../components/Line';
-import { useDispatch } from 'react-redux';
 // utils
 import { normalize } from '../utils/normalize';
 import * as Theme from '../utils/theme';

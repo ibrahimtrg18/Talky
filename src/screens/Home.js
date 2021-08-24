@@ -1,7 +1,7 @@
 import React from 'react';
-import { SafeAreaView, View, Image, StyleSheet } from 'react-native';
+import { SafeAreaView, View, Image, Button, StyleSheet } from 'react-native';
 // libraries
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 // components
 import Text from '../components/Text';
 // utils
@@ -11,16 +11,20 @@ import * as Theme from '../utils/theme';
 import SearchIcon from '../assets/icons/iconSearch.svg';
 // images
 import Avatar from '../assets/images/avatar.png';
+// actions
+import { userLogout } from '../redux/actions/auth';
 
 const Home = () => {
+  const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <Image source={Avatar} />
-        <Text>{user.user.name}</Text>
+        <Text>{!!user && !!user.user && user.user.name}</Text>
         <SearchIcon width={28} height={28} />
+        <Button title="logout" onPress={() => dispatch(userLogout())} />
       </View>
     </SafeAreaView>
   );
