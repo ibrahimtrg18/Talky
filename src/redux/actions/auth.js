@@ -1,9 +1,10 @@
+import axios from '../../utils/axios';
 import {
   GoogleSignin,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
 import { googleSigninConfig } from '../../utils/googleSigninConfig';
-import { storeData, deleteData } from '../../utils/store';
+import { storeData, deleteData, getAllData } from '../../utils/storage';
 
 export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
@@ -58,10 +59,22 @@ const signOut = async () => {
 };
 
 export const userLogin = () => async (dispatch) => {
-  GoogleSignin.configure(googleSigninConfig);
-  const user = await signIn();
+  try {
+    GoogleSignin.configure(googleSigninConfig);
+    const user = await signIn();
+    const res = await axios.post('/users/google/login', null, {
+      headers: { token: user.idToken },
+    });
+    storeData({ key: 'access_token', value: res.data.access_token });
 
-  dispatch({ type: LOGIN, payload: user });
+    const auth = {
+      access_token: res.data.access_token,
+    };
+
+    dispatch({ type: LOGIN, payload: auth });
+  } catch (e) {
+    console.error(e);
+  }
 };
 
 export const userLogout = () => async (dispatch) => {

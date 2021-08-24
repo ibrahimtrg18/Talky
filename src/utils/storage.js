@@ -1,4 +1,4 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-community/async-storage';
 
 export const storeData = async ({ key, value }) => {
   try {
@@ -28,5 +28,16 @@ export const deleteData = async (key) => {
   } catch (e) {
     // error reading value
     console.error('error getData: ', e);
+  }
+};
+
+export const getAllData = async () => {
+  try {
+    const keys = await AsyncStorage.getAllKeys();
+    const result = await AsyncStorage.multiGet(keys);
+
+    return result.map((req) => JSON.parse(req)).forEach(console.log);
+  } catch (error) {
+    console.error(error);
   }
 };
