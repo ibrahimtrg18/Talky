@@ -39,31 +39,19 @@ const Login = ({ navigation }) => {
           style={styles.button}
           onPress={() => dispatch(userLoginGoogle())}
         />
-        <SignInWith
-          Icon={FacebookIcon}
-          text="Sign in with Facebook"
-          rounded={8}
-          style={styles.button}
-        />
-        <SignInWith
-          Icon={AppleIcon}
-          text="Sign in with Apple"
-          rounded={8}
-          style={styles.button}
-        />
         <View style={styles.horizontalRule}>
           <Line />
           <Text style={styles.horizontalRuleText}>or</Text>
           <Line />
         </View>
         <SignInWith
-          text="Continue with phone number"
+          text="Continue with Account"
           rounded={8}
           style={styles.button}
         />
       </View>
       <View style={styles.footer}>
-        <Text size={14}>Already have an account?</Text>
+        <Text size={14}>Don't have an account?</Text>
         <Text size={14} color={Theme.primary}>
           Sign up here
         </Text>
