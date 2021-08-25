@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 // screen
@@ -6,10 +7,22 @@ import Home from './screens/Home';
 import Login from './screens/Login';
 import Conversation from './screens/Conversation';
 import Profile from './screens/Profile';
+import { getData } from './utils/storage';
+// actions
+import { userIsSignIn } from './redux/actions/auth';
 
 const Stack = createNativeStackNavigator();
 
 const App = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    (async () => {
+      const accessToken = await getData('access_token');
+      dispatch(userIsSignIn(accessToken));
+    })();
+  });
+
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Login">

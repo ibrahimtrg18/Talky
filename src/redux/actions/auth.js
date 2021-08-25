@@ -58,6 +58,16 @@ const signOut = async () => {
   }
 };
 
+export const userIsSignIn = (token) => async (dispatch) => {
+  try {
+    const auth = { access_token: token };
+
+    dispatch({ type: LOGIN, payload: auth });
+  } catch (e) {
+    console.error(e);
+  }
+};
+
 export const userLogin = () => async (dispatch) => {
   try {
     GoogleSignin.configure(googleSigninConfig);
