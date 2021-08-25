@@ -60,7 +60,6 @@ const Login = ({ navigation }) => {
           text="Continue with phone number"
           rounded={8}
           style={styles.button}
-          onPress={() => navigation.navigate('Home')}
         />
       </View>
       <View style={styles.footer}>
