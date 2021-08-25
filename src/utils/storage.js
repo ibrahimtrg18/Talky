@@ -41,3 +41,11 @@ export const getAllData = async () => {
     console.error(error);
   }
 };
+
+export const clearData = async () => {
+  try {
+    await AsyncStorage.clear();
+  } catch (error) {
+    console.error(error);
+  }
+};

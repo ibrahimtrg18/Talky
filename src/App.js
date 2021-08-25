@@ -7,7 +7,6 @@ import Home from './screens/Home';
 import Login from './screens/Login';
 import Conversation from './screens/Conversation';
 import Profile from './screens/Profile';
-import { getData } from './utils/storage';
 // actions
 import { userIsSignIn } from './redux/actions/auth';
 
@@ -18,10 +17,9 @@ const App = () => {
 
   useEffect(() => {
     (async () => {
-      const accessToken = await getData('access_token');
-      dispatch(userIsSignIn(accessToken));
+      dispatch(userIsSignIn());
     })();
-  });
+  }, [dispatch]);
 
   return (
     <NavigationContainer>

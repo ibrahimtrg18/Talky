@@ -14,7 +14,7 @@ import GoogleIcon from '../assets/icons/iconGoogle.svg';
 import FacebookIcon from '../assets/icons/iconFacebook.svg';
 import AppleIcon from '../assets/icons/iconApple.svg';
 // actions
-import { userLogin } from '../redux/actions/auth';
+import { userLoginGoogle } from '../redux/actions/auth';
 
 const Login = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -37,7 +37,7 @@ const Login = ({ navigation }) => {
           text="Sign in with Google"
           rounded={8}
           style={styles.button}
-          onPress={() => dispatch(userLogin())}
+          onPress={() => dispatch(userLoginGoogle())}
         />
         <SignInWith
           Icon={FacebookIcon}

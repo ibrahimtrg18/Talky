@@ -4,7 +4,7 @@ import {
   statusCodes,
 } from '@react-native-google-signin/google-signin';
 import { googleSigninConfig } from '../../utils/googleSigninConfig';
-import { storeData, deleteData, getAllData } from '../../utils/storage';
+import { storeData, getData, clearData } from '../../utils/storage';
 
 export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
@@ -26,29 +26,6 @@ const signIn = async () => {
   }
 };
 
-const isSignedIn = async () => {
-  const isSignedIn = await GoogleSignin.isSignedIn();
-  if (!!isSignedIn) {
-    getCurrentUserInfo();
-  } else {
-    console.log('Please Login');
-  }
-};
-
-const getCurrentUserInfo = async () => {
-  try {
-    const userInfo = await GoogleSignin.signInSilently();
-  } catch (error) {
-    if (error.code === statusCodes.SIGN_IN_REQUIRED) {
-      alert('User has not signed in yet');
-      console.log('User has not signed in yet');
-    } else {
-      alert("Something went wrong. Unable to get user's info");
-      console.log("Something went wrong. Unable to get user's info");
-    }
-  }
-};
-
 const signOut = async () => {
   try {
     await GoogleSignin.revokeAccess();
@@ -58,24 +35,30 @@ const signOut = async () => {
   }
 };
 
-export const userIsSignIn = (token) => async (dispatch) => {
+export const userIsSignIn = () => async (dispatch) => {
   try {
-    const auth = { access_token: token };
-
-    dispatch({ type: LOGIN, payload: auth });
+    if ((await getData('login_with')) === 'google') {
+      const auth = { access_token: await getData('idToken') };
+      dispatch({ type: LOGIN, payload: auth });
+    } else {
+      const auth = { access_token: await getData('access_token') };
+      dispatch({ type: LOGIN, payload: auth });
+    }
   } catch (e) {
     console.error(e);
   }
 };
 
-export const userLogin = () => async (dispatch) => {
+export const userLoginGoogle = () => async (dispatch) => {
   try {
     GoogleSignin.configure(googleSigninConfig);
     const user = await signIn();
     const res = await axios.post('/users/google/login', null, {
       headers: { token: user.idToken },
     });
-    storeData({ key: 'access_token', value: res.data.access_token });
+    await storeData({ key: 'login_with', value: 'google' });
+    await storeData({ key: 'idToken', value: user.idToken });
+    await storeData({ key: 'access_token', value: res.data.access_token });
 
     const auth = {
       access_token: res.data.access_token,
@@ -88,7 +71,14 @@ export const userLogin = () => async (dispatch) => {
 };
 
 export const userLogout = () => async (dispatch) => {
-  const user = await signOut();
+  try {
+    if ((await getData('login_with')) === 'google') {
+      await signOut();
+    }
+    await clearData();
 
-  dispatch({ type: LOGOUT, payload: user });
+    dispatch({ type: LOGOUT });
+  } catch (e) {
+    console.error(e);
+  }
 };
