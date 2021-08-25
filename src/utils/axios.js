@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { userLogout } from '../redux/actions/auth';
+import store from '../redux/store';
 
 // Create an instance using the config defaults provided by the library
 // At this point the timeout config value is `0` as is the default for the library
@@ -28,6 +30,12 @@ instance.interceptors.response.use(
   function (error) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
+
+    // UNAUTHORIZATION
+    if (error.response.status === 401) {
+      store.dispatch(userLogout());
+    }
+
     return Promise.reject(error);
   },
 );
