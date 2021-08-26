@@ -7,6 +7,7 @@ import Home from './screens/Home';
 import Login from './screens/Login';
 import Conversation from './screens/Conversation';
 import Profile from './screens/Profile';
+import Register from './screens/Register';
 // actions
 import { userIsSignIn } from './redux/actions/auth';
 
@@ -47,6 +48,11 @@ const App = () => {
           <Stack.Screen
             name="Login"
             component={Login}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Register"
+            component={Register}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>

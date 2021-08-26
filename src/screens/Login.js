@@ -52,7 +52,11 @@ const Login = ({ navigation }) => {
       </View>
       <View style={styles.footer}>
         <Text size={14}>Don't have an account?</Text>
-        <Text size={14} color={Theme.primary}>
+        <Text
+          size={14}
+          color={Theme.primary}
+          onPress={() => navigation.navigate('Register')}
+        >
           Sign up here
         </Text>
       </View>
