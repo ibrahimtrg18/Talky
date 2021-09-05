@@ -12,9 +12,9 @@ const SignInWith = ({ Icon, text, rounded, ...props }) => {
   return (
     <TouchableHighlight
       {...props}
-      style={{ ...styles.buttonContainer, ...customRounded, ...props.style }}
+      style={[styles.buttonContainer, customRounded, props.style]}
     >
-      <View style={{ ...styles.container, ...customCenter }}>
+      <View style={[styles.container, customCenter]}>
         {Icon && <Icon style={styles.icon} width={28} height={28} />}
         <Text style={styles.text}>{text}</Text>
       </View>

@@ -6,7 +6,7 @@ import * as Theme from '../utils/theme';
 const Line = ({ color }) => {
   const customColor = color && { borderBottomColor: color };
 
-  return <View style={{ ...styles.line, ...customColor }} />;
+  return <View style={[styles.line, customColor]} />;
 };
 
 const styles = StyleSheet.create({

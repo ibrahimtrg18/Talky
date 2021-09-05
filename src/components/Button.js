@@ -12,11 +12,8 @@ const CustomButton = ({ rounded, style, textColor, ...props }) => {
   const customTextColor = textColor && { color: textColor };
 
   return (
-    <TouchableOpacity
-      {...props}
-      style={{ ...styles.button, ...customRounded, ...style }}
-    >
-      <Text style={{ ...styles.text, ...customTextColor }}>{props.title}</Text>
+    <TouchableOpacity {...props} style={[styles.button, customRounded, style]}>
+      <Text style={[styles.text, customTextColor]}>{props.title}</Text>
     </TouchableOpacity>
   );
 };

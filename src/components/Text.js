@@ -13,13 +13,13 @@ const CustomText = ({ size, color, weight, ...props }) => {
   return (
     <Text
       {...props}
-      style={{
-        ...styles.text,
-        ...customFontSize,
-        ...customFontColor,
-        ...customWeight,
-        ...props.style,
-      }}
+      style={[
+        styles.text,
+        customFontSize,
+        customFontColor,
+        customWeight,
+        props.style,
+      ]}
     >
       {props.children}
     </Text>

@@ -44,14 +44,14 @@ const Input = ({
       <View style={styles.container}>
         <TextInput
           {...props}
-          style={{
-            ...styles.input,
-            ...customFontSize,
-            ...customWeight,
-            ...customRounded,
-            ...isFocus,
-            ...style,
-          }}
+          style={[
+            styles.input,
+            customFontSize,
+            customWeight,
+            customRounded,
+            isFocus,
+            style,
+          ]}
           onFocus={onTextInputFocus}
           onBlur={onTextInputBlur}
         />
