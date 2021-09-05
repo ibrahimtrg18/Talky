@@ -1,10 +1,22 @@
-import React from 'react';
-import { SafeAreaView, View, Image, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import {
+  KeyboardAvoidingView,
+  Platform,
+  TouchableWithoutFeedback,
+  Keyboard,
+  SafeAreaView,
+  Pressable,
+  View,
+  Image,
+  StyleSheet,
+} from 'react-native';
 // libraries
 import { useSelector, useDispatch } from 'react-redux';
 // components
 import Text from '../components/Text';
 import Button from '../components/Button';
+import Input from '../components/Input';
+import BottomSheet from '../components/BottomSheet';
 // utils
 import { normalize } from '../utils/normalize';
 import * as Theme from '../utils/theme';
@@ -18,50 +30,91 @@ import { userLogout } from '../redux/actions/auth';
 
 const Home = () => {
   const dispatch = useDispatch();
+  const [showBottomSheet, setShowBottomSheet] = useState(false);
   const user = useSelector((state) => state.user);
 
+  const onShowBottomSheet = () => {
+    setShowBottomSheet(true);
+  };
+
+  const onHideBottomSheet = () => {
+    Keyboard.dismiss();
+    setShowBottomSheet(false);
+  };
+
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <Image source={Avatar} />
-        <Text>{!!user && !!user.user && user.user.name}</Text>
-        <SearchIcon width={28} height={28} />
-        <Button title="logout" onPress={() => dispatch(userLogout())} />
-      </View>
-      <View style={styles.tabView}>
-        <Button
-          title="Chat"
-          style={styles.tabViewButtonActive}
-          textColor={Theme.black}
-          rounded={8}
-        />
-        <Button
-          title="Call"
-          style={styles.tabViewButton}
-          textColor={Theme.black}
-          rounded={8}
-        />
-      </View>
-      <View style={styles.conversationList}>
-        <View style={styles.conversationItem}>
-          <Image source={Avatar} style={styles.conversationLeft} />
-          <View style={styles.conversationMid}>
-            <View style={styles.conversationMidHead}>
-              <Text color={Theme.text} size={16}>
-                Name
-              </Text>
-              <Text color={Theme.dark} size={12}>
-                Time
-              </Text>
-            </View>
-            <Text color={Theme.dark} size={14}>
-              Message
-            </Text>
+    <KeyboardAvoidingView
+      behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+      enabled={false}
+      style={styles.container}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <>
+          <View style={styles.header}>
+            <Image source={Avatar} />
+            <Text>{!!user && !!user.user && user.user.name}</Text>
+            <Pressable onPress={onShowBottomSheet}>
+              <SearchIcon width={28} height={28} />
+            </Pressable>
+            <Button title="logout" onPress={() => dispatch(userLogout())} />
           </View>
-          <ChevronRightIcon width={24} height={24} />
-        </View>
-      </View>
-    </SafeAreaView>
+          <View style={styles.tabView}>
+            <Button
+              title="Chat"
+              style={styles.tabViewButtonActive}
+              textColor={Theme.black}
+              rounded={8}
+            />
+            <Button
+              title="Call"
+              style={styles.tabViewButton}
+              textColor={Theme.black}
+              rounded={8}
+            />
+          </View>
+          <View style={styles.conversationList}>
+            <View style={styles.conversationItem}>
+              <Image source={Avatar} style={styles.conversationLeft} />
+              <View style={styles.conversationMid}>
+                <View style={styles.conversationMidHead}>
+                  <Text color={Theme.text} size={16}>
+                    Name
+                  </Text>
+                  <Text color={Theme.dark} size={12}>
+                    Time
+                  </Text>
+                </View>
+                <Text color={Theme.dark} size={14}>
+                  Message
+                </Text>
+              </View>
+              <ChevronRightIcon width={24} height={24} />
+            </View>
+          </View>
+
+          <BottomSheet
+            show={showBottomSheet}
+            height={600}
+            onOuterClick={onHideBottomSheet}
+          >
+            <View style={styles.bottomSheetContent}>
+              <Pressable
+                onPress={onHideBottomSheet}
+                style={styles.bottomSheetCloseButton}
+              >
+                <Text style={styles.buttonText}>X Close</Text>
+              </Pressable>
+              <View style={styles.searchContainer}>
+                <Input rounded={8} style={styles.searchInput} />
+                <Pressable>
+                  <SearchIcon width={22} height={22} />
+                </Pressable>
+              </View>
+            </View>
+          </BottomSheet>
+        </>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -120,6 +173,21 @@ const styles = StyleSheet.create({
   conversationMidHead: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+  // bottomSheet
+  bottomSheetContent: {
+    flex: 1,
+  },
+  bottomSheetCloseButton: { marginBottom: 16 },
+  searchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  searchInput: {
+    flex: 1,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    marginRight: 8,
   },
 });
 
