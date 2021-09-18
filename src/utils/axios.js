@@ -1,11 +1,11 @@
 import axios from 'axios';
 import { userLogout } from '../redux/actions/auth';
-import store from '../redux/store';
+import { store } from '../redux/store';
 
 // Create an instance using the config defaults provided by the library
 // At this point the timeout config value is `0` as is the default for the library
 const instance = axios.create({
-  baseURL: 'http://192.168.100.229:3000/',
+  baseURL: 'http://192.168.100.229:3000/api',
 });
 
 // Add a request interceptor

@@ -37,12 +37,11 @@ const signOut = async () => {
 
 export const userIsSignIn = () => async (dispatch) => {
   try {
-    if ((await getData('login_with')) === 'google') {
-      const auth = { access_token: await getData('idToken') };
-      dispatch({ type: LOGIN, payload: auth });
-    } else {
+    if (await getData('access_token')) {
       const auth = { access_token: await getData('access_token') };
       dispatch({ type: LOGIN, payload: auth });
+    } else {
+      dispatch(userLogout());
     }
   } catch (e) {
     console.error(e);
@@ -56,8 +55,6 @@ export const userLoginGoogle = () => async (dispatch) => {
     const res = await axios.post('/users/google/login', null, {
       headers: { token: user.idToken },
     });
-    await storeData({ key: 'login_with', value: 'google' });
-    await storeData({ key: 'idToken', value: user.idToken });
     await storeData({ key: 'access_token', value: res.data.access_token });
 
     const auth = {
