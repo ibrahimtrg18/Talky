@@ -7,78 +7,85 @@ import { getFontWeight } from '../utils/getFontWeight';
 // icons
 import EyeIcon from '../assets/icons/iconEye.svg';
 
-const Input = ({
-  size,
-  weight,
-  rounded,
-  style,
-  type,
-  showPassword,
-  setShowPassword,
-  ...props
-}) => {
-  const [isFocus, setIsFocus] = useState(false);
+const Input = React.forwardRef(
+  (
+    {
+      size,
+      weight,
+      rounded,
+      style,
+      type,
+      showPassword,
+      setShowPassword,
+      ...props
+    },
+    ref,
+  ) => {
+    const [isFocus, setIsFocus] = useState(false);
 
-  const customFontSize = size && { fontSize: normalize(size) };
-  const customRounded = rounded && { borderRadius: rounded };
-  const customWeight = getFontWeight(weight || 500);
+    const customFontSize = size && { fontSize: normalize(size) };
+    const customRounded = rounded && { borderRadius: rounded };
+    const customWeight = getFontWeight(weight || 500);
 
-  const onTextInputFocus = () => {
-    setIsFocus({
-      backgroundColor: Theme.white,
-      borderColor: Theme.primary,
-      color: Theme.text,
-    });
-  };
+    const onTextInputFocus = () => {
+      setIsFocus({
+        backgroundColor: Theme.white,
+        borderColor: Theme.primary,
+        color: Theme.text,
+      });
+    };
 
-  const onTextInputBlur = () => {
-    setIsFocus({
-      backgroundColor: Theme.background,
-      borderColor: Theme.border,
-      color: Theme.text,
-    });
-  };
+    const onTextInputBlur = () => {
+      setIsFocus({
+        backgroundColor: Theme.background,
+        borderColor: Theme.border,
+        color: Theme.text,
+      });
+    };
 
-  if (type === 'password') {
+    if (type === 'password') {
+      return (
+        <View style={styles.container}>
+          <TextInput
+            {...props}
+            ref={ref}
+            style={[
+              styles.input,
+              customFontSize,
+              customWeight,
+              customRounded,
+              isFocus,
+              style,
+            ]}
+            onFocus={onTextInputFocus}
+            onBlur={onTextInputBlur}
+          />
+          <EyeIcon
+            style={styles.icon}
+            onPress={() => setShowPassword(!showPassword)}
+          />
+        </View>
+      );
+    }
+
     return (
-      <View style={styles.container}>
-        <TextInput
-          {...props}
-          style={[
-            styles.input,
-            customFontSize,
-            customWeight,
-            customRounded,
-            isFocus,
-            style,
-          ]}
-          onFocus={onTextInputFocus}
-          onBlur={onTextInputBlur}
-        />
-        <EyeIcon
-          style={styles.icon}
-          onPress={() => setShowPassword(!showPassword)}
-        />
-      </View>
+      <TextInput
+        {...props}
+        ref={ref}
+        style={{
+          ...styles.input,
+          ...customFontSize,
+          ...customWeight,
+          ...customRounded,
+          ...isFocus,
+          ...style,
+        }}
+        onFocus={onTextInputFocus}
+        onBlur={onTextInputBlur}
+      />
     );
-  }
-
-  return (
-    <TextInput
-      {...props}
-      style={{
-        ...styles.input,
-        ...customFontSize,
-        ...customWeight,
-        ...customRounded,
-        ...isFocus,
-        ...style,
-      }}
-      onFocus={onTextInputFocus}
-      onBlur={onTextInputBlur}
-    />
-  );
-};
+  },
+);
 
 const styles = StyleSheet.create({
   container: {
