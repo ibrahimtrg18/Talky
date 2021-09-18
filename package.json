@@ -8,7 +8,8 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "devtools": "react-devtools"
   },
   "dependencies": {
     "@gorhom/bottom-sheet": "4",
@@ -41,7 +42,8 @@
     "jest": "^27.0.6",
     "metro-react-native-babel-preset": "^0.66.2",
     "react-native-svg-transformer": "^0.14.3",
-    "react-test-renderer": "17.0.1"
+    "react-test-renderer": "17.0.1",
+    "reactotron-react-native": "^5.0.0"
   },
   "jest": {
     "preset": "react-native"
