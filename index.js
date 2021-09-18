@@ -4,6 +4,8 @@ import App from './src/App';
 import { name as appName } from './app.json';
 // Libraries
 import { Provider } from 'react-redux';
+import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
+// Store
 import { store } from './src/redux/store';
 
 const AppContainer = () => (
@@ -12,4 +14,6 @@ const AppContainer = () => (
   </Provider>
 );
 
-AppRegistry.registerComponent(appName, () => AppContainer);
+AppRegistry.registerComponent(appName, () =>
+  gestureHandlerRootHOC(AppContainer),
+);
