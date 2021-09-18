@@ -1,6 +1,10 @@
 import axios from 'axios';
 import { userLogout } from '../redux/actions/auth';
-import { store } from '../redux/store';
+let store;
+
+export const injectStore = (_store) => {
+  store = _store;
+};
 
 // Create an instance using the config defaults provided by the library
 // At this point the timeout config value is `0` as is the default for the library

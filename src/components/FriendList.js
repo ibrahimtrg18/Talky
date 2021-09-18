@@ -41,7 +41,7 @@ const FriendList = () => {
   return (
     <View style={styles.friendList}>
       {friends.map((friend) => (
-        <FriendItem friend={friend} />
+        <FriendItem key={friend.user.id} friend={friend} />
       ))}
     </View>
   );

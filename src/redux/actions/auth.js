@@ -1,4 +1,4 @@
-import axios from '../../utils/axios';
+import Axios from 'axios';
 import {
   GoogleSignin,
   statusCodes,
@@ -6,10 +6,14 @@ import {
 import { googleSigninConfig } from '../../utils/googleSigninConfig';
 import { storeData, getData, clearData } from '../../utils/storage';
 
+const axios = Axios.create({
+  baseURL: 'http://192.168.100.229:3000/api',
+});
+
 export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
 
-const signIn = async () => {
+const signInGoogle = async () => {
   try {
     await GoogleSignin.hasPlayServices();
     return await GoogleSignin.signIn();
@@ -26,7 +30,7 @@ const signIn = async () => {
   }
 };
 
-const signOut = async () => {
+const signOutGoogle = async () => {
   try {
     await GoogleSignin.revokeAccess();
     await GoogleSignin.signOut();
@@ -51,7 +55,7 @@ export const userIsSignIn = () => async (dispatch) => {
 export const userLoginGoogle = () => async (dispatch) => {
   try {
     GoogleSignin.configure(googleSigninConfig);
-    const user = await signIn();
+    const user = await signInGoogle();
     const res = await axios.post('/users/google/login', null, {
       headers: { token: user.idToken },
     });
@@ -70,7 +74,7 @@ export const userLoginGoogle = () => async (dispatch) => {
 export const userLogout = () => async (dispatch) => {
   try {
     if ((await getData('login_with')) === 'google') {
-      await signOut();
+      await signOutGoogle();
     }
     await clearData();
 
