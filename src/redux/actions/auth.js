@@ -1,4 +1,5 @@
 import Axios from 'axios';
+import Config from 'react-native-config';
 import {
   GoogleSignin,
   statusCodes,
@@ -7,7 +8,7 @@ import { googleSigninConfig } from '../../utils/googleSigninConfig';
 import { storeData, getData, clearData } from '../../utils/storage';
 
 const axios = Axios.create({
-  baseURL: 'http://192.168.100.229:3000/api',
+  baseURL: Config.API_URL,
 });
 
 axios.interceptors.response.use(

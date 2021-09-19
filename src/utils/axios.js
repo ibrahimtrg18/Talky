@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Config from 'react-native-config';
 import { userLogout } from '../redux/actions/auth';
 let store;
 
@@ -9,7 +10,7 @@ export const injectStore = (_store) => {
 // Create an instance using the config defaults provided by the library
 // At this point the timeout config value is `0` as is the default for the library
 const instance = axios.create({
-  baseURL: 'http://192.168.100.229:3000/api',
+  baseURL: Config.API_URL,
 });
 
 // Add a request interceptor
