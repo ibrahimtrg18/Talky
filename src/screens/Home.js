@@ -2,13 +2,12 @@ import React, { useRef, useMemo, useCallback } from 'react';
 import { SafeAreaView, Pressable, View, Image, StyleSheet } from 'react-native';
 // libraries
 import { useSelector, useDispatch } from 'react-redux';
-import Animated from 'react-native-reanimated';
 import BottomSheet from '@gorhom/bottom-sheet';
 // components
 import Text from '../components/Text';
 import Button from '../components/Button';
 import Input from '../components/Input';
-import FriendList from '../components/FriendList';
+import FriendList from '../components/Friend/FriendList';
 // utils
 import { normalize } from '../utils/normalize';
 import * as Theme from '../utils/theme';
@@ -17,15 +16,12 @@ import SearchIcon from '../assets/icons/iconSearch.svg';
 import ChevronRightIcon from '../assets/icons/iconChevronRight.svg';
 // images
 import Avatar from '../assets/images/avatar.png';
-// actions
-import { fetchProfile } from '../redux/actions/user';
 
 const Home = () => {
   const bottomSheetRef = useRef(null);
   const searchRef = useRef(null);
 
   // redux
-  const dispatch = useDispatch();
   const profile = useSelector((state) => state.user.profile);
 
   // variables snap bottomsheet
