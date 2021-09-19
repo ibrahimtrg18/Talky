@@ -22,7 +22,7 @@ const FriendList = () => {
       <VirtualizedList
         data={friends}
         initialNumToRender={4}
-        renderItem={({ item }) => <FriendItem user={item.user} />}
+        renderItem={({ item }) => <FriendItem key={item.id} user={item.user} />}
         keyExtractor={(item) => item.key}
         getItemCount={(data) => data.length}
         getItem={(data, index) => {
