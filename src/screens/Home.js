@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo, useCallback } from 'react';
+import React, { useRef, useMemo, useCallback } from 'react';
 import { SafeAreaView, Pressable, View, Image, StyleSheet } from 'react-native';
 // libraries
 import { useSelector, useDispatch } from 'react-redux';
@@ -18,19 +18,20 @@ import ChevronRightIcon from '../assets/icons/iconChevronRight.svg';
 // images
 import Avatar from '../assets/images/avatar.png';
 // actions
-import { userLogout } from '../redux/actions/auth';
+import { fetchProfile } from '../redux/actions/user';
 
 const Home = () => {
   const bottomSheetRef = useRef(null);
   const searchRef = useRef(null);
-  const [callbackNode, setCallbackNode] = useState(new Animated.Value(0));
-  // variables
+
+  // redux
+  const dispatch = useDispatch();
+  const profile = useSelector((state) => state.user.profile);
+
+  // variables snap bottomsheet
   const snapPoints = useMemo(() => ['80%', '100%'], []);
 
-  const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
-
-  // callbacks
+  // callbacks bottomsheet
   const handleSheetChanges = useCallback((index) => {
     console.log('handleSheetChanges', index);
   }, []);
@@ -38,12 +39,13 @@ const Home = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Image source={Avatar} />
-        <Text>{!!user && !!user.user && user.user.name}</Text>
+        <View style={styles.headerUser}>
+          <Image source={Avatar} style={styles.headerUserImage} />
+          <Text style={styles.headerUserName}>{!!profile && profile.name}</Text>
+        </View>
         <Pressable onPress={() => bottomSheetRef.current.snapToIndex(0)}>
           <SearchIcon width={28} height={28} />
         </Pressable>
-        <Button title="logout" onPress={() => dispatch(userLogout())} />
       </View>
       <View style={styles.tabView}>
         <Button
@@ -114,6 +116,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: normalize(32),
     marginBottom: normalize(16),
+  },
+  headerUser: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  headerUserName: {
+    marginLeft: 16,
   },
   tabView: {
     flexDirection: 'row',
