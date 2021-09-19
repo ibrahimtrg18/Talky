@@ -1,7 +1,8 @@
 import Reactotron from 'reactotron-react-native';
+import { reactotronRedux } from 'reactotron-redux';
 import AsyncStorage from '@react-native-community/async-storage';
 
-Reactotron.setAsyncStorageHandler(AsyncStorage) // AsyncStorage would either come from `react-native` or `@react-native-community/async-storage` depending on where you get it from
+const reactotron = Reactotron.setAsyncStorageHandler(AsyncStorage) // AsyncStorage would either come from `react-native` or `@react-native-community/async-storage` depending on where you get it from
   .configure({
     name: 'React Native Demo',
   })
@@ -15,4 +16,7 @@ Reactotron.setAsyncStorageHandler(AsyncStorage) // AsyncStorage would either com
     errors: { veto: (stackFrame) => false }, // or turn it off with false
     overlay: false, // just turning off overlay
   })
+  .use(reactotronRedux())
   .connect();
+
+export default reactotron;
