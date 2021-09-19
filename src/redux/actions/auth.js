@@ -10,6 +10,15 @@ const axios = Axios.create({
   baseURL: 'http://192.168.100.229:3000/api',
 });
 
+axios.interceptors.response.use(
+  function (response) {
+    return { ...response, ...response.data };
+  },
+  function (error) {
+    return Promise.reject(error);
+  },
+);
+
 export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
 
@@ -59,6 +68,7 @@ export const userLoginGoogle = () => async (dispatch) => {
     const res = await axios.post('/users/google/login', null, {
       headers: { token: user.idToken },
     });
+    console.log(res.data);
     await storeData({ key: 'access_token', value: res.data.access_token });
 
     const auth = {
