@@ -23,7 +23,7 @@ const FriendList = () => {
         data={friends}
         initialNumToRender={4}
         renderItem={({ item }) => <FriendItem key={item.id} user={item.user} />}
-        keyExtractor={(item) => item.key}
+        keyExtractor={(item) => item.id}
         getItemCount={(data) => data.length}
         getItem={(data, index) => {
           return data[index];
