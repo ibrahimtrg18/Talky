@@ -21,6 +21,7 @@
     "@react-navigation/native-stack": "^6.0.5",
     "axios": "^0.21.1",
     "formik": "^2.2.9",
+    "lodash": "^4.17.21",
     "react": "17.0.1",
     "react-native": "0.64.2",
     "react-native-config": "^1.4.4",
