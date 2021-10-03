@@ -1,4 +1,10 @@
-import React, { useRef, useMemo, useCallback } from 'react';
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  useMemo,
+  useCallback,
+} from 'react';
 import { SafeAreaView, Pressable, View, Image, StyleSheet } from 'react-native';
 // libraries
 import { useSelector, useDispatch } from 'react-redux';
@@ -8,6 +14,8 @@ import Text from '../components/Text';
 import Button from '../components/Button';
 import Input from '../components/Input';
 import FriendList from '../components/Friend/FriendList';
+// actions
+import { searchUser } from '../redux/actions/user';
 // utils
 import { normalize } from '../utils/normalize';
 import * as Theme from '../utils/theme';
@@ -18,8 +26,20 @@ import ChevronRightIcon from '../assets/icons/iconChevronRight.svg';
 import Avatar from '../assets/images/avatar.png';
 
 const Home = () => {
+  const [query, setQuery] = useState('');
   const bottomSheetRef = useRef(null);
   const searchRef = useRef(null);
+
+  const dispatch = useDispatch();
+  const search = useSelector((state) => Object.values(state.user.search));
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      dispatch(searchUser(query));
+    }, 500);
+
+    return () => clearTimeout(timeoutId);
+  }, [query]);
 
   // redux
   const profile = useSelector((state) => state.user.profile);
@@ -86,7 +106,13 @@ const Home = () => {
       >
         <View style={styles.bottomSheetContent}>
           <View style={styles.searchContainer}>
-            <Input ref={searchRef} rounded={8} style={styles.searchInput} />
+            <Input
+              ref={searchRef}
+              rounded={8}
+              style={styles.searchInput}
+              value={query}
+              onChangeText={(text) => setQuery(text)}
+            />
             <Pressable>
               <SearchIcon width={22} height={22} />
             </Pressable>
