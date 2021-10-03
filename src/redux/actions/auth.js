@@ -16,7 +16,7 @@ axios.interceptors.response.use(
     return { ...response, ...response.data };
   },
   function (error) {
-    return Promise.reject(error);
+    return Promise.reject(error.response.data);
   },
 );
 
@@ -66,6 +66,7 @@ export const userLoginGoogle = () => async (dispatch) => {
   try {
     GoogleSignin.configure(googleSigninConfig);
     const user = await signInGoogle();
+    console.log(user);
     const res = await axios.post('/users/google/login', null, {
       headers: { token: user.idToken },
     });

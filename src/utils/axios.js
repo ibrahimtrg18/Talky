@@ -3,6 +3,8 @@ import Config from 'react-native-config';
 import { userLogout } from '../redux/actions/auth';
 let store;
 
+console.log(Config.API_URL);
+
 export const injectStore = (_store) => {
   store = _store;
 };
@@ -41,7 +43,7 @@ instance.interceptors.response.use(
       store.dispatch(userLogout());
     }
 
-    return Promise.reject(error);
+    return Promise.reject(error.response.data);
   },
 );
 
