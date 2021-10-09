@@ -7,11 +7,11 @@ import FriendItem from './FriendItem';
 // utils
 import { normalize } from '../../utils/normalize';
 // actions
-import { fetchFriends } from '../../redux/actions/friend';
+import { fetchFriends } from '../../redux/actions/user';
 
 const FriendList = () => {
   const dispatch = useDispatch();
-  const friends = useSelector((state) => Object.values(state.friend));
+  const friends = useSelector((state) => Object.values(state.user.friend));
 
   useEffect(() => {
     dispatch(fetchFriends());
