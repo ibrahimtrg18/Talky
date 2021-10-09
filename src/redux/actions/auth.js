@@ -67,7 +67,7 @@ export const userLoginGoogle = () => async (dispatch) => {
     GoogleSignin.configure(googleSigninConfig);
     const user = await signInGoogle();
     console.log(user);
-    const res = await axios.post('/users/google/login', null, {
+    const res = await axios.post('/user/google/login', null, {
       headers: { token: user.idToken },
     });
     console.log(res.data);
