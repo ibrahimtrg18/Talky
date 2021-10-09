@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Image, Pressable, StyleSheet } from 'react-native';
 // components
-import Text from '../../components/Text';
+import Text from '../Text';
 // utils
 import { normalize } from '../../utils/normalize';
 import * as Theme from '../../utils/theme';
@@ -10,13 +10,13 @@ import ChevronRightIcon from '../../assets/icons/iconChevronRight.svg';
 // images
 import Avatar from '../../assets/images/avatar.png';
 
-const FriendItem = ({ user }) => {
+const UserItem = ({ user }) => {
   return (
     <Pressable>
-      <View style={styles.friendItem}>
-        <Image source={Avatar} style={styles.friendLeft} />
-        <View style={styles.friendMid}>
-          <View style={styles.friendMidHead}>
+      <View style={styles.userItem}>
+        <Image source={Avatar} style={styles.userLeft} />
+        <View style={styles.userMid}>
+          <View style={styles.userMidHead}>
             <Text color={Theme.text} size={16}>
               {user.name}
             </Text>
@@ -29,23 +29,23 @@ const FriendItem = ({ user }) => {
 };
 
 const styles = StyleSheet.create({
-  friendItem: {
+  userItem: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: normalize(8),
   },
-  friendLeft: {
+  userLeft: {
     width: 50,
     height: 50,
   },
-  friendMid: {
+  userMid: {
     flex: 1,
     paddingHorizontal: normalize(8),
   },
-  friendMidHead: {
+  userMidHead: {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
 });
 
-export default FriendItem;
+export default UserItem;

@@ -13,9 +13,9 @@ import BottomSheet from '@gorhom/bottom-sheet';
 import Text from '../components/Text';
 import Button from '../components/Button';
 import Input from '../components/Input';
-import FriendList from '../components/Friend/FriendList';
+import UserList from '../components/User/UserList';
 // actions
-import { searchUser } from '../redux/actions/user';
+import { searchUser, fetchFriends } from '../redux/actions/user';
 // utils
 import { normalize } from '../utils/normalize';
 import * as Theme from '../utils/theme';
@@ -31,7 +31,8 @@ const Home = () => {
   const searchRef = useRef(null);
 
   const dispatch = useDispatch();
-  const search = useSelector((state) => Object.values(state.user.search));
+  const userSearch = useSelector((state) => Object.values(state.user.search));
+  const userFriends = useSelector((state) => Object.values(state.user.friend));
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -49,7 +50,12 @@ const Home = () => {
 
   // callbacks bottomsheet
   const handleSheetChanges = useCallback((index) => {
-    console.log('handleSheetChanges', index);
+    if (index >= 0) {
+      dispatch(fetchFriends());
+    }
+    if (index >= 0) {
+      dispatch(fetchFriends());
+    }
   }, []);
 
   return (
@@ -118,7 +124,8 @@ const Home = () => {
             </Pressable>
           </View>
 
-          <FriendList />
+          <UserList users={userFriends} type="friend" />
+          <UserList users={userSearch} type="search" />
         </View>
       </BottomSheet>
     </SafeAreaView>
