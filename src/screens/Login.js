@@ -6,6 +6,8 @@ import { useDispatch } from 'react-redux';
 import Text from '../components/Text';
 import SignInWith from '../components/SignInWith';
 import Line from '../components/Line';
+// actions
+import { userLoginGoogle } from '../redux/actions/auth';
 // utils
 import { normalize } from '../utils/normalize';
 import * as Theme from '../utils/theme';
@@ -13,8 +15,6 @@ import * as Theme from '../utils/theme';
 import GoogleIcon from '../assets/icons/iconGoogle.svg';
 import FacebookIcon from '../assets/icons/iconFacebook.svg';
 import AppleIcon from '../assets/icons/iconApple.svg';
-// actions
-import { userLoginGoogle } from '../redux/actions/auth';
 
 const Login = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -48,6 +48,7 @@ const Login = ({ navigation }) => {
           text="Continue with Account"
           rounded={8}
           style={styles.button}
+          onPress={() => navigation.navigate('LoginAccount')}
         />
       </View>
       <View style={styles.footer}>

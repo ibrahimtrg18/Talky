@@ -95,3 +95,17 @@ export const userLogout = () => async (dispatch) => {
     console.error(e);
   }
 };
+
+export const userLoginAccount = (payload) => async (dispatch, getState) => {
+  try {
+    const res = await axios.post('/user/login', payload);
+
+    const auth = {
+      access_token: res.data.access_token,
+    };
+
+    dispatch({ type: LOGIN, payload: auth });
+  } catch (e) {
+    console.error(e);
+  }
+};
