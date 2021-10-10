@@ -61,7 +61,7 @@ const Input = React.forwardRef(
             onBlur={onTextInputBlur}
           />
           <EyeIcon
-            style={styles.icon}
+            style={[styles.icon]}
             onPress={() => setShowPassword(!showPassword)}
           />
         </View>
@@ -72,14 +72,14 @@ const Input = React.forwardRef(
       <TextInput
         {...props}
         ref={ref}
-        style={{
-          ...styles.input,
-          ...customFontSize,
-          ...customWeight,
-          ...customRounded,
-          ...isFocus,
-          ...style,
-        }}
+        style={[
+          styles.input,
+          customFontSize,
+          customWeight,
+          customRounded,
+          isFocus,
+          style,
+        ]}
         onFocus={onTextInputFocus}
         onBlur={onTextInputBlur}
       />
@@ -89,15 +89,15 @@ const Input = React.forwardRef(
 
 const styles = StyleSheet.create({
   container: {
-    position: 'relative',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   icon: {
     position: 'absolute',
-    top: '50%',
     right: 16,
-    transform: [{ translateY: -23 }],
   },
   input: {
+    width: '100%',
     backgroundColor: Theme.background,
     borderWidth: 1,
     borderStyle: 'solid',
