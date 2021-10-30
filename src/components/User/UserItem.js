@@ -17,7 +17,7 @@ const UserItem = ({ user }) => {
         <Image source={Avatar} style={styles.userLeft} />
         <View style={styles.userMid}>
           <View style={styles.userMidHead}>
-            <Text color={Theme.text} size={16}>
+            <Text style={styles.textTransform} color={Theme.text} size={16}>
               {user.name}
             </Text>
           </View>
@@ -45,6 +45,9 @@ const styles = StyleSheet.create({
   userMidHead: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+  userName: {
+    textTransform: 'capitalize',
   },
 });
 
