@@ -15,7 +15,11 @@ import Button from '../components/Button';
 import Input from '../components/Input';
 import UserList from '../components/User/UserList';
 // actions
-import { searchUser, fetchFriends } from '../redux/actions/user';
+import {
+  searchUser,
+  fetchUserFriends,
+  fetchUserConversations,
+} from '../redux/actions/user';
 // utils
 import { normalize } from '../utils/normalize';
 import * as Theme from '../utils/theme';
@@ -33,13 +37,22 @@ const Home = () => {
   const dispatch = useDispatch();
   const userSearch = useSelector((state) => Object.values(state.user.search));
   const userFriends = useSelector((state) => Object.values(state.user.friend));
+  const userConversations = useSelector((state) =>
+    Object.values(state.user.conversation),
+  );
 
   useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      dispatch(searchUser(query));
-    }, 500);
+    dispatch(fetchUserConversations());
+  }, []);
 
-    return () => clearTimeout(timeoutId);
+  useEffect(() => {
+    if (query) {
+      const timeoutId = setTimeout(() => {
+        dispatch(searchUser(query));
+      }, 500);
+
+      return () => clearTimeout(timeoutId);
+    }
   }, [query]);
 
   // redux
@@ -51,10 +64,10 @@ const Home = () => {
   // callbacks bottomsheet
   const handleSheetChanges = useCallback((index) => {
     if (index >= 0) {
-      dispatch(fetchFriends());
+      dispatch(fetchUserFriends());
     }
     if (index >= 0) {
-      dispatch(fetchFriends());
+      dispatch(fetchUserFriends());
     }
   }, []);
 
@@ -83,26 +96,13 @@ const Home = () => {
           rounded={8}
         />
       </View>
-      <View style={styles.conversationList}>
-        <View style={styles.conversationItem}>
-          <Image source={Avatar} style={styles.conversationLeft} />
-          <View style={styles.conversationMid}>
-            <View style={styles.conversationMidHead}>
-              <Text color={Theme.text} size={16}>
-                Name
-              </Text>
-              <Text color={Theme.dark} size={12}>
-                Time
-              </Text>
-            </View>
-            <Text color={Theme.dark} size={14}>
-              Message
-            </Text>
-          </View>
-          <ChevronRightIcon width={24} height={24} />
-        </View>
+
+      {/* !Conversation */}
+      <View style={styles.conversationContainer}>
+        <UserList users={userConversations} type="conversation" />
       </View>
 
+      {/* !BottomSheet */}
       <BottomSheet
         ref={bottomSheetRef}
         index={-1}
@@ -177,23 +177,8 @@ const styles = StyleSheet.create({
     elevation: 12,
   },
   // conversation
-  conversationList: {},
-  conversationItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  conversationContainer: {
     paddingHorizontal: normalize(32),
-  },
-  conversationLeft: {
-    width: 50,
-    height: 50,
-  },
-  conversationMid: {
-    flex: 1,
-    paddingHorizontal: normalize(8),
-  },
-  conversationMidHead: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
   },
   // bottomSheet
   bottomSheetContent: {

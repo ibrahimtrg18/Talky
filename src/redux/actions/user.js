@@ -8,7 +8,17 @@ export const ADD_FRIEND = 'ADD_FRIEND';
 export const REMOVE_FRIEND = 'REMOVE_FRIEND';
 export const FIND_USER = 'FIND_USER';
 export const FETCH_USER_FRIENDS = 'FETCH_USER_FRIENDS';
+export const FETCH_USER_CONVERSATIONS = 'FETCH_USER_CONVERSATIONS';
 export const REGISTER_USER = 'REGISTER_USER';
+
+export const registerUser = (payload) => async (dispatch, getState) => {
+  try {
+    const res = await axios.post('/user/register', payload);
+    dispatch({ type: REGISTER_USER, payload: res.data.access_token });
+  } catch (e) {
+    console.error(e);
+  }
+};
 
 export const fetchProfile = () => async (dispatch, getState) => {
   try {
@@ -34,7 +44,7 @@ export const searchUser = (query) => async (dispatch, getState) => {
   }
 };
 
-export const fetchFriends = () => async (dispatch, getState) => {
+export const fetchUserFriends = () => async (dispatch, getState) => {
   try {
     const { auth } = getState();
     const friends = await axios.get('/user/friend', {
@@ -46,10 +56,13 @@ export const fetchFriends = () => async (dispatch, getState) => {
   }
 };
 
-export const registerUser = (payload) => async (dispatch, getState) => {
+export const fetchUserConversations = () => async (dispatch, getState) => {
   try {
-    const res = await axios.post('/user/register', payload);
-    dispatch({ type: REGISTER_USER, payload: res.data.access_token });
+    const { auth } = getState();
+    const friends = await axios.get('/user/conversation', {
+      headers: { Authorization: 'Bearer ' + auth.access_token },
+    });
+    dispatch({ type: FETCH_USER_CONVERSATIONS, payload: friends.data });
   } catch (e) {
     console.error(e);
   }
