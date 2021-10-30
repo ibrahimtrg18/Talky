@@ -6,6 +6,32 @@ import UserItem from './UserItem';
 import { normalize } from '../../utils/normalize';
 
 const UserList = ({ users, type, message }) => {
+  if (type === 'conversation') {
+    return (
+      <View style={styles.userList}>
+        <VirtualizedList
+          data={users}
+          initialNumToRender={4}
+          renderItem={({ item }) => {
+            if (item.type === 'INDIVIDUAL') {
+              return <UserItem key={item.id} user={item.users[0]} />;
+            } else {
+              const user = {
+                name: 'Group',
+              };
+              return <UserItem key={item.id} user={user} />;
+            }
+          }}
+          keyExtractor={(item) => item.id}
+          getItemCount={(data) => data.length}
+          getItem={(data, index) => {
+            return data[index];
+          }}
+        />
+      </View>
+    );
+  }
+
   if (users && Array.isArray(users) && users.length > 0) {
     return (
       <View style={styles.userList}>
