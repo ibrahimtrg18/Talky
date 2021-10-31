@@ -5,7 +5,7 @@ import UserItem from './UserItem';
 // utils
 import { normalize } from '../../utils/normalize';
 
-const UserList = ({ users, type, message }) => {
+const UserList = ({ users, type, message, onUserClick }) => {
   if (type === 'conversation') {
     return (
       <View style={styles.userList}>
@@ -14,12 +14,24 @@ const UserList = ({ users, type, message }) => {
           initialNumToRender={4}
           renderItem={({ item }) => {
             if (item.type === 'INDIVIDUAL') {
-              return <UserItem key={item.id} user={item.users[0]} />;
+              return (
+                <UserItem
+                  key={item.id}
+                  user={item.users[0]}
+                  onUserClick={() => onUserClick({ conversationId: item.id })}
+                />
+              );
             } else {
               const user = {
                 name: 'Group',
               };
-              return <UserItem key={item.id} user={user} />;
+              return (
+                <UserItem
+                  key={item.id}
+                  user={user}
+                  onUserClick={() => onUserClick({ conversationId: item.id })}
+                />
+              );
             }
           }}
           keyExtractor={(item) => item.id}

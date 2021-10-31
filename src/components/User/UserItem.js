@@ -10,9 +10,9 @@ import ChevronRightIcon from '../../assets/icons/iconChevronRight.svg';
 // images
 import Avatar from '../../assets/images/avatar.png';
 
-const UserItem = ({ user }) => {
+const UserItem = ({ user, onUserClick }) => {
   return (
-    <Pressable>
+    <Pressable onPress={() => (onUserClick ? onUserClick() : null)}>
       <View style={styles.userItem}>
         <Image source={Avatar} style={styles.userLeft} />
         <View style={styles.userMid}>
