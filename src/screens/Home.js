@@ -29,7 +29,7 @@ import ChevronRightIcon from '../assets/icons/iconChevronRight.svg';
 // images
 import Avatar from '../assets/images/avatar.png';
 
-const Home = () => {
+const Home = ({ navigation }) => {
   const [query, setQuery] = useState('');
   const bottomSheetRef = useRef(null);
   const searchRef = useRef(null);
@@ -71,6 +71,10 @@ const Home = () => {
     }
   }, []);
 
+  const onUserConversationClick = ({ conversationId }) => {
+    navigation.navigate('Conversation', { conversationId });
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -99,7 +103,13 @@ const Home = () => {
 
       {/* !Conversation */}
       <View style={styles.conversationContainer}>
-        <UserList users={userConversations} type="conversation" />
+        <UserList
+          users={userConversations}
+          type="conversation"
+          onUserClick={({ conversationId }) => {
+            onUserConversationClick({ conversationId });
+          }}
+        />
       </View>
 
       {/* !BottomSheet */}
