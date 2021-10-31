@@ -1,10 +1,12 @@
 import React from 'react';
 import { SafeAreaView, Text } from 'react-native';
 
-const Conversion = () => {
+const Conversion = ({ route }) => {
+  const { conversationId } = route.params;
+
   return (
     <SafeAreaView>
-      <Text>Conversion</Text>
+      <Text>Conversion {conversationId}</Text>
     </SafeAreaView>
   );
 };
