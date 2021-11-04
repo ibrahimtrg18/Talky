@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   },
   text: {
     color: Theme.white,
-    fontSize: normalize(16),
+    fontSize: normalize(14),
   },
 });
 
