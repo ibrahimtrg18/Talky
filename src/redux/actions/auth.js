@@ -40,6 +40,29 @@ const signInGoogle = async () => {
   }
 };
 
+export const userLoginGoogle = () => async (dispatch) => {
+  try {
+    GoogleSignin.configure(googleSigninConfig);
+    const user = await signInGoogle();
+
+    const res = await axios.post('/user/google/login', null, {
+      headers: { token: user.idToken },
+    });
+
+    await storeData({ key: 'access_token', value: res.data.access_token });
+    await storeData({ key: 'id', value: res.data.id });
+
+    const auth = {
+      id: res.data.id,
+      access_token: res.data.access_token,
+    };
+
+    dispatch({ type: LOGIN, payload: auth });
+  } catch (e) {
+    console.error(e);
+  }
+};
+
 const signOutGoogle = async () => {
   try {
     await GoogleSignin.revokeAccess();
@@ -52,7 +75,11 @@ const signOutGoogle = async () => {
 export const userIsSignIn = () => async (dispatch) => {
   try {
     if (await getData('access_token')) {
-      const auth = { access_token: await getData('access_token') };
+      const auth = {
+        id: await getData('id'),
+        access_token: await getData('access_token'),
+      };
+
       dispatch({ type: LOGIN, payload: auth });
     } else {
       dispatch(userLogout());
@@ -62,18 +89,14 @@ export const userIsSignIn = () => async (dispatch) => {
   }
 };
 
-export const userLoginGoogle = () => async (dispatch) => {
+export const userLoginAccount = (payload) => async (dispatch, getState) => {
   try {
-    GoogleSignin.configure(googleSigninConfig);
-    const user = await signInGoogle();
-    console.log(user);
-    const res = await axios.post('/user/google/login', null, {
-      headers: { token: user.idToken },
-    });
-    console.log(res.data);
+    const res = await axios.post('/user/login', payload);
     await storeData({ key: 'access_token', value: res.data.access_token });
+    await storeData({ key: 'id', value: res.data.id });
 
     const auth = {
+      id: res.data.id,
       access_token: res.data.access_token,
     };
 
@@ -91,20 +114,6 @@ export const userLogout = () => async (dispatch) => {
     await clearData();
 
     dispatch({ type: LOGOUT });
-  } catch (e) {
-    console.error(e);
-  }
-};
-
-export const userLoginAccount = (payload) => async (dispatch, getState) => {
-  try {
-    const res = await axios.post('/user/login', payload);
-
-    const auth = {
-      access_token: res.data.access_token,
-    };
-
-    dispatch({ type: LOGIN, payload: auth });
   } catch (e) {
     console.error(e);
   }
