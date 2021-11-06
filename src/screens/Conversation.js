@@ -1,14 +1,25 @@
 import React, { useEffect } from 'react';
-import { SafeAreaView, View, ScrollView, StyleSheet } from 'react-native';
+import {
+  SafeAreaView,
+  View,
+  // ScrollView,
+  // VirtualizedList,
+  FlatList,
+  StyleSheet,
+} from 'react-native';
 // libraries
 import { useDispatch, useSelector } from 'react-redux';
 // components
 import Text from '../components/Text';
 import Button from '../components/Button';
 import Input from '../components/Input';
+import Message from '../components/Message';
 import UserList from '../components/User/UserList';
 // actions
-import { fetchConversationById } from '../redux/actions/conversation';
+import {
+  fetchConversationById,
+  fetchConversationChatById,
+} from '../redux/actions/conversation';
 // utils
 import { normalize } from '../utils/normalize';
 import * as Theme from '../utils/theme';
@@ -19,9 +30,15 @@ const Conversion = ({ route }) => {
   const { conversationId } = route.params;
   const dispatch = useDispatch();
 
+  const conversation = useSelector((state) => state.conversation);
+  const chats = useSelector((state) => Object.values(state.conversation.chat));
+
   useEffect(() => {
-    dispatch(fetchConversationById(conversationId));
-  }, []);
+    (async () => {
+      await dispatch(fetchConversationById(conversationId));
+      await dispatch(fetchConversationChatById(conversationId));
+    })();
+  }, [conversationId]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -29,17 +46,36 @@ const Conversion = ({ route }) => {
         <BackIcon width={28} height={28} style={{ marginRight: 8 }} />
         <Text>Back</Text>
       </View>
-      <ScrollView style={styles.body}>
-        <Text style={styles.text}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-          culpa qui officia deserunt mollit anim id est laborum.
-        </Text>
-      </ScrollView>
+      {/* <ScrollView style={styles.body}>
+        {chats.map((chat) => (
+          <Message key={chat.id} chat={chat} />
+        ))}
+      </ScrollView> */}
+
+      {/* <VirtualizedList
+        style={styles.body}
+        data={chats}
+        initialNumToRender={10}
+        renderItem={({ item }) => (
+          <Message key={item.id} chat={item} conversation={conversation} />
+        )}
+        keyExtractor={(item) => item.id}
+        getItemCount={(data) => data.length}
+        getItem={(data, index) => {
+          return data[index];
+        }}
+        initialScrollIndex={chats.length - 1}
+        onScrollToIndexFailed={() => {}}
+      /> */}
+      <FlatList
+        style={styles.body}
+        data={chats}
+        renderItem={({ item }) => (
+          <Message key={item.id} chat={item} conversation={conversation} />
+        )}
+        keyExtractor={(item) => item.id}
+        initialScrollIndex={chats.length - 1}
+      />
       <View style={styles.footer}>
         <Input placeholder="Message" style={styles.input} />
         <Button title="Send" style={styles.button} />
