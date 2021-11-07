@@ -1,14 +1,17 @@
-import React, { useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   SafeAreaView,
   View,
   // ScrollView,
   // VirtualizedList,
   FlatList,
+  Pressable,
   StyleSheet,
 } from 'react-native';
 // libraries
+import Config from 'react-native-config';
 import { useDispatch, useSelector } from 'react-redux';
+import io from 'socket.io-client';
 // components
 import Text from '../components/Text';
 import Button from '../components/Button';
@@ -19,6 +22,7 @@ import UserList from '../components/User/UserList';
 import {
   fetchConversationById,
   fetchConversationChatById,
+  addConversationChat,
 } from '../redux/actions/conversation';
 // utils
 import { normalize } from '../utils/normalize';
@@ -26,12 +30,32 @@ import * as Theme from '../utils/theme';
 // icons
 import BackIcon from '../assets/icons/iconBack.svg';
 
-const Conversion = ({ route }) => {
+const Conversion = ({ navigation, route }) => {
   const { conversationId } = route.params;
   const dispatch = useDispatch();
+  const [message, setMessage] = useState('');
+  const flatList = useRef();
 
+  const auth = useSelector((state) => state.auth);
   const conversation = useSelector((state) => state.conversation);
   const chats = useSelector((state) => Object.values(state.conversation.chat));
+
+  const socket = io(Config.SOCKET_URL, {
+    extraHeaders: {
+      Authorization: 'Bearer ' + auth.access_token,
+    },
+  });
+
+  socket.on('connect_error', (err) => console.error(err));
+  socket.on('connect_failed', (err) => console.error(err));
+  socket.on('disconnect', (err) => console.error(err));
+
+  useEffect(() => {
+    socket.on('createChat', async (data) => {
+      console.log('createChat', JSON.stringify(data, null, 2));
+      await dispatch(addConversationChat(data));
+    });
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -40,11 +64,29 @@ const Conversion = ({ route }) => {
     })();
   }, [conversationId]);
 
+  const onSendPress = () => {
+    try {
+      console.log(message);
+      socket.emit('createChat', {
+        conversation: {
+          id: conversationId,
+        },
+        message,
+      });
+      setMessage('');
+      flatList.current.scrollToEnd({ animated: true });
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <BackIcon width={28} height={28} style={{ marginRight: 8 }} />
-        <Text>Back</Text>
+        <Pressable onPress={() => navigation.goBack()}>
+          <BackIcon width={28} height={28} style={{ marginRight: 8 }} />
+          {/* <Text>Back</Text> */}
+        </Pressable>
       </View>
       {/* <ScrollView style={styles.body}>
         {chats.map((chat) => (
@@ -68,17 +110,27 @@ const Conversion = ({ route }) => {
         onScrollToIndexFailed={() => {}}
       /> */}
       <FlatList
+        ref={flatList}
         style={styles.body}
         data={chats}
         renderItem={({ item }) => (
           <Message key={item.id} chat={item} conversation={conversation} />
         )}
         keyExtractor={(item) => item.id}
-        initialScrollIndex={chats.length - 1}
+        onContentSizeChange={() =>
+          flatList.current.scrollToEnd({ animated: true })
+        }
+        onLayout={() => flatList.current.scrollToEnd({ animated: true })}
+        // initialScrollIndex={chats.length - 1}
       />
       <View style={styles.footer}>
-        <Input placeholder="Message" style={styles.input} />
-        <Button title="Send" style={styles.button} />
+        <Input
+          style={styles.input}
+          value={message}
+          placeholder="Message"
+          onChangeText={(text) => setMessage(text)}
+        />
+        <Button title="Send" style={styles.button} onPress={onSendPress} />
       </View>
     </SafeAreaView>
   );
