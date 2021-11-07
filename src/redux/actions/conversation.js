@@ -2,6 +2,7 @@ import axios from '../../utils/axios';
 
 export const FETCH_CONVERSATION = 'FETCH_CONVERSATION';
 export const FETCH_CONVERSATION_CHAT = 'FETCH_CONVERSATION_CHAT';
+export const ADD_CONVERSATION_CHAT = 'ADD_CONVERSATION_CHAT';
 
 export const fetchConversationById = (id) => async (dispatch, getState) => {
   try {
@@ -24,6 +25,17 @@ export const fetchConversationChatById = (id) => async (dispatch, getState) => {
     dispatch({
       type: FETCH_CONVERSATION_CHAT,
       payload: conversation.data,
+    });
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+export const addConversationChat = (chat) => async (dispatch) => {
+  try {
+    dispatch({
+      type: ADD_CONVERSATION_CHAT,
+      payload: chat,
     });
   } catch (e) {
     console.error(e);
