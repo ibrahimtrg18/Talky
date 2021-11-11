@@ -24,7 +24,7 @@ const Login = ({ navigation }) => {
       <View style={styles.header}>
         <Text>
           <Text size={60} weight={800} style={styles.title}>
-            Talky
+            Talkyu
           </Text>
           <Text size={60} weight={800} style={styles.dot}>
             .

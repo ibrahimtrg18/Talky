@@ -43,7 +43,7 @@ const Register = ({ navigation }) => {
           <View style={styles.headerContainer}>
             <Text>
               <Text size={40} weight={800} style={styles.title}>
-                Talky
+                Talkyu
               </Text>
               <Text size={40} weight={800} style={styles.dot}>
                 .
