@@ -91,7 +91,7 @@ apply from: "../../node_modules/react-native/react.gradle"
  * Upload all the APKs to the Play Store and people will download
  * the correct one based on the CPU architecture of their device.
  */
-def enableSeparateBuildPerCPUArchitecture = false
+def enableSeparateBuildPerCPUArchitecture = true
 
 /**
  * Run Proguard to shrink the Java bytecode in release builds.
@@ -120,6 +120,11 @@ def jscFlavor = 'org.webkit:android-jsc:+'
  */
 def enableHermes = project.ext.react.get("enableHermes", false);
 
+// Load keystore
+def keystorePropertiesFile = rootProject.file("/release.keystore.properties");
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
 android {
     ndkVersion rootProject.ext.ndkVersion
 
@@ -146,6 +151,12 @@ android {
         }
     }
     signingConfigs {
+        release {
+            storeFile file(keystoreProperties['MYAPP_UPLOAD_STORE_FILE'])
+            storePassword keystoreProperties['MYAPP_UPLOAD_STORE_PASSWORD']
+            keyAlias keystoreProperties['MYAPP_UPLOAD_KEY_ALIAS']
+            keyPassword keystoreProperties['MYAPP_UPLOAD_KEY_PASSWORD']
+        }
         debug {
             storeFile file('debug.keystore')
             storePassword 'android'
@@ -160,7 +171,7 @@ android {
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
@@ -219,6 +230,12 @@ task copyDownloadableDepsToLibs(type: Copy) {
     from configurations.compile
     into 'libs'
 }
+
+project.ext.envConfigFiles = [
+    debug: ".env.development",
+    release: ".env.production",
+    anothercustombuild: ".env",
+]
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
 apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"

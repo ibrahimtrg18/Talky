@@ -60,3 +60,6 @@ buck-out/
 
 # environment
 .env.*
+
+# release keystore
+/android/release.keystore.properties
