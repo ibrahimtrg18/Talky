@@ -18,7 +18,8 @@ export default (state = INITIAL_STATE, action) => {
     case ADD_CONVERSATION_CHAT:
       return {
         ...state,
-        chat: { ...state.chat, [action.payload.id]: action.payload },
+        // using conversation inverted
+        chat: { [action.payload.id]: action.payload, ...state.chat },
       };
     default:
       return state;

@@ -34,7 +34,6 @@ const Conversion = ({ navigation, route }) => {
   const { conversationId } = route.params;
   const dispatch = useDispatch();
   const [message, setMessage] = useState('');
-  const flatList = useRef();
 
   const auth = useSelector((state) => state.auth);
   const conversation = useSelector((state) => state.conversation);
@@ -52,7 +51,6 @@ const Conversion = ({ navigation, route }) => {
 
   useEffect(() => {
     socket.on('createChat', async (data) => {
-      console.log('createChat', JSON.stringify(data, null, 2));
       await dispatch(addConversationChat(data));
     });
   }, []);
@@ -66,15 +64,15 @@ const Conversion = ({ navigation, route }) => {
 
   const onSendPress = () => {
     try {
-      console.log(message);
-      socket.emit('createChat', {
-        conversation: {
-          id: conversationId,
-        },
-        message,
-      });
-      setMessage('');
-      flatList.current.scrollToEnd({ animated: true });
+      if (message && message) {
+        socket.emit('createChat', {
+          conversation: {
+            id: conversationId,
+          },
+          message,
+        });
+        setMessage('');
+      }
     } catch (e) {
       console.error(e);
     }
@@ -110,17 +108,13 @@ const Conversion = ({ navigation, route }) => {
         onScrollToIndexFailed={() => {}}
       /> */}
       <FlatList
-        ref={flatList}
         style={styles.body}
         data={chats}
         renderItem={({ item }) => (
           <Message key={item.id} chat={item} conversation={conversation} />
         )}
         keyExtractor={(item) => item.id}
-        onContentSizeChange={() =>
-          flatList.current.scrollToEnd({ animated: true })
-        }
-        onLayout={() => flatList.current.scrollToEnd({ animated: true })}
+        inverted
         // initialScrollIndex={chats.length - 1}
       />
       <View style={styles.footer}>
