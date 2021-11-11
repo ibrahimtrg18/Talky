@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.ibrahimtarigan.talky">
+  package="com.ibrahimtarigan.talkyu">
 
     <uses-permission android:name="android.permission.INTERNET" />
 

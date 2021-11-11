@@ -1,4 +1,4 @@
-package com.ibrahimtarigan.talky;
+package com.ibrahimtarigan.talkyu;
 
 import android.os.Bundle;
 import com.facebook.react.ReactActivity;

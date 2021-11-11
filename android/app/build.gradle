@@ -131,7 +131,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.ibrahimtarigan.talky"
+        applicationId "com.ibrahimtarigan.talkyu"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
