@@ -1,5 +1,4 @@
 import axios from '../../utils/axios';
-import { storeData, getData, clearData } from '../../utils/storage';
 
 export const FETCH_PROFILE = 'FETCH_PROFILE';
 export const GET_ALL_FRIEND = 'GET_ALL_FRIEND';
@@ -23,10 +22,10 @@ export const registerUser = (payload) => async (dispatch, getState) => {
 export const fetchProfile = () => async (dispatch, getState) => {
   try {
     const { auth } = getState();
-    const user = await axios.get('/user/account', {
+    const res = await axios.get('/user/account', {
       headers: { Authorization: 'Bearer ' + auth.access_token },
     });
-    dispatch({ type: FETCH_PROFILE, payload: user.data });
+    dispatch({ type: FETCH_PROFILE, payload: res.data });
   } catch (e) {
     console.error(e);
   }
@@ -35,10 +34,10 @@ export const fetchProfile = () => async (dispatch, getState) => {
 export const searchUser = (query) => async (dispatch, getState) => {
   try {
     const { auth } = getState();
-    const users = await axios.get(`/user/search?q=${query}`, {
+    const res = await axios.get(`/user/search?q=${query}`, {
       headers: { Authorization: 'Bearer ' + auth.access_token },
     });
-    dispatch({ type: FIND_USER, payload: users.data });
+    dispatch({ type: FIND_USER, payload: res.data });
   } catch (e) {
     console.error(e);
   }
@@ -47,10 +46,10 @@ export const searchUser = (query) => async (dispatch, getState) => {
 export const fetchUserFriends = () => async (dispatch, getState) => {
   try {
     const { auth } = getState();
-    const friends = await axios.get('/user/friend', {
+    const res = await axios.get('/user/friend', {
       headers: { Authorization: 'Bearer ' + auth.access_token },
     });
-    dispatch({ type: FETCH_USER_FRIENDS, payload: friends.data });
+    dispatch({ type: FETCH_USER_FRIENDS, payload: res.data });
   } catch (e) {
     console.error(e);
   }
@@ -59,10 +58,10 @@ export const fetchUserFriends = () => async (dispatch, getState) => {
 export const fetchUserConversations = () => async (dispatch, getState) => {
   try {
     const { auth } = getState();
-    const friends = await axios.get('/user/conversation', {
+    const res = await axios.get('/user/conversation', {
       headers: { Authorization: 'Bearer ' + auth.access_token },
     });
-    dispatch({ type: FETCH_USER_CONVERSATIONS, payload: friends.data });
+    dispatch({ type: FETCH_USER_CONVERSATIONS, payload: res.data });
   } catch (e) {
     console.error(e);
   }
