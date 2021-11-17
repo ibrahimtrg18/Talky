@@ -4,6 +4,7 @@ import {
   TouchableWithoutFeedback,
   Platform,
   Keyboard,
+  ToastAndroid,
   View,
   StyleSheet,
 } from 'react-native';
@@ -55,11 +56,11 @@ const LoginAccount = ({ navigation }) => {
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
-            onSubmit={async (values, { resetForm, setSubmitting }) => {
+            onSubmit={async (values, { setSubmitting }) => {
               try {
                 setSubmitting(true);
-                dispatch(userLoginAccount(values));
-                // navigation.navigate('Login');
+                const { message } = await dispatch(userLoginAccount(values));
+                ToastAndroid.show(message, ToastAndroid.SHORT);
                 setSubmitting(false);
               } catch (e) {
                 console.error(e);

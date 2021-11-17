@@ -101,8 +101,10 @@ export const userLoginAccount = (payload) => async (dispatch, getState) => {
     };
 
     dispatch({ type: LOGIN, payload: auth });
+    return res;
   } catch (e) {
     console.error(e);
+    return e;
   }
 };
 
