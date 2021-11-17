@@ -79,7 +79,9 @@ const Home = ({ navigation }) => {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <View style={styles.headerUser}>
-          <Image source={Avatar} style={styles.headerUserImage} />
+          <Pressable onPress={() => navigation.navigate('Profile')}>
+            <Image source={Avatar} style={styles.headerUserImage} />
+          </Pressable>
           <Text style={styles.headerUserName}>{!!profile && profile.name}</Text>
         </View>
         <Pressable onPress={() => bottomSheetRef.current.snapToIndex(0)}>
