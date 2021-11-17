@@ -31,6 +31,20 @@ export const fetchAccount = () => async (dispatch, getState) => {
   }
 };
 
+export const updateAccount = (payload) => async (dispatch, getState) => {
+  try {
+    const { auth } = getState();
+    const res = await axios.patch('/user/account', payload, {
+      headers: { Authorization: 'Bearer ' + auth.access_token },
+    });
+    dispatch({ type: FETCH_PROFILE, payload: res.data });
+    return res;
+  } catch (e) {
+    console.error(e);
+    return e;
+  }
+};
+
 export const searchUser = (query) => async (dispatch, getState) => {
   try {
     const { auth } = getState();
