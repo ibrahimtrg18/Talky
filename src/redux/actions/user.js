@@ -19,7 +19,7 @@ export const registerUser = (payload) => async (dispatch, getState) => {
   }
 };
 
-export const fetchProfile = () => async (dispatch, getState) => {
+export const fetchAccount = () => async (dispatch, getState) => {
   try {
     const { auth } = getState();
     const res = await axios.get('/user/account', {

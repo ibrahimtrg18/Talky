@@ -7,7 +7,7 @@ import {
 } from '../actions/user';
 
 const INITIAL_STATE = {
-  profile: null,
+  account: null,
   search: {},
   friend: {},
   conversation: {},
@@ -16,7 +16,7 @@ const INITIAL_STATE = {
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case FETCH_PROFILE:
-      return { ...state, profile: action.payload };
+      return { ...state, account: action.payload };
     case FIND_USER:
       return { ...state, search: { ..._.mapKeys(action.payload, 'id') } };
     case FETCH_USER_FRIENDS:

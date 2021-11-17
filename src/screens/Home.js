@@ -56,7 +56,7 @@ const Home = ({ navigation }) => {
   }, [query]);
 
   // redux
-  const profile = useSelector((state) => state.user.profile);
+  const account = useSelector((state) => state.user.account);
 
   // variables snap bottomsheet
   const snapPoints = useMemo(() => ['80%', '100%'], []);
@@ -82,7 +82,7 @@ const Home = ({ navigation }) => {
           <Pressable onPress={() => navigation.navigate('Profile')}>
             <Image source={Avatar} style={styles.headerUserImage} />
           </Pressable>
-          <Text style={styles.headerUserName}>{!!profile && profile.name}</Text>
+          <Text style={styles.headerUserName}>{!!account && account.name}</Text>
         </View>
         <Pressable onPress={() => bottomSheetRef.current.snapToIndex(0)}>
           <SearchIcon width={28} height={28} />

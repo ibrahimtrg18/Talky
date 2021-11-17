@@ -11,7 +11,7 @@ import Profile from './screens/Profile';
 import Register from './screens/Register';
 // actions
 import { userIsSignIn } from './redux/actions/auth';
-import { fetchProfile } from './redux/actions/user';
+import { fetchAccount } from './redux/actions/user';
 
 const Stack = createNativeStackNavigator();
 
@@ -27,7 +27,7 @@ const App = () => {
 
   useEffect(() => {
     if (auth.access_token) {
-      dispatch(fetchProfile());
+      dispatch(fetchAccount());
     }
   }, [auth]);
 
