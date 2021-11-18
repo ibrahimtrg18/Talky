@@ -1,5 +1,11 @@
 // libraries
-import React, { useState } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useMemo,
+  useCallback,
+} from 'react';
 import {
   Dimensions,
   SafeAreaView,
@@ -11,11 +17,13 @@ import {
   StyleSheet,
   Platform,
   Keyboard,
+  ToastAndroid,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { Formik } from 'formik';
+import { Formik, useFormik, FormikProvider } from 'formik';
 import * as Yup from 'yup';
 import Config from 'react-native-config';
+import BottomSheet from '@gorhom/bottom-sheet';
 // utils
 import { normalize } from '../utils/normalize';
 import * as Theme from '../utils/theme';
@@ -27,7 +35,12 @@ import Input from '../components/Input';
 import Button from '../components/Button';
 import Text from '../components/Text';
 
-const initialValues = { email: '', name: '', phoneNumber: '' };
+const initialValues = {
+  email: '',
+  name: '',
+  phoneNumber: '',
+  confirmPassword: '',
+};
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email().min(3).max(320).required('Email is required'),
@@ -39,10 +52,70 @@ const IMAGE_URL_PREFIX = `${Config.API_URL}/user/account/avatar`;
 
 const Profile = () => {
   const dispatch = useDispatch();
+  const [modeConfirmation, setModeConfirmation] = useState(false);
   const { width, height } = Dimensions.get('window');
   const auth = useSelector((state) => state.auth);
   const { account } = useSelector((state) => state.user);
   const [firstLetterName, setFirstLetterName] = useState('');
+  const inputConfirmationPasswordRef = useRef(null);
+
+  // ref bottomsheet
+  const bottomSheetRef = useRef(null);
+
+  // variables snap bottomsheet
+  const snapPoints = useMemo(() => ['30%', '40%'], []);
+
+  // callbacks bottomsheet
+  const handleSheetChanges = useCallback((index) => {
+    bottomSheetRef.current.snapToIndex(index);
+  }, []);
+
+  const formik = useFormik({
+    initialValues: { ...initialValues, ...account },
+    validationSchema,
+    enableReinitialize: true,
+    onSubmit: async (values, { setSubmitting }) => {
+      try {
+        setSubmitting(true);
+        if (!modeConfirmation) {
+          bottomSheetRef.current.snapToIndex(1);
+          setModeConfirmation(true);
+          inputConfirmationPasswordRef.current.focus();
+        } else {
+          const { message } = await dispatch(updateAccount(values));
+          ToastAndroid.showWithGravity(
+            message,
+            ToastAndroid.SHORT,
+            ToastAndroid.CENTER,
+          );
+          bottomSheetRef.current.forceClose();
+          setModeConfirmation(false);
+        }
+        setSubmitting(false);
+      } catch (e) {
+        console.error(e);
+      }
+    },
+  });
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
+      if (modeConfirmation) {
+        bottomSheetRef.current.snapToIndex(1);
+      }
+    });
+    const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
+      if (modeConfirmation) {
+        bottomSheetRef.current.forceClose();
+        setModeConfirmation(false);
+      }
+    });
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, [modeConfirmation]);
 
   const onImageError = (e) => {
     const newFirstLetterName = account.name.split(' ');
@@ -58,97 +131,104 @@ const Profile = () => {
       <Header title="Profile" showBack />
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'position' : 'position'}
-        keyboardVerticalOffset={20}
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <Formik
-            initialValues={{ ...initialValues, ...account }}
-            validationSchema={validationSchema}
-            enableReinitialize
-            onSubmit={async (values, { setSubmitting }) => {
-              try {
-                setSubmitting(true);
-                console.log(values);
-                const { message } = await dispatch(updateAccount(values));
-                setSubmitting(false);
-              } catch (e) {
-                console.error(e);
-              }
-            }}
-          >
-            {({
-              handleChange,
-              handleBlur,
-              handleSubmit,
-              touched,
-              errors,
-              values,
-              isSubmitting,
-            }) => (
-              <View style={styles.content}>
-                <Pressable>
-                  <Image
-                    source={{ uri: `${IMAGE_URL_PREFIX}?userId=${auth.id}` }}
-                    onError={(e) => onImageError(e)}
-                    style={{
-                      backgroundColor: Theme.dark,
-                      width: width - normalize(64),
-                      height: width - normalize(64),
-                      marginBottom: normalize(16),
-                      borderRadius: Math.round(width + height) / 2,
-                    }}
-                  />
-                </Pressable>
-                <View style={styles.inputContainer}>
-                  <Input
-                    placeholder={'username@mail.com'}
-                    rounded={8}
-                    value={values.email}
-                    onChangeText={handleChange('email')}
-                    onBlur={handleBlur('email')}
-                  />
-                  {errors.email && touched.email && (
-                    <Text style={styles.errorMessage}>{errors.email}</Text>
-                  )}
-                </View>
-                <View style={styles.inputContainer}>
-                  <Input
-                    placeholder={'Name'}
-                    rounded={8}
-                    value={values.name}
-                    onChangeText={handleChange('name')}
-                    onBlur={handleBlur('name')}
-                  />
-                  {errors.name && touched.name && (
-                    <Text style={styles.errorMessage}>{errors.name}</Text>
-                  )}
-                </View>
-                <View style={styles.inputContainer}>
-                  <Input
-                    placeholder={'Phone Number'}
-                    rounded={8}
-                    value={values.phoneNumber}
-                    onChangeText={handleChange('phoneNumber')}
-                    onBlur={handleBlur('phoneNumber')}
-                  />
-                  {errors.phoneNumber && touched.phoneNumber && (
-                    <Text style={styles.errorMessage}>
-                      {errors.phoneNumber}
-                    </Text>
-                  )}
-                </View>
-                <Button
-                  onPress={handleSubmit}
-                  title="Submit"
-                  rounded={8}
-                  style={styles.button}
-                  disable={isSubmitting}
+          <FormikProvider value={formik}>
+            <View style={styles.content}>
+              <Pressable>
+                <Image
+                  source={{ uri: `${IMAGE_URL_PREFIX}?userId=${auth.id}` }}
+                  onError={(e) => onImageError(e)}
+                  style={{
+                    backgroundColor: Theme.dark,
+                    width: width - normalize(64),
+                    height: width - normalize(64),
+                    marginBottom: normalize(16),
+                    borderRadius: Math.round(width + height) / 2,
+                  }}
                 />
+              </Pressable>
+              <View style={styles.inputContainer}>
+                <Input
+                  placeholder={'username@mail.com'}
+                  rounded={8}
+                  value={formik.values.email}
+                  onChangeText={formik.handleChange('email')}
+                  onBlur={formik.handleBlur('email')}
+                />
+                {formik.errors.email && formik.touched.email && (
+                  <Text style={styles.errorMessage}>{formik.errors.email}</Text>
+                )}
               </View>
-            )}
-          </Formik>
+              <View style={styles.inputContainer}>
+                <Input
+                  placeholder={'Name'}
+                  rounded={8}
+                  value={formik.values.name}
+                  onChangeText={formik.handleChange('name')}
+                  onBlur={formik.handleBlur('name')}
+                />
+                {formik.errors.name && formik.touched.name && (
+                  <Text style={styles.errorMessage}>{formik.errors.name}</Text>
+                )}
+              </View>
+              <View style={styles.inputContainer}>
+                <Input
+                  placeholder={'Phone Number'}
+                  rounded={8}
+                  value={formik.values.phoneNumber}
+                  onChangeText={formik.handleChange('phoneNumber')}
+                  onBlur={formik.handleBlur('phoneNumber')}
+                />
+                {formik.errors.phoneNumber && formik.touched.phoneNumber && (
+                  <Text style={styles.errorMessage}>
+                    {formik.errors.phoneNumber}
+                  </Text>
+                )}
+              </View>
+              <Button
+                onPress={formik.handleSubmit}
+                title="Submit"
+                rounded={8}
+                style={styles.button}
+                disable={formik.isSubmitting}
+              />
+            </View>
+          </FormikProvider>
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
+      <BottomSheet
+        ref={bottomSheetRef}
+        index={-1}
+        snapPoints={snapPoints}
+        onChange={handleSheetChanges}
+        enablePanDownToClose={true}
+      >
+        <View style={styles.bottomSheetContent}>
+          <View style={styles.inputContainer}>
+            <Input
+              ref={inputConfirmationPasswordRef}
+              placeholder={'Confirm Password'}
+              rounded={8}
+              value={formik.values.confirmPassword}
+              onChangeText={formik.handleChange('confirmPassword')}
+            />
+            {formik.errors.confirmPassword &&
+              formik.touched.confirmPassword && (
+                <Text style={styles.errorMessage}>
+                  {formik.errors.confirmPassword}
+                </Text>
+              )}
+          </View>
+          <Button
+            onPress={formik.handleSubmit}
+            title="Submit"
+            rounded={8}
+            style={styles.button}
+            disable={formik.isSubmitting}
+          />
+        </View>
+      </BottomSheet>
     </SafeAreaView>
   );
 };
@@ -175,6 +255,12 @@ const styles = StyleSheet.create({
   errorMessage: {
     fontSize: normalize(12),
     color: Theme.danger,
+  },
+  bottomSheetContent: {
+    flex: 1,
+    backgroundColor: Theme.white,
+    paddingVertical: normalize(16),
+    marginHorizontal: normalize(32),
   },
 });
 
