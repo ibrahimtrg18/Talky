@@ -70,6 +70,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: normalize(12),
     justifyContent: 'space-between',
+    zIndex: 1,
   },
   headerBoxShadow: {
     shadowColor: '#000000',
