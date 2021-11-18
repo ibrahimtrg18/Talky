@@ -60,7 +60,11 @@ const LoginAccount = ({ navigation }) => {
               try {
                 setSubmitting(true);
                 const { message } = await dispatch(userLoginAccount(values));
-                ToastAndroid.show(message, ToastAndroid.SHORT);
+                ToastAndroid.showWithGravity(
+                  message,
+                  ToastAndroid.SHORT,
+                  ToastAndroid.CENTER,
+                );
                 setSubmitting(false);
               } catch (e) {
                 console.error(e);
