@@ -10,28 +10,66 @@ import Text from '../components/Text';
 // icons
 import BackIcon from '../assets/icons/iconBack.svg';
 
-const Header = ({ title, backgroundColor = Theme.white }) => {
+const Header = (props) => {
+  const {
+    showBack,
+    title,
+    leftContent,
+    centerContent,
+    rightContent,
+    shadow,
+    backgroundColor = Theme.white,
+    ...restProps
+  } = props;
+
   const navigation = useNavigation();
 
   const customBackgroundColor = { backgroundColor: backgroundColor };
 
   return (
     <View
-      style={[styles.header, styles.headerBoxShadow, customBackgroundColor]}
+      {...restProps}
+      style={[
+        styles.header,
+        shadow && styles.headerBoxShadow,
+        customBackgroundColor,
+      ]}
     >
-      <Pressable onPress={() => navigation.goBack()}>
-        <BackIcon width={28} height={28} style={styles.icon} />
-      </Pressable>
-      {title && <Text>{title}</Text>}
+      <View style={styles.leftContent}>
+        {showBack ? (
+          <Pressable
+            onPress={() => navigation.goBack()}
+            style={styles.leftContent}
+          >
+            <BackIcon width={28} height={28} style={styles.icon} />
+          </Pressable>
+        ) : (
+          leftContent && <View>{leftContent}</View>
+        )}
+      </View>
+      <View>
+        {title ? (
+          <Text weight={700} fontSize={18}>
+            {title}
+          </Text>
+        ) : (
+          centerContent && <View>{centerContent}</View>
+        )}
+      </View>
+      <View style={styles.rightContent}>
+        {rightContent && <View>{rightContent}</View>}
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   header: {
+    height: normalize(56),
     flexDirection: 'row',
     alignItems: 'center',
     padding: normalize(12),
+    justifyContent: 'space-between',
   },
   headerBoxShadow: {
     shadowColor: '#000000',
@@ -43,8 +81,13 @@ const styles = StyleSheet.create({
     shadowRadius: 4.84,
     elevation: 2,
   },
-  icon: {
-    marginRight: 8,
+  icon: {},
+  leftContent: {
+    minWidth: normalize(48),
+  },
+  rightContent: {
+    minWidth: normalize(48),
+    backgroundColor: Theme.dark,
   },
 });
 
