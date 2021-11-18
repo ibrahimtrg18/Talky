@@ -55,7 +55,7 @@ const Profile = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header title="Profile" />
+      <Header title="Profile" showBack />
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'position' : 'position'}
         keyboardVerticalOffset={20}
