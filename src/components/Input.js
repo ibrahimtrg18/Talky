@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
 // utils
 import { normalize } from '../utils/normalize';
@@ -17,7 +17,9 @@ const Input = React.forwardRef(
       type,
       showPassword,
       setShowPassword,
-      ...props
+      onFocus,
+      onBlur,
+      ...restProps
     },
     ref,
   ) => {
@@ -43,11 +45,21 @@ const Input = React.forwardRef(
       });
     };
 
+    const onInputFocus = () => {
+      onTextInputFocus();
+      if (onFocus) onFocus();
+    };
+
+    const onInputBlur = () => {
+      onTextInputBlur();
+      if (onFocus) onBlur();
+    };
+
     if (type === 'password') {
       return (
         <View style={styles.container}>
           <TextInput
-            {...props}
+            {...restProps}
             ref={ref}
             style={[
               styles.input,
@@ -57,8 +69,8 @@ const Input = React.forwardRef(
               isFocus,
               style,
             ]}
-            onFocus={onTextInputFocus}
-            onBlur={onTextInputBlur}
+            onFocus={onInputFocus}
+            onBlur={onInputBlur}
           />
           <EyeIcon
             style={[styles.icon]}
@@ -70,7 +82,7 @@ const Input = React.forwardRef(
 
     return (
       <TextInput
-        {...props}
+        {...restProps}
         ref={ref}
         style={[
           styles.input,
@@ -80,8 +92,8 @@ const Input = React.forwardRef(
           isFocus,
           style,
         ]}
-        onFocus={onTextInputFocus}
-        onBlur={onTextInputBlur}
+        onFocus={onInputFocus}
+        onBlur={onInputBlur}
       />
     );
   },
