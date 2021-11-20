@@ -8,7 +8,7 @@ import * as Theme from '../utils/theme';
 // components
 import Text from '../components/Text';
 // icons
-import BackIcon from '../assets/icons/iconBack.svg';
+import ChevronLeft from '../assets/icons/iconChevronLeft.svg';
 
 const Header = (props) => {
   const {
@@ -41,7 +41,11 @@ const Header = (props) => {
             onPress={() => navigation.goBack()}
             style={styles.leftContent}
           >
-            <BackIcon width={28} height={28} style={styles.icon} />
+            <ChevronLeft
+              width={normalize(24)}
+              height={normalize(24)}
+              style={styles.icon}
+            />
           </Pressable>
         ) : (
           leftContent && <View>{leftContent}</View>
@@ -88,7 +92,6 @@ const styles = StyleSheet.create({
   },
   rightContent: {
     minWidth: normalize(48),
-    backgroundColor: Theme.dark,
   },
 });
 
