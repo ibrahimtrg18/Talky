@@ -7,97 +7,91 @@ import { getFontWeight } from '../utils/getFontWeight';
 // icons
 import EyeIcon from '../assets/icons/iconEye.svg';
 
-const Input = React.forwardRef(
-  (
-    {
-      size,
-      weight,
-      rounded,
-      style,
-      type,
-      showPassword,
-      setShowPassword,
-      onFocus,
-      onBlur,
-      ...restProps
-    },
-    ref,
-  ) => {
-    const [isFocus, setIsFocus] = useState(false);
+const Input = React.forwardRef((props, ref) => {
+  const {
+    size,
+    weight,
+    rounded,
+    style,
+    type,
+    showPassword,
+    setShowPassword,
+    onFocus,
+    onBlur,
+    ...restProps
+  } = props;
+  const [isFocus, setIsFocus] = useState(false);
 
-    const customFontSize = size && { fontSize: normalize(size) };
-    const customRounded = rounded && { borderRadius: rounded };
-    const customWeight = getFontWeight(weight || 500);
+  const customFontSize = size && { fontSize: normalize(size) };
+  const customRounded = rounded && { borderRadius: rounded };
+  const customWeight = getFontWeight(weight || 500);
 
-    const onTextInputFocus = () => {
-      setIsFocus({
-        backgroundColor: Theme.white,
-        borderColor: Theme.primary,
-        color: Theme.text,
-      });
-    };
+  const onTextInputFocus = () => {
+    setIsFocus({
+      borderColor: Theme.primary,
+      color: Theme.text,
+    });
+  };
 
-    const onTextInputBlur = () => {
-      setIsFocus({
-        backgroundColor: Theme.background,
-        borderColor: Theme.border,
-        color: Theme.text,
-      });
-    };
+  const onTextInputBlur = () => {
+    setIsFocus({
+      borderColor: Theme.border,
+      color: Theme.text,
+    });
+  };
 
-    const onInputFocus = () => {
-      onTextInputFocus();
-      if (onFocus) onFocus();
-    };
+  const onInputFocus = () => {
+    onTextInputFocus();
+    if (onFocus) onFocus();
+  };
 
-    const onInputBlur = () => {
-      onTextInputBlur();
-      if (onFocus) onBlur();
-    };
+  const onInputBlur = () => {
+    onTextInputBlur();
+    if (onFocus) onBlur();
+  };
 
-    if (type === 'password') {
-      return (
-        <View style={styles.container}>
-          <TextInput
-            {...restProps}
-            ref={ref}
-            style={[
-              styles.input,
-              customFontSize,
-              customWeight,
-              customRounded,
-              isFocus,
-              style,
-            ]}
-            onFocus={onInputFocus}
-            onBlur={onInputBlur}
-          />
-          <EyeIcon
-            style={[styles.icon]}
-            onPress={() => setShowPassword(!showPassword)}
-          />
-        </View>
-      );
-    }
-
+  if (type === 'password') {
     return (
-      <TextInput
-        {...restProps}
-        ref={ref}
-        style={[
-          styles.input,
-          customFontSize,
-          customWeight,
-          customRounded,
-          isFocus,
-          style,
-        ]}
-        onFocus={onInputFocus}
-        onBlur={onInputBlur}
-      />
+      <View style={styles.container}>
+        <TextInput
+          {...restProps}
+          ref={ref}
+          style={[
+            styles.input,
+            customFontSize,
+            customWeight,
+            customRounded,
+            isFocus,
+            style,
+          ]}
+          onFocus={onInputFocus}
+          onBlur={onInputBlur}
+        />
+        <EyeIcon
+          style={[styles.icon]}
+          onPress={() => setShowPassword(!showPassword)}
+        />
+      </View>
     );
-  },
-);
+  }
+
+  return (
+    <TextInput
+      {...restProps}
+      ref={ref}
+      style={[
+        styles.input,
+        customFontSize,
+        customWeight,
+        customRounded,
+        isFocus,
+        style,
+      ]}
+      onFocus={onInputFocus}
+      onBlur={onInputBlur}
+    />
+  );
+});
 
 const styles = StyleSheet.create({
   container: {
@@ -110,14 +104,14 @@ const styles = StyleSheet.create({
   },
   input: {
     width: '100%',
-    backgroundColor: Theme.background,
+    backgroundColor: Theme.white,
     borderWidth: 1,
     borderStyle: 'solid',
     borderColor: Theme.border,
     color: Theme.text,
-    fontSize: normalize(14),
-    paddingVertical: normalize(12),
-    paddingHorizontal: normalize(10),
+    fontSize: normalize(16),
+    paddingHorizontal: normalize(16),
+    paddingVertical: normalize(10),
   },
 });
 
