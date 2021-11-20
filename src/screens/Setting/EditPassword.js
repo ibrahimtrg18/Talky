@@ -35,11 +35,15 @@ const initialValues = {
 };
 
 const validationSchema = Yup.object().shape({
-  newPassword: Yup.string().required('New Password is required'),
+  newPassword: Yup.string()
+    .min(8)
+    .max(128)
+    .required('New Password is required'),
   confirmationPassword: Yup.string().oneOf(
     [Yup.ref('newPassword'), null],
     'Passwords must be match',
   ),
+  confirmPassword: Yup.string().min(8).max(128).required('Confirm is required'),
 });
 
 const EditPassword = () => {
@@ -71,7 +75,8 @@ const EditPassword = () => {
           setModeConfirmation(true);
           inputConfirmationPasswordRef.current.focus();
         } else {
-          const { message } = await dispatch(updateAccount(values));
+          const { confirmationPassword, ...restValues } = values;
+          const { message } = await dispatch(updateAccount(restValues));
           ToastAndroid.showWithGravity(
             message,
             ToastAndroid.SHORT,

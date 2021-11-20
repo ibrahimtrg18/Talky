@@ -39,6 +39,7 @@ const validationSchema = Yup.object().shape({
   email: Yup.string().email().min(3).max(320).required('Email is required'),
   name: Yup.string().min(8).max(26).required('Name is required'),
   phoneNumber: Yup.string().max(26).required('Phone Number is required'),
+  confirmPassword: Yup.string().min(8).max(128).required('Confirm is required'),
 });
 
 const EditProfile = () => {
