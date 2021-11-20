@@ -89,9 +89,11 @@ const styles = StyleSheet.create({
   icon: {},
   leftContent: {
     minWidth: normalize(48),
+    alignItems: 'flex-start',
   },
   rightContent: {
     minWidth: normalize(48),
+    alignItems: 'flex-end',
   },
 });
 
