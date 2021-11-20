@@ -153,7 +153,7 @@ const EditProfile = () => {
             title="Submit"
             rounded={8}
             style={styles.button}
-            disable={formik.isSubmitting}
+            disabled={formik.isSubmitting}
           />
         </View>
       </FormikProvider>
@@ -185,7 +185,7 @@ const EditProfile = () => {
             title="Submit"
             rounded={8}
             style={styles.button}
-            disable={formik.isSubmitting}
+            disabled={formik.isSubmitting}
           />
         </View>
       </BottomSheet>

@@ -118,7 +118,7 @@ const LoginAccount = ({ navigation }) => {
                     title="Submit"
                     rounded={8}
                     style={styles.button}
-                    disable={isSubmitting}
+                    disabled={isSubmitting}
                   />
                   <View style={styles.footer}>
                     <Text size={14}>Already have an account?</Text>
