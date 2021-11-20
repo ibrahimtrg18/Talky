@@ -13,14 +13,13 @@ import {
   TouchableWithoutFeedback,
   View,
   Image,
-  Pressable,
   StyleSheet,
   Platform,
   Keyboard,
   ToastAndroid,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { Formik, useFormik, FormikProvider } from 'formik';
+import { useFormik, FormikProvider } from 'formik';
 import * as Yup from 'yup';
 import Config from 'react-native-config';
 import BottomSheet from '@gorhom/bottom-sheet';
@@ -135,19 +134,16 @@ const Profile = () => {
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <FormikProvider value={formik}>
             <View style={styles.content}>
-              <Pressable>
+              <View style={styles.avatarContainer}>
                 <Image
                   source={{ uri: `${IMAGE_URL_PREFIX}?userId=${auth.id}` }}
                   onError={(e) => onImageError(e)}
-                  style={{
-                    backgroundColor: Theme.dark,
-                    width: width - normalize(64),
-                    height: width - normalize(64),
-                    marginBottom: normalize(16),
-                    borderRadius: Math.round(width + height) / 2,
-                  }}
+                  style={[
+                    styles.avatar,
+                    { borderRadius: Math.round(width + height) / 2 },
+                  ]}
                 />
-              </Pressable>
+              </View>
               <View style={styles.inputContainer}>
                 <Input
                   placeholder={'username@mail.com'}
@@ -242,9 +238,15 @@ const styles = StyleSheet.create({
     marginVertical: normalize(16),
     marginHorizontal: normalize(32),
   },
+  avatarContainer: {
+    alignItems: 'center',
+  },
   avatar: {
+    width: normalize(100),
+    height: normalize(100),
     marginBottom: normalize(16),
-    width: '100%',
+    alignItems: 'center',
+    resizeMode: 'contain',
   },
   inputContainer: {
     marginBottom: normalize(8),
