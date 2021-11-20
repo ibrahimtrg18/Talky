@@ -8,6 +8,7 @@ import Login from './screens/Login';
 import LoginAccount from './screens/LoginAccount';
 import Conversation from './screens/Conversation';
 import Profile from './screens/Profile';
+import EditProfile from './screens/Setting/EditProfile';
 import Register from './screens/Register';
 // actions
 import { userIsSignIn } from './redux/actions/auth';
@@ -48,6 +49,11 @@ const App = () => {
           <Stack.Screen
             name="Profile"
             component={Profile}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="EditProfile"
+            component={EditProfile}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>
