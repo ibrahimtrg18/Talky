@@ -4,6 +4,7 @@ import {
   Dimensions,
   SafeAreaView,
   View,
+  Pressable,
   Image,
   StyleSheet,
 } from 'react-native';
@@ -14,10 +15,12 @@ import { normalize } from '../utils/normalize';
 import * as Theme from '../utils/theme';
 // components
 import Header from '../components/Header';
+// icons
+import SettingIcon from '../assets/icons/iconSetting.svg';
 
 const IMAGE_URL_PREFIX = `${Config.API_URL}/user/account/avatar`;
 
-const Profile = () => {
+const Profile = ({ navigation }) => {
   const { width, height } = Dimensions.get('window');
   const auth = useSelector((state) => state.auth);
   const { account } = useSelector((state) => state.user);
@@ -34,7 +37,15 @@ const Profile = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header title="Profile" showBack />
+      <Header
+        title="Profile"
+        showBack
+        rightContent={
+          <Pressable onPress={() => navigation.navigate('Setting')}>
+            <SettingIcon width={normalize(24)} height={normalize(24)} />
+          </Pressable>
+        }
+      />
       <View style={styles.content}>
         <View style={styles.avatarContainer}>
           <Image
