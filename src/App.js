@@ -10,6 +10,7 @@ import Conversation from './screens/Conversation';
 import Profile from './screens/Profile';
 import Setting from './screens/Setting';
 import EditProfile from './screens/Setting/EditProfile';
+import EditPassword from './screens/Setting/EditPassword';
 import Register from './screens/Register';
 // actions
 import { userIsSignIn } from './redux/actions/auth';
@@ -60,6 +61,11 @@ const App = () => {
           <Stack.Screen
             name="EditProfile"
             component={EditProfile}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="EditPassword"
+            component={EditPassword}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>

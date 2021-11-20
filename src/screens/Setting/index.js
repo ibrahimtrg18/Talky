@@ -29,6 +29,7 @@ const MENUS = [
     id: 'editPassword',
     icon: LockIcon,
     title: 'Edit Password',
+    navigate: 'EditPassword',
   },
   {
     id: 'logout',
