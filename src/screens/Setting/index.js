@@ -1,0 +1,94 @@
+// libraries
+import React from 'react';
+import { SafeAreaView, FlatList, Pressable, StyleSheet } from 'react-native';
+// utils
+import { normalize } from '../../utils/normalize';
+import * as Theme from '../../utils/theme';
+// components
+import Header from '../../components/Header';
+import Text from '../../components/Text';
+// icons
+import ImageIcon from '../../assets/icons/iconImage.svg';
+import UserIcon from '../../assets/icons/iconUser.svg';
+import LockIcon from '../../assets/icons/iconLock.svg';
+import LogOutIcon from '../../assets/icons/iconLogOut.svg';
+
+const MENUS = [
+  {
+    id: 'editAvatar',
+    icon: ImageIcon,
+    title: 'Edit Avatar',
+  },
+  {
+    id: 'editProfile',
+    icon: UserIcon,
+    title: 'Edit Profile',
+    navigate: 'EditProfile',
+  },
+  {
+    id: 'editPassword',
+    icon: LockIcon,
+    title: 'Edit Password',
+  },
+  {
+    id: 'logout',
+    icon: LogOutIcon,
+    title: 'Logout',
+  },
+];
+
+const Setting = ({ navigation }) => {
+  const Menu = ({ Icon, title, navigate }) => {
+    return (
+      <Pressable
+        onPress={() => navigate && navigation.navigate(navigate)}
+        style={styles.menuItem}
+      >
+        <Icon
+          style={styles.menuItemIcon}
+          width={normalize(24)}
+          height={normalize(24)}
+        />
+        <Text>{title}</Text>
+      </Pressable>
+    );
+  };
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <Header showBack title="Setting" />
+      <FlatList
+        data={MENUS}
+        renderItem={({ item }) => (
+          <Menu
+            key={item.id}
+            Icon={item.icon}
+            title={item.title}
+            navigate={item.navigate}
+          />
+        )}
+        keyExtractor={(item) => item.id}
+      />
+    </SafeAreaView>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: Theme.white,
+  },
+  menuItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: Theme.white,
+    paddingHorizontal: normalize(16),
+    paddingVertical: normalize(10),
+    marginVertical: normalize(4),
+  },
+  menuItemIcon: {
+    marginRight: normalize(8),
+  },
+});
+
+export default Setting;

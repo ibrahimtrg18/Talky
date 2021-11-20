@@ -8,6 +8,7 @@ import Login from './screens/Login';
 import LoginAccount from './screens/LoginAccount';
 import Conversation from './screens/Conversation';
 import Profile from './screens/Profile';
+import Setting from './screens/Setting';
 import EditProfile from './screens/Setting/EditProfile';
 import Register from './screens/Register';
 // actions
@@ -49,6 +50,11 @@ const App = () => {
           <Stack.Screen
             name="Profile"
             component={Profile}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Setting"
+            component={Setting}
             options={{ headerShown: false }}
           />
           <Stack.Screen
