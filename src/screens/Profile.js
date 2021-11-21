@@ -15,6 +15,7 @@ import { normalize } from '../utils/normalize';
 import * as Theme from '../utils/theme';
 // components
 import Header from '../components/Header';
+import Text from '../components/Text';
 // icons
 import SettingIcon from '../assets/icons/iconSetting.svg';
 
@@ -56,6 +57,15 @@ const Profile = ({ navigation }) => {
               { borderRadius: Math.round(width + height) / 2 },
             ]}
           />
+          <Text size={20} weight={700} style={styles.name}>
+            {account.name}
+          </Text>
+          <Text size={16} weight={400}>
+            {account.email}
+          </Text>
+          <Text size={14} weight={300}>
+            {account.totalFriends || 0} Friends
+          </Text>
         </View>
       </View>
     </SafeAreaView>
@@ -80,6 +90,9 @@ const styles = StyleSheet.create({
     marginBottom: normalize(16),
     alignItems: 'center',
     resizeMode: 'contain',
+  },
+  name: {
+    textTransform: 'capitalize',
   },
 });
 
