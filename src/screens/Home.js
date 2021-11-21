@@ -5,7 +5,14 @@ import React, {
   useMemo,
   useCallback,
 } from 'react';
-import { SafeAreaView, Pressable, View, Image, StyleSheet } from 'react-native';
+import {
+  SafeAreaView,
+  Pressable,
+  View,
+  Image,
+  Dimensions,
+  StyleSheet,
+} from 'react-native';
 // libraries
 import { useSelector, useDispatch } from 'react-redux';
 import BottomSheet from '@gorhom/bottom-sheet';
@@ -23,18 +30,18 @@ import {
 // utils
 import { normalize } from '../utils/normalize';
 import * as Theme from '../utils/theme';
+import { USER_AVATAR_IMAGE } from '../utils/constants';
 // icons
 import SearchIcon from '../assets/icons/iconSearch.svg';
-import ChevronRightIcon from '../assets/icons/iconChevronRight.svg';
-// images
-import Avatar from '../assets/images/avatar.png';
 
 const Home = ({ navigation }) => {
+  const { width, height } = Dimensions.get('window');
   const [query, setQuery] = useState('');
   const bottomSheetRef = useRef(null);
   const searchRef = useRef(null);
 
   const dispatch = useDispatch();
+  const auth = useSelector((state) => state.auth);
   const userSearch = useSelector((state) => Object.values(state.user.search));
   const userFriends = useSelector((state) => Object.values(state.user.friend));
   const userConversations = useSelector((state) =>
@@ -80,7 +87,17 @@ const Home = ({ navigation }) => {
       <View style={styles.header}>
         <View style={styles.headerUser}>
           <Pressable onPress={() => navigation.navigate('Profile')}>
-            <Image source={Avatar} style={styles.headerUserImage} />
+            <Image
+              source={{
+                uri: `${USER_AVATAR_IMAGE}?userId=${
+                  auth.id
+                }&time=${Date.now()}`,
+              }}
+              style={[
+                styles.headerUserAvatar,
+                { borderRadius: Math.round(width + height) / 2 },
+              ]}
+            />
           </Pressable>
           <Text style={styles.headerUserName}>{!!account && account.name}</Text>
         </View>
@@ -161,6 +178,10 @@ const styles = StyleSheet.create({
   headerUser: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  headerUserAvatar: {
+    width: normalize(50),
+    height: normalize(50),
   },
   headerUserName: {
     marginLeft: 16,
