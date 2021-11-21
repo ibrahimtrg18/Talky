@@ -1,48 +1,59 @@
 // libraries
 import React from 'react';
 import { SafeAreaView, FlatList, Pressable, StyleSheet } from 'react-native';
+import { useDispatch } from 'react-redux';
 // utils
 import { normalize } from '../../utils/normalize';
 import * as Theme from '../../utils/theme';
 // components
 import Header from '../../components/Header';
 import Text from '../../components/Text';
+// actions
+import { userLogout } from '../../redux/actions/auth';
 // icons
 import ImageIcon from '../../assets/icons/iconImage.svg';
 import UserIcon from '../../assets/icons/iconUser.svg';
 import LockIcon from '../../assets/icons/iconLock.svg';
 import LogOutIcon from '../../assets/icons/iconLogOut.svg';
 
-const MENUS = [
-  {
-    id: 'editAvatar',
-    icon: ImageIcon,
-    title: 'Edit Avatar',
-  },
-  {
-    id: 'editProfile',
-    icon: UserIcon,
-    title: 'Edit Profile',
-    navigate: 'EditProfile',
-  },
-  {
-    id: 'editPassword',
-    icon: LockIcon,
-    title: 'Edit Password',
-    navigate: 'EditPassword',
-  },
-  {
-    id: 'logout',
-    icon: LogOutIcon,
-    title: 'Logout',
-  },
-];
-
 const Setting = ({ navigation }) => {
-  const Menu = ({ Icon, title, navigate }) => {
+  const dispatch = useDispatch();
+
+  const MENUS = [
+    {
+      id: 'editAvatar',
+      icon: ImageIcon,
+      title: 'Edit Avatar',
+    },
+    {
+      id: 'editProfile',
+      icon: UserIcon,
+      title: 'Edit Profile',
+      navigate: 'EditProfile',
+    },
+    {
+      id: 'editPassword',
+      icon: LockIcon,
+      title: 'Edit Password',
+      navigate: 'EditPassword',
+    },
+    {
+      id: 'logout',
+      icon: LogOutIcon,
+      title: 'Logout',
+      callback: () => {
+        dispatch(userLogout());
+      },
+    },
+  ];
+
+  const Menu = ({ Icon, title, navigate, callback }) => {
     return (
       <Pressable
-        onPress={() => navigate && navigation.navigate(navigate)}
+        onPress={() => {
+          if (callback) callback();
+          if (navigate) navigation.navigate(navigate);
+        }}
         style={styles.menuItem}
       >
         <Icon
@@ -66,6 +77,7 @@ const Setting = ({ navigation }) => {
             Icon={item.icon}
             title={item.title}
             navigate={item.navigate}
+            callback={item.callback}
           />
         )}
         keyExtractor={(item) => item.id}
