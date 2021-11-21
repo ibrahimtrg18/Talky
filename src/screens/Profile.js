@@ -9,17 +9,15 @@ import {
   StyleSheet,
 } from 'react-native';
 import { useSelector } from 'react-redux';
-import Config from 'react-native-config';
 // utils
 import { normalize } from '../utils/normalize';
 import * as Theme from '../utils/theme';
+import { USER_AVATAR_IMAGE } from '../utils/constants';
 // components
 import Header from '../components/Header';
 import Text from '../components/Text';
 // icons
 import SettingIcon from '../assets/icons/iconSetting.svg';
-
-const IMAGE_URL_PREFIX = `${Config.API_URL}/user/account/avatar`;
 
 const Profile = ({ navigation }) => {
   const { width, height } = Dimensions.get('window');
@@ -50,7 +48,9 @@ const Profile = ({ navigation }) => {
       <View style={styles.content}>
         <View style={styles.avatarContainer}>
           <Image
-            source={{ uri: `${IMAGE_URL_PREFIX}?userId=${auth.id}` }}
+            source={{
+              uri: `${USER_AVATAR_IMAGE}?userId=${auth.id}&time=${Date.now()}`,
+            }}
             onError={(e) => onImageError(e)}
             style={[
               styles.avatar,
