@@ -9,6 +9,7 @@ import LoginAccount from './screens/LoginAccount';
 import Conversation from './screens/Conversation';
 import Profile from './screens/Profile';
 import Setting from './screens/Setting';
+import EditAvatar from './screens/Setting/EditAvatar';
 import EditProfile from './screens/Setting/EditProfile';
 import EditPassword from './screens/Setting/EditPassword';
 import Register from './screens/Register';
@@ -56,6 +57,11 @@ const App = () => {
           <Stack.Screen
             name="Setting"
             component={Setting}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="EditAvatar"
+            component={EditAvatar}
             options={{ headerShown: false }}
           />
           <Stack.Screen

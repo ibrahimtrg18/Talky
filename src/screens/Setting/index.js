@@ -24,6 +24,7 @@ const Setting = ({ navigation }) => {
       id: 'editAvatar',
       icon: ImageIcon,
       title: 'Edit Avatar',
+      navigate: 'EditAvatar',
     },
     {
       id: 'editProfile',
