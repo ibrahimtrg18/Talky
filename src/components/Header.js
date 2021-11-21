@@ -37,10 +37,7 @@ const Header = (props) => {
     >
       <View style={styles.leftContent}>
         {showBack ? (
-          <Pressable
-            onPress={() => navigation.goBack()}
-            style={styles.leftContent}
-          >
+          <Pressable onPress={() => navigation.goBack()}>
             <ChevronLeft
               width={normalize(24)}
               height={normalize(24)}
@@ -53,16 +50,14 @@ const Header = (props) => {
       </View>
       <View>
         {title ? (
-          <Text weight={700} fontSize={18}>
+          <Text weight={700} size={18}>
             {title}
           </Text>
         ) : (
           centerContent && <View>{centerContent}</View>
         )}
       </View>
-      <View style={styles.rightContent}>
-        {rightContent && <View>{rightContent}</View>}
-      </View>
+      <View style={styles.rightContent}>{rightContent && rightContent}</View>
     </View>
   );
 };
@@ -72,7 +67,6 @@ const styles = StyleSheet.create({
     height: normalize(56),
     flexDirection: 'row',
     alignItems: 'center',
-    padding: normalize(12),
     justifyContent: 'space-between',
     zIndex: 1,
   },
@@ -88,12 +82,12 @@ const styles = StyleSheet.create({
   },
   icon: {},
   leftContent: {
-    minWidth: normalize(48),
     alignItems: 'flex-start',
+    marginLeft: normalize(16),
   },
   rightContent: {
-    minWidth: normalize(48),
     alignItems: 'flex-end',
+    marginRight: normalize(16),
   },
 });
 
