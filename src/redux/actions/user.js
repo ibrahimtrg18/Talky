@@ -80,3 +80,20 @@ export const fetchUserConversations = () => async (dispatch, getState) => {
     console.error(e);
   }
 };
+
+export const uploadUserAccountAvatar = (data) => async (dispatch, getState) => {
+  try {
+    const { auth } = getState();
+
+    const res = await axios.post('/user/account/avatar', data, {
+      headers: {
+        Authorization: 'Bearer ' + auth.access_token,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    console.log(res);
+    dispatch({ type: FETCH_USER_CONVERSATIONS, payload: res.data });
+  } catch (e) {
+    console.error(e);
+  }
+};
