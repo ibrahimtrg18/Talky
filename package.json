@@ -10,8 +10,8 @@
     "test": "jest",
     "lint": "eslint .",
     "devtools": "react-devtools",
-    "android:dev": "SET ENVFILE=.env.development && react-native run-android",
-    "android:prod": "SET ENVFILE=.env.production && react-native run-android"
+    "android:dev": "react-native run-android --variant=debug",
+    "android:prod": "react-native run-android --variant=release"
   },
   "dependencies": {
     "@gorhom/bottom-sheet": "4",
