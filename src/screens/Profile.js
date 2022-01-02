@@ -26,11 +26,13 @@ const Profile = ({ navigation }) => {
   const [firstLetterName, setFirstLetterName] = useState('');
 
   const onImageError = () => {
-    const newFirstLetterName = account.name.split(' ');
-    if (firstLetterName.length >= 2) {
-      setFirstLetterName(`${newFirstLetterName[0]}${newFirstLetterName[1]}`);
+    const firstLetterName = account.name.split(' ');
+    if (firstLetterName.length == 2) {
+      setFirstLetterName(
+        `${firstLetterName[0].charAt(0)}${firstLetterName[1].charAt(0)}`,
+      );
     } else {
-      setFirstLetterName(firstLetterName[0]);
+      setFirstLetterName(firstLetterName[0].charAt(0));
     }
   };
 
@@ -47,16 +49,32 @@ const Profile = ({ navigation }) => {
       />
       <View style={styles.content}>
         <View style={styles.avatarContainer}>
-          <Image
-            source={{
-              uri: `${USER_AVATAR_IMAGE}?userId=${auth.id}&time=${Date.now()}`,
-            }}
-            onError={(e) => onImageError(e)}
-            style={[
-              styles.avatar,
-              { borderRadius: Math.round(width + height) / 2 },
-            ]}
-          />
+          {firstLetterName ? (
+            <View
+              style={[
+                styles.avatar,
+                { borderRadius: Math.round(width + height) / 2 },
+                styles.avatarText,
+              ]}
+            >
+              <Text color={Theme.white} size={28}>
+                {firstLetterName}
+              </Text>
+            </View>
+          ) : (
+            <Image
+              source={{
+                uri: `${USER_AVATAR_IMAGE}?userId=${
+                  auth.id
+                }&time=${Date.now()}`,
+              }}
+              style={[
+                styles.avatar,
+                { borderRadius: Math.round(width + height) / 2 },
+              ]}
+              onError={(e) => onImageError(e)}
+            />
+          )}
           <Text size={20} weight={700} style={styles.name}>
             {account.name}
           </Text>
@@ -90,6 +108,10 @@ const styles = StyleSheet.create({
     marginBottom: normalize(16),
     alignItems: 'center',
     resizeMode: 'contain',
+  },
+  avatarText: {
+    justifyContent: 'center',
+    backgroundColor: Theme.primary,
   },
   name: {
     textTransform: 'capitalize',

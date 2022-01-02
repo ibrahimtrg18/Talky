@@ -37,6 +37,7 @@ import SearchIcon from '../assets/icons/iconSearch.svg';
 const Home = ({ navigation }) => {
   const { width, height } = Dimensions.get('window');
   const [query, setQuery] = useState('');
+  const [firstLetterName, setFirstLetterName] = useState('');
   const bottomSheetRef = useRef(null);
   const searchRef = useRef(null);
 
@@ -82,22 +83,48 @@ const Home = ({ navigation }) => {
     navigation.navigate('Conversation', { conversationId });
   };
 
+  const onImageError = () => {
+    const firstLetterName = account.name.split(' ');
+    if (firstLetterName.length == 2) {
+      setFirstLetterName(
+        `${firstLetterName[0].charAt(0)}${firstLetterName[1].charAt(0)}`,
+      );
+    } else {
+      setFirstLetterName(firstLetterName[0].charAt(0));
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <View style={styles.headerUser}>
           <Pressable onPress={() => navigation.navigate('Profile')}>
-            <Image
-              source={{
-                uri: `${USER_AVATAR_IMAGE}?userId=${
-                  auth.id
-                }&time=${Date.now()}`,
-              }}
-              style={[
-                styles.headerUserAvatar,
-                { borderRadius: Math.round(width + height) / 2 },
-              ]}
-            />
+            {firstLetterName ? (
+              <View
+                style={[
+                  styles.headerUserAvatar,
+                  { borderRadius: Math.round(width + height) / 2 },
+                  styles.headerUserAvatarText,
+                ]}
+              >
+                <Text color={Theme.white} size={20}>
+                  {firstLetterName}
+                </Text>
+              </View>
+            ) : (
+              <Image
+                source={{
+                  uri: `${USER_AVATAR_IMAGE}?userId=${
+                    auth.id
+                  }&time=${Date.now()}`,
+                }}
+                style={[
+                  styles.headerUserAvatar,
+                  { borderRadius: Math.round(width + height) / 2 },
+                ]}
+                onError={(e) => onImageError(e)}
+              />
+            )}
           </Pressable>
           <Text style={styles.headerUserName}>{!!account && account.name}</Text>
         </View>
@@ -182,6 +209,11 @@ const styles = StyleSheet.create({
   headerUserAvatar: {
     width: normalize(50),
     height: normalize(50),
+  },
+  headerUserAvatarText: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: Theme.primary,
   },
   headerUserName: {
     marginLeft: 16,
