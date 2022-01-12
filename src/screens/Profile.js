@@ -18,6 +18,8 @@ import Header from '../components/Header';
 import Text from '../components/Text';
 // icons
 import SettingIcon from '../assets/icons/iconSetting.svg';
+// helpers
+import { getFirstCharacter } from '../helpers/commons';
 
 const Profile = ({ navigation }) => {
   const { width, height } = Dimensions.get('window');
@@ -26,14 +28,7 @@ const Profile = ({ navigation }) => {
   const [firstLetterName, setFirstLetterName] = useState('');
 
   const onImageError = () => {
-    const firstLetterName = account.name.split(' ');
-    if (firstLetterName.length == 2) {
-      setFirstLetterName(
-        `${firstLetterName[0].charAt(0)}${firstLetterName[1].charAt(0)}`,
-      );
-    } else {
-      setFirstLetterName(firstLetterName[0].charAt(0));
-    }
+    setFirstLetterName(getFirstCharacter(account.name));
   };
 
   return (

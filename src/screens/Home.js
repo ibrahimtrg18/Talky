@@ -33,6 +33,8 @@ import * as Theme from '../utils/theme';
 import { USER_AVATAR_IMAGE } from '../utils/constants';
 // icons
 import SearchIcon from '../assets/icons/iconSearch.svg';
+// helpers
+import { getFirstCharacter } from '../helpers/commons';
 
 const Home = ({ navigation }) => {
   const { width, height } = Dimensions.get('window');
@@ -84,14 +86,7 @@ const Home = ({ navigation }) => {
   };
 
   const onImageError = () => {
-    const firstLetterName = account.name.split(' ');
-    if (firstLetterName.length == 2) {
-      setFirstLetterName(
-        `${firstLetterName[0].charAt(0)}${firstLetterName[1].charAt(0)}`,
-      );
-    } else {
-      setFirstLetterName(firstLetterName[0].charAt(0));
-    }
+    setFirstLetterName(getFirstCharacter(account.name));
   };
 
   return (
