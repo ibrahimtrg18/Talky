@@ -12,31 +12,24 @@ import ImagePicker from 'react-native-image-crop-picker';
 // components
 import Header from '../../components/Header';
 import Button from '../../components/Button';
-import Text from '../../components/Text';
+import UserAvatarImage from '../../components/User/UserAvatarImage';
 // utils
 import { normalize } from '../../utils/normalize';
 import * as Theme from '../../utils/theme';
-import { USER_AVATAR_IMAGE } from '../../apis';
 // actions
 import {
   uploadUserAccountAvatar,
   fetchAccount,
 } from '../../redux/actions/user';
 // helpers
-import { getFirstCharacter } from '../../helpers/commons';
 
 const EditAvatar = () => {
   const dispatch = useDispatch();
   const { width, height } = Dimensions.get('window');
   const [photo, setPhoto] = React.useState(null);
-  const [firstLetterName, setFirstLetterName] = useState('');
   // redux
   const auth = useSelector((state) => state.auth);
   const account = useSelector((state) => state.user.account);
-
-  const onImageError = () => {
-    setFirstLetterName(getFirstCharacter(account.name));
-  };
 
   const onSelectPhoto = () => {
     ImagePicker.openPicker({
@@ -98,34 +91,12 @@ const EditAvatar = () => {
             />
           </>
         ) : (
-          <>
-            {firstLetterName ? (
-              <View
-                style={[
-                  styles.userAvatar,
-                  { borderRadius: Math.round(width + height) / 2 },
-                  styles.userAvatarText,
-                ]}
-              >
-                <Text color={Theme.white} size={40}>
-                  {firstLetterName}
-                </Text>
-              </View>
-            ) : (
-              <Image
-                source={{
-                  uri: `${USER_AVATAR_IMAGE}?userId=${
-                    auth.id
-                  }&time=${Date.now()}`,
-                }}
-                style={[
-                  styles.userAvatar,
-                  { borderRadius: Math.round(width + height) / 2 },
-                ]}
-                onError={(e) => onImageError(e)}
-              />
-            )}
-          </>
+          <UserAvatarImage
+            name={account?.name}
+            userId={auth.id}
+            width={150}
+            height={150}
+          />
         )}
         <Button
           title="Choose Photo"
@@ -170,15 +141,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: Theme.text,
     color: Theme.text,
-  },
-  userAvatar: {
-    width: normalize(150),
-    height: normalize(150),
-  },
-  userAvatarText: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: Theme.primary,
   },
 });
 

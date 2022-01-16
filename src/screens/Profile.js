@@ -1,35 +1,20 @@
 // libraries
-import React, { useState } from 'react';
-import {
-  Dimensions,
-  SafeAreaView,
-  View,
-  Pressable,
-  Image,
-  StyleSheet,
-} from 'react-native';
+import React from 'react';
+import { SafeAreaView, View, Pressable, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 // utils
 import { normalize } from '../utils/normalize';
 import * as Theme from '../utils/theme';
-import { USER_AVATAR_IMAGE } from '../apis';
 // components
 import Header from '../components/Header';
 import Text from '../components/Text';
+import UserAvatarImage from '../components/User/UserAvatarImage';
 // icons
 import SettingIcon from '../assets/icons/iconSetting.svg';
-// helpers
-import { getFirstCharacter } from '../helpers/commons';
 
 const Profile = ({ navigation }) => {
-  const { width, height } = Dimensions.get('window');
   const auth = useSelector((state) => state.auth);
   const { account } = useSelector((state) => state.user);
-  const [firstLetterName, setFirstLetterName] = useState('');
-
-  const onImageError = () => {
-    setFirstLetterName(getFirstCharacter(account.name));
-  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -44,32 +29,12 @@ const Profile = ({ navigation }) => {
       />
       <View style={styles.content}>
         <View style={styles.avatarContainer}>
-          {firstLetterName ? (
-            <View
-              style={[
-                styles.avatar,
-                { borderRadius: Math.round(width + height) / 2 },
-                styles.avatarText,
-              ]}
-            >
-              <Text color={Theme.white} size={28}>
-                {firstLetterName}
-              </Text>
-            </View>
-          ) : (
-            <Image
-              source={{
-                uri: `${USER_AVATAR_IMAGE}?userId=${
-                  auth.id
-                }&time=${Date.now()}`,
-              }}
-              style={[
-                styles.avatar,
-                { borderRadius: Math.round(width + height) / 2 },
-              ]}
-              onError={(e) => onImageError(e)}
-            />
-          )}
+          <UserAvatarImage
+            name={account?.name}
+            userId={auth.id}
+            width={150}
+            height={150}
+          />
           <Text size={20} weight={700} style={styles.name}>
             {account.name}
           </Text>

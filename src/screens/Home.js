@@ -5,14 +5,7 @@ import React, {
   useMemo,
   useCallback,
 } from 'react';
-import {
-  SafeAreaView,
-  Pressable,
-  View,
-  Image,
-  Dimensions,
-  StyleSheet,
-} from 'react-native';
+import { SafeAreaView, Pressable, View, StyleSheet } from 'react-native';
 // libraries
 import { useSelector, useDispatch } from 'react-redux';
 import BottomSheet from '@gorhom/bottom-sheet';
@@ -21,6 +14,7 @@ import Text from '../components/Text';
 import Button from '../components/Button';
 import Input from '../components/Input';
 import UserList from '../components/User/UserList';
+import UserAvatarImage from '../components/User/UserAvatarImage';
 // actions
 import {
   searchUser,
@@ -30,16 +24,11 @@ import {
 // utils
 import { normalize } from '../utils/normalize';
 import * as Theme from '../utils/theme';
-import { USER_AVATAR_IMAGE } from '../apis';
 // icons
 import SearchIcon from '../assets/icons/iconSearch.svg';
-// helpers
-import { getFirstCharacter } from '../helpers/commons';
 
 const Home = ({ navigation }) => {
-  const { width, height } = Dimensions.get('window');
   const [query, setQuery] = useState('');
-  const [firstLetterName, setFirstLetterName] = useState('');
   const bottomSheetRef = useRef(null);
   const searchRef = useRef(null);
 
@@ -85,41 +74,12 @@ const Home = ({ navigation }) => {
     navigation.navigate('Conversation', { conversationId });
   };
 
-  const onImageError = () => {
-    setFirstLetterName(getFirstCharacter(account.name));
-  };
-
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <View style={styles.headerUser}>
           <Pressable onPress={() => navigation.navigate('Profile')}>
-            {firstLetterName ? (
-              <View
-                style={[
-                  styles.headerUserAvatar,
-                  { borderRadius: Math.round(width + height) / 2 },
-                  styles.headerUserAvatarText,
-                ]}
-              >
-                <Text color={Theme.white} size={20}>
-                  {firstLetterName}
-                </Text>
-              </View>
-            ) : (
-              <Image
-                source={{
-                  uri: `${USER_AVATAR_IMAGE}?userId=${
-                    auth.id
-                  }&time=${Date.now()}`,
-                }}
-                style={[
-                  styles.headerUserAvatar,
-                  { borderRadius: Math.round(width + height) / 2 },
-                ]}
-                onError={(e) => onImageError(e)}
-              />
-            )}
+            <UserAvatarImage name={account?.name} userId={auth.id} />
           </Pressable>
           <Text style={styles.headerUserName}>{!!account && account.name}</Text>
         </View>
@@ -200,15 +160,6 @@ const styles = StyleSheet.create({
   headerUser: {
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  headerUserAvatar: {
-    width: normalize(50),
-    height: normalize(50),
-  },
-  headerUserAvatarText: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: Theme.primary,
   },
   headerUserName: {
     marginLeft: 16,
