@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Image, Pressable, Dimensions, StyleSheet } from 'react-native';
 // components
 import Text from '../Text';
@@ -8,22 +8,44 @@ import * as Theme from '../../utils/theme';
 import { USER_AVATAR_IMAGE } from '../../apis';
 // icons
 import ChevronRightIcon from '../../assets/icons/iconChevronRight.svg';
+// helpers
+import { getFirstCharacter } from '../../helpers/commons';
 
 const UserItem = ({ user, onUserClick }) => {
   const { width, height } = Dimensions.get('window');
+  const [firstLetterName, setFirstLetterName] = useState('');
+
+  const onImageError = () => {
+    setFirstLetterName(getFirstCharacter(user.name));
+  };
 
   return (
     <Pressable onPress={() => (onUserClick ? onUserClick() : null)}>
       <View style={styles.userItem}>
-        <Image
-          source={{
-            uri: `${USER_AVATAR_IMAGE}?userId=${user.id}&time=${Date.now()}`,
-          }}
-          style={[
-            styles.userLeft,
-            { borderRadius: Math.round(width + height) / 2 },
-          ]}
-        />
+        {firstLetterName ? (
+          <View
+            style={[
+              styles.userAvatar,
+              { borderRadius: Math.round(width + height) / 2 },
+              styles.userAvatarText,
+            ]}
+          >
+            <Text color={Theme.white} size={20}>
+              {firstLetterName}
+            </Text>
+          </View>
+        ) : (
+          <Image
+            source={{
+              uri: `${USER_AVATAR_IMAGE}?userId=${user.id}&time=${Date.now()}`,
+            }}
+            style={[
+              styles.userAvatar,
+              { borderRadius: Math.round(width + height) / 2 },
+            ]}
+            onError={(e) => onImageError(e)}
+          />
+        )}
         <View style={styles.userMid}>
           <View style={styles.userMidHead}>
             <Text style={styles.textTransform} color={Theme.text} size={16}>
@@ -57,6 +79,15 @@ const styles = StyleSheet.create({
   },
   userName: {
     textTransform: 'capitalize',
+  },
+  userAvatar: {
+    width: normalize(50),
+    height: normalize(50),
+  },
+  userAvatarText: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: Theme.primary,
   },
 });
 
