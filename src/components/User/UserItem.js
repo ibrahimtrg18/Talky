@@ -5,7 +5,7 @@ import Text from '../Text';
 // utils
 import { normalize } from '../../utils/normalize';
 import * as Theme from '../../utils/theme';
-import { USER_AVATAR_IMAGE } from '../../utils/constants';
+import { USER_AVATAR_IMAGE } from '../../apis';
 // icons
 import ChevronRightIcon from '../../assets/icons/iconChevronRight.svg';
 

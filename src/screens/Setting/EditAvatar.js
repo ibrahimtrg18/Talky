@@ -16,7 +16,7 @@ import Button from '../../components/Button';
 // utils
 import { normalize } from '../../utils/normalize';
 import * as Theme from '../../utils/theme';
-import { USER_AVATAR_IMAGE } from '../../utils/constants';
+import { USER_AVATAR_IMAGE } from '../../apis';
 // actions
 import {
   uploadUserAccountAvatar,

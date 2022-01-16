@@ -30,7 +30,7 @@ import {
 // utils
 import { normalize } from '../utils/normalize';
 import * as Theme from '../utils/theme';
-import { USER_AVATAR_IMAGE } from '../utils/constants';
+import { USER_AVATAR_IMAGE } from '../apis';
 // icons
 import SearchIcon from '../assets/icons/iconSearch.svg';
 // helpers
@@ -127,7 +127,7 @@ const Home = ({ navigation }) => {
           <SearchIcon width={28} height={28} />
         </Pressable>
       </View>
-      <View style={styles.tabView}>
+      {/* <View style={styles.tabView}>
         <Button
           title="Chat"
           style={styles.tabViewButtonActive}
@@ -140,7 +140,7 @@ const Home = ({ navigation }) => {
           textColor={Theme.black}
           rounded={8}
         />
-      </View>
+      </View> */}
 
       {/* !Conversation */}
       <View style={styles.conversationContainer}>

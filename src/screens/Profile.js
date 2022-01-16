@@ -12,7 +12,7 @@ import { useSelector } from 'react-redux';
 // utils
 import { normalize } from '../utils/normalize';
 import * as Theme from '../utils/theme';
-import { USER_AVATAR_IMAGE } from '../utils/constants';
+import { USER_AVATAR_IMAGE } from '../apis';
 // components
 import Header from '../components/Header';
 import Text from '../components/Text';
