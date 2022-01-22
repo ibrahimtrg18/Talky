@@ -20,7 +20,7 @@ import {
   searchUser,
   fetchUserFriends,
   fetchUserConversations,
-} from '../redux/actions/user';
+} from '../redux/actions';
 // utils
 import { normalize } from '../utils/normalize';
 import * as Theme from '../utils/theme';

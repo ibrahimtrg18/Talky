@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Config from 'react-native-config';
-import { userLogout } from '../redux/actions/auth';
+import { userLogout } from '../redux/actions/authAction';
 let store;
 
 console.log(Config.API_URL);

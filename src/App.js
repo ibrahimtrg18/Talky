@@ -14,8 +14,8 @@ import EditProfile from './screens/Setting/EditProfile';
 import EditPassword from './screens/Setting/EditPassword';
 import Register from './screens/Register';
 // actions
-import { userIsSignIn } from './redux/actions/auth';
-import { fetchAccount } from './redux/actions/user';
+import { userIsSignIn } from './redux/actions';
+import { fetchAccount } from './redux/actions';
 
 const Stack = createNativeStackNavigator();
 

@@ -23,7 +23,7 @@ import {
   fetchConversationById,
   fetchConversationChatById,
   addConversationChat,
-} from '../redux/actions/conversation';
+} from '../redux/actions';
 // utils
 import { normalize } from '../utils/normalize';
 import * as Theme from '../utils/theme';

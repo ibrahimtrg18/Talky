@@ -4,7 +4,7 @@ import {
   FIND_USER,
   FETCH_USER_FRIENDS,
   FETCH_USER_CONVERSATIONS,
-} from '../actions/user';
+} from '../actions';
 
 const INITIAL_STATE = {
   account: null,

@@ -4,7 +4,7 @@ import { View, Image, Dimensions, StyleSheet } from 'react-native';
 // components
 import Text from '../../components/Text';
 // apis
-import { USER_AVATAR_IMAGE } from '../../apis';
+import UserAPI from '../../apis/UserAPI';
 // utils
 import { normalize } from '../../utils/normalize';
 import * as Theme from '../../utils/theme';
@@ -18,6 +18,7 @@ const UserAvatarImage = (props) => {
     textSize = 20,
     backgroundColor = Theme.primary,
   } = props;
+  const userAPI = new UserAPI();
   const { width, height } = Dimensions.get('window');
   const [firstLetterName, setFirstLetterName] = useState('');
 
@@ -45,7 +46,7 @@ const UserAvatarImage = (props) => {
       ) : (
         <Image
           source={{
-            uri: `${USER_AVATAR_IMAGE}?userId=${userId}`,
+            uri: `${userAPI.accountAvatar()}?userId=${userId}`,
           }}
           style={[
             styles.userAvatar,

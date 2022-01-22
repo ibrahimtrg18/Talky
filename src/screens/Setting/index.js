@@ -9,7 +9,7 @@ import * as Theme from '../../utils/theme';
 import Header from '../../components/Header';
 import Text from '../../components/Text';
 // actions
-import { userLogout } from '../../redux/actions/auth';
+import { userLogout } from '../../redux/actions';
 // icons
 import ImageIcon from '../../assets/icons/iconImage.svg';
 import UserIcon from '../../assets/icons/iconUser.svg';

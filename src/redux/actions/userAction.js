@@ -1,4 +1,4 @@
-import axios from '../../utils/axios';
+import UserAPI from '../../apis/UserAPI';
 
 export const FETCH_PROFILE = 'FETCH_PROFILE';
 export const GET_ALL_FRIEND = 'GET_ALL_FRIEND';
@@ -12,7 +12,8 @@ export const REGISTER_USER = 'REGISTER_USER';
 
 export const registerUser = (payload) => async (dispatch, getState) => {
   try {
-    const res = await axios.post('/user/register', payload);
+    const userAPI = new UserAPI();
+    const res = await userAPI.register(payload);
     dispatch({ type: REGISTER_USER, payload: res.data.access_token });
   } catch (e) {
     console.error(e);
@@ -22,9 +23,8 @@ export const registerUser = (payload) => async (dispatch, getState) => {
 export const fetchAccount = () => async (dispatch, getState) => {
   try {
     const { auth } = getState();
-    const res = await axios.get('/user/account', {
-      headers: { Authorization: 'Bearer ' + auth.access_token },
-    });
+    const userAPI = new UserAPI(auth.access_token);
+    const res = await userAPI.account();
     dispatch({ type: FETCH_PROFILE, payload: res.data });
   } catch (e) {
     console.error(e);
@@ -34,9 +34,8 @@ export const fetchAccount = () => async (dispatch, getState) => {
 export const updateAccount = (payload) => async (dispatch, getState) => {
   try {
     const { auth } = getState();
-    const res = await axios.patch('/user/account', payload, {
-      headers: { Authorization: 'Bearer ' + auth.access_token },
-    });
+    const userAPI = new UserAPI(auth.access_token);
+    const res = await userAPI.updateAccount(payload);
     dispatch({ type: FETCH_PROFILE, payload: res.data });
     return res;
   } catch (e) {
@@ -48,9 +47,8 @@ export const updateAccount = (payload) => async (dispatch, getState) => {
 export const searchUser = (query) => async (dispatch, getState) => {
   try {
     const { auth } = getState();
-    const res = await axios.get(`/user/search?q=${query}`, {
-      headers: { Authorization: 'Bearer ' + auth.access_token },
-    });
+    const userAPI = new UserAPI(auth.access_token);
+    const res = await userAPI.search({ q: query });
     dispatch({ type: FIND_USER, payload: res.data });
   } catch (e) {
     console.error(e);
@@ -60,9 +58,8 @@ export const searchUser = (query) => async (dispatch, getState) => {
 export const fetchUserFriends = () => async (dispatch, getState) => {
   try {
     const { auth } = getState();
-    const res = await axios.get('/user/friend', {
-      headers: { Authorization: 'Bearer ' + auth.access_token },
-    });
+    const userAPI = new UserAPI(auth.access_token);
+    const res = await userAPI.friend();
     dispatch({ type: FETCH_USER_FRIENDS, payload: res.data });
   } catch (e) {
     console.error(e);
@@ -72,9 +69,8 @@ export const fetchUserFriends = () => async (dispatch, getState) => {
 export const fetchUserConversations = () => async (dispatch, getState) => {
   try {
     const { auth } = getState();
-    const res = await axios.get('/user/conversation', {
-      headers: { Authorization: 'Bearer ' + auth.access_token },
-    });
+    const userAPI = new UserAPI(auth.access_token);
+    const res = await userAPI.conversation();
     dispatch({ type: FETCH_USER_CONVERSATIONS, payload: res.data });
   } catch (e) {
     console.error(e);
@@ -84,14 +80,8 @@ export const fetchUserConversations = () => async (dispatch, getState) => {
 export const uploadUserAccountAvatar = (data) => async (dispatch, getState) => {
   try {
     const { auth } = getState();
-
-    const res = await axios.post('/user/account/avatar', data, {
-      headers: {
-        Authorization: 'Bearer ' + auth.access_token,
-        'Content-Type': 'multipart/form-data',
-      },
-    });
-    console.log(res);
+    const userAPI = new UserAPI(auth.access_token);
+    const res = await userAPI.createAccountAvatar(data);
     dispatch({ type: FETCH_USER_CONVERSATIONS, payload: res.data });
   } catch (e) {
     console.error(e);

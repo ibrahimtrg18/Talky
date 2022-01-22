@@ -3,7 +3,7 @@ import {
   FETCH_CONVERSATION,
   FETCH_CONVERSATION_CHAT,
   ADD_CONVERSATION_CHAT,
-} from '../actions/conversation';
+} from '../actions';
 
 const INITIAL_STATE = {
   chat: {},

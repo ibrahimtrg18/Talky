@@ -1,24 +1,10 @@
-import Axios from 'axios';
-import Config from 'react-native-config';
 import {
   GoogleSignin,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
+import AuthAPI from '../../apis/AuthAPI';
 import { googleSigninConfig } from '../../utils/googleSigninConfig';
 import { storeData, getData, clearData } from '../../utils/storage';
-
-const axios = Axios.create({
-  baseURL: Config.API_URL,
-});
-
-axios.interceptors.response.use(
-  function (response) {
-    return { ...response, ...response.data };
-  },
-  function (error) {
-    return Promise.reject(error.response.data);
-  },
-);
 
 export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
@@ -45,9 +31,7 @@ export const userLoginGoogle = () => async (dispatch) => {
     GoogleSignin.configure(googleSigninConfig);
     const user = await signInGoogle();
 
-    const res = await axios.post('/user/google/login', null, {
-      headers: { token: user.idToken },
-    });
+    const res = await AuthAPI.googleLogin(user.idToken);
 
     await storeData({ key: 'access_token', value: res.data.access_token });
     await storeData({ key: 'id', value: res.data.id });
@@ -91,7 +75,7 @@ export const userIsSignIn = () => async (dispatch) => {
 
 export const userLoginAccount = (payload) => async (dispatch, getState) => {
   try {
-    const res = await axios.post('/user/login', payload);
+    const res = await AuthAPI.accountLogin(payload);
     await storeData({ key: 'access_token', value: res.data.access_token });
     await storeData({ key: 'id', value: res.data.id });
 

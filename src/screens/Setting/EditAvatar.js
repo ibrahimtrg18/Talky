@@ -17,10 +17,7 @@ import UserAvatarImage from '../../components/User/UserAvatarImage';
 import { normalize } from '../../utils/normalize';
 import * as Theme from '../../utils/theme';
 // actions
-import {
-  uploadUserAccountAvatar,
-  fetchAccount,
-} from '../../redux/actions/user';
+import { uploadUserAccountAvatar, fetchAccount } from '../../redux/actions';
 // helpers
 
 const EditAvatar = () => {

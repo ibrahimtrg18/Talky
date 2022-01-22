@@ -21,7 +21,7 @@ import BottomSheet from '@gorhom/bottom-sheet';
 import { normalize } from '../../utils/normalize';
 import * as Theme from '../../utils/theme';
 // actions
-import { updateAccount } from '../../redux/actions/user';
+import { updateAccount } from '../../redux/actions';
 // components
 import Header from '../../components/Header';
 import Input from '../../components/Input';

@@ -16,7 +16,7 @@ import Input from '../components/Input';
 import Button from '../components/Button';
 import Text from '../components/Text';
 // actions
-import { registerUser } from '../redux/actions/user';
+import { registerUser } from '../redux/actions';
 // utils
 import { normalize } from '../utils/normalize';
 import * as Theme from '../utils/theme';

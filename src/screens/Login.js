@@ -7,7 +7,7 @@ import Text from '../components/Text';
 import SignInWith from '../components/SignInWith';
 import Line from '../components/Line';
 // actions
-import { userLoginGoogle } from '../redux/actions/auth';
+import { userLoginGoogle } from '../redux/actions';
 // utils
 import { normalize } from '../utils/normalize';
 import * as Theme from '../utils/theme';
