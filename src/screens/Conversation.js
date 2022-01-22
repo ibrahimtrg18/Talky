@@ -43,22 +43,24 @@ const Conversion = ({ navigation, route }) => {
     extraHeaders: {
       Authorization: 'Bearer ' + auth.access_token,
     },
+    transports: ['websocket'],
   });
 
   socket.on('connect_error', (err) => console.error(err));
   socket.on('connect_failed', (err) => console.error(err));
-  socket.on('disconnect', (err) => console.error(err));
 
   useEffect(() => {
     socket.on('createChat', async (data) => {
-      await dispatch(addConversationChat(data));
+      dispatch(addConversationChat(data.data));
     });
+
+    return () => socket.on('disconnect', (err) => console.error(err));
   }, []);
 
   useEffect(() => {
     (async () => {
-      await dispatch(fetchConversationById(conversationId));
-      await dispatch(fetchConversationChatById(conversationId));
+      dispatch(fetchConversationById(conversationId));
+      dispatch(fetchConversationChatById(conversationId));
     })();
   }, [conversationId]);
 
