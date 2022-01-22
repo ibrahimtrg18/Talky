@@ -36,13 +36,13 @@ const Profile = ({ navigation }) => {
             height={150}
           />
           <Text size={20} weight={700} style={styles.name}>
-            {account.name}
+            {account?.name}
           </Text>
           <Text size={16} weight={400}>
-            {account.email}
+            {account?.email}
           </Text>
           <Text size={14} weight={300}>
-            {account.totalFriends || 0} Friends
+            {account?.totalFriends || 0} Friends
           </Text>
         </View>
       </View>
