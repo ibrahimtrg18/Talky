@@ -23,7 +23,7 @@ import * as Theme from '../../utils/theme';
 // actions
 import { updateAccount } from '../../redux/actions';
 // components
-import Header from '../../components/Header';
+import AppBar from '../../components/AppBar';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 import Text from '../../components/Text';
@@ -117,7 +117,7 @@ const EditPassword = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header title="Edit Profile" showBack />
+      <AppBar title="Edit Profile" showBack />
       <FormikProvider value={formik}>
         <View style={styles.content}>
           <View style={styles.inputContainer}>

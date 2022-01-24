@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import { normalize } from '../utils/normalize';
 import * as Theme from '../utils/theme';
 // components
-import Header from '../components/Header';
+import AppBar from '../components/AppBar';
 import Text from '../components/Text';
 import UserAvatarImage from '../components/User/UserAvatarImage';
 // icons
@@ -18,7 +18,7 @@ const Profile = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header
+      <AppBar
         title="Profile"
         showBack
         rightContent={

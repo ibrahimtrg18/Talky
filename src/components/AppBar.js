@@ -6,11 +6,11 @@ import { useNavigation } from '@react-navigation/native';
 import { normalize } from '../utils/normalize';
 import * as Theme from '../utils/theme';
 // components
-import Text from '../components/Text';
+import Text from './Text';
 // icons
 import ChevronLeft from '../assets/icons/iconChevronLeft.svg';
 
-const Header = (props) => {
+const AppBar = (props) => {
   const {
     showBack,
     title,
@@ -29,11 +29,7 @@ const Header = (props) => {
   return (
     <View
       {...restProps}
-      style={[
-        styles.header,
-        shadow && styles.headerBoxShadow,
-        customBackgroundColor,
-      ]}
+      style={[styles.appBar, styles.appBarBoxShadow, customBackgroundColor]}
     >
       <View style={styles.leftContent}>
         {showBack ? (
@@ -57,20 +53,23 @@ const Header = (props) => {
           centerContent && <View>{centerContent}</View>
         )}
       </View>
-      <View style={styles.rightContent}>{rightContent && rightContent}</View>
+      <View style={[styles.rightContent, styles.rightSpace]}>
+        {rightContent && rightContent}
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  header: {
-    height: normalize(56),
+  appBar: {
+    height: normalize(48),
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     zIndex: 1,
+    marginBottom: normalize(16),
   },
-  headerBoxShadow: {
+  appBarBoxShadow: {
     shadowColor: '#000000',
     shadowOffset: {
       width: 0,
@@ -89,6 +88,10 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     marginRight: normalize(16),
   },
+  rightSpace: {
+    width: normalize(24),
+    height: normalize(24),
+  },
 });
 
-export default Header;
+export default AppBar;

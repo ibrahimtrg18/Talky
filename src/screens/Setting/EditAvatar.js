@@ -10,7 +10,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import ImagePicker from 'react-native-image-crop-picker';
 // components
-import Header from '../../components/Header';
+import AppBar from '../../components/AppBar';
 import Button from '../../components/Button';
 import UserAvatarImage from '../../components/User/UserAvatarImage';
 // utils
@@ -64,7 +64,7 @@ const EditAvatar = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header title="Edit Avatar" showBack />
+      <AppBar title="Edit Avatar" showBack />
       <View style={styles.content}>
         {photo ? (
           <>

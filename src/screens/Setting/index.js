@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import { normalize } from '../../utils/normalize';
 import * as Theme from '../../utils/theme';
 // components
-import Header from '../../components/Header';
+import AppBar from '../../components/AppBar';
 import Text from '../../components/Text';
 // actions
 import { userLogout } from '../../redux/actions';
@@ -69,7 +69,7 @@ const Setting = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header showBack title="Setting" />
+      <AppBar showBack title="Setting" />
       <FlatList
         data={MENUS}
         renderItem={({ item }) => (
