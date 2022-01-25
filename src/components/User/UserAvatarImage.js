@@ -23,38 +23,48 @@ const UserAvatarImage = (props) => {
     setFirstLetterName(getFirstCharacter(name));
   };
 
+  useEffect(() => {
+    if (!src) {
+      setFirstLetterName(getFirstCharacter(name));
+    }
+  }, [src, name]);
+
+  if (!name) {
+    return null;
+  }
+
+  if (!firstLetterName) {
+    return (
+      <Image
+        source={{
+          uri: src,
+        }}
+        style={[
+          styles.userAvatar,
+          props.width && { width: normalize(props.width) },
+          props.height && { height: normalize(props.height) },
+          { borderRadius: Math.round(width + height) / 2 },
+        ]}
+        onError={(e) => onImageError(e)}
+      />
+    );
+  }
+
   return (
-    <>
-      {firstLetterName ? (
-        <View
-          style={[
-            styles.userAvatar,
-            styles.userAvatarText,
-            props.width && { width: normalize(props.width) },
-            props.height && { height: normalize(props.height) },
-            { borderRadius: Math.round(width + height) / 2 },
-            { backgroundColor },
-          ]}
-        >
-          <Text color={Theme.white} size={textSize}>
-            {firstLetterName}
-          </Text>
-        </View>
-      ) : (
-        <Image
-          source={{
-            uri: src,
-          }}
-          style={[
-            styles.userAvatar,
-            props.width && { width: normalize(props.width) },
-            props.height && { height: normalize(props.height) },
-            { borderRadius: Math.round(width + height) / 2 },
-          ]}
-          onError={(e) => onImageError(e)}
-        />
-      )}
-    </>
+    <View
+      style={[
+        styles.userAvatar,
+        styles.userAvatarText,
+        props.width && { width: normalize(props.width) },
+        props.height && { height: normalize(props.height) },
+        { borderRadius: Math.round(width + height) / 2 },
+        { backgroundColor },
+      ]}
+    >
+      <Text color={Theme.white} size={textSize}>
+        {firstLetterName}
+      </Text>
+    </View>
   );
 };
 
