@@ -69,11 +69,6 @@ const UserList = ({ users, type, message, onUserClick }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  // friend
-  userList: {
-    paddingVertical: normalize(8),
-  },
-});
+const styles = StyleSheet.create({});
 
 export default UserList;

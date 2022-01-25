@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     zIndex: 1,
-    marginBottom: normalize(16),
+    marginBottom: normalize(8),
   },
   appBarBoxShadow: {
     shadowColor: '#000000',
@@ -82,15 +82,17 @@ const styles = StyleSheet.create({
   icon: {},
   leftContent: {
     alignItems: 'flex-start',
+    justifyContent: 'center',
     marginLeft: normalize(16),
   },
   rightContent: {
     alignItems: 'flex-end',
+    justifyContent: 'center',
     marginRight: normalize(16),
   },
   rightSpace: {
-    width: normalize(24),
-    height: normalize(24),
+    width: normalize(32),
+    height: normalize(32),
   },
 });
 

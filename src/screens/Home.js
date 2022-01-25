@@ -12,6 +12,7 @@ import BottomSheet from '@gorhom/bottom-sheet';
 // apis
 import UploadsAPI from '../apis/UploadsAPI';
 // components
+import AppBar from '../components/AppBar';
 import Text from '../components/Text';
 import Button from '../components/Button';
 import Input from '../components/Input';
@@ -79,8 +80,9 @@ const Home = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <View style={styles.headerUser}>
+      <AppBar
+        title={<Text>Home</Text>}
+        leftContent={
           <Pressable onPress={() => navigation.navigate('Profile')}>
             <UserAvatarImage
               name={account?.name}
@@ -90,12 +92,13 @@ const Home = ({ navigation }) => {
               height={normalize(32)}
             />
           </Pressable>
-          <Text style={styles.headerUserName}>{!!account && account.name}</Text>
-        </View>
-        <Pressable onPress={() => bottomSheetRef.current.snapToIndex(0)}>
-          <SearchIcon width={28} height={28} />
-        </Pressable>
-      </View>
+        }
+        rightContent={
+          <Pressable onPress={() => bottomSheetRef.current.snapToIndex(0)}>
+            <SearchIcon width={normalize(24)} height={normalize(24)} />
+          </Pressable>
+        }
+      />
       {/* <View style={styles.tabView}>
         <Button
           title="Chat"
@@ -156,22 +159,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Theme.white,
-    paddingTop: normalize(16),
-  },
-  // header
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: normalize(32),
-    marginBottom: normalize(16),
-  },
-  headerUser: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  headerUserName: {
-    marginLeft: 16,
   },
   tabView: {
     flexDirection: 'row',
@@ -198,7 +185,7 @@ const styles = StyleSheet.create({
   },
   // conversation
   conversationContainer: {
-    paddingHorizontal: normalize(32),
+    paddingHorizontal: normalize(20),
   },
   // bottomSheet
   bottomSheetContent: {
