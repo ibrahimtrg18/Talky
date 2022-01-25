@@ -9,6 +9,8 @@ import {
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import ImagePicker from 'react-native-image-crop-picker';
+// apis
+import UploadsAPI from '../../apis/UploadsAPI';
 // components
 import AppBar from '../../components/AppBar';
 import Button from '../../components/Button';
@@ -21,6 +23,7 @@ import { uploadUserAccountAvatar, fetchAccount } from '../../redux/actions';
 // helpers
 
 const EditAvatar = () => {
+  const uploadsAPI = new UploadsAPI();
   const dispatch = useDispatch();
   const { width, height } = Dimensions.get('window');
   const [photo, setPhoto] = React.useState(null);
@@ -91,6 +94,7 @@ const EditAvatar = () => {
           <UserAvatarImage
             name={account?.name}
             userId={auth.id}
+            src={`${uploadsAPI.userAvatar(account?.avatar)}`}
             width={150}
             height={150}
           />

@@ -1,5 +1,7 @@
 import React from 'react';
 import { View, Pressable, StyleSheet } from 'react-native';
+// apis
+import UploadsAPI from '../../apis/UploadsAPI';
 // components
 import Text from '../Text';
 import UserAvatarImage from './UserAvatarImage';
@@ -10,10 +12,15 @@ import * as Theme from '../../utils/theme';
 import ChevronRightIcon from '../../assets/icons/iconChevronRight.svg';
 
 const UserItem = ({ user, onUserClick }) => {
+  const uploadsAPI = new UploadsAPI();
+
   return (
     <Pressable onPress={() => (onUserClick ? onUserClick() : null)}>
       <View style={styles.userItem}>
-        <UserAvatarImage name={user?.name} userId={user.id} />
+        <UserAvatarImage
+          name={user?.name}
+          src={`${uploadsAPI.userAvatar(user?.avatar)}`}
+        />
         <View style={styles.userMid}>
           <View style={styles.userMidHead}>
             <Text style={styles.textTransform} color={Theme.text} size={16}>

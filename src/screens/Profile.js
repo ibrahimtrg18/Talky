@@ -2,6 +2,8 @@
 import React from 'react';
 import { SafeAreaView, View, Pressable, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
+// apis
+import UploadsAPI from '../apis/UploadsAPI';
 // utils
 import { normalize } from '../utils/normalize';
 import * as Theme from '../utils/theme';
@@ -13,6 +15,7 @@ import UserAvatarImage from '../components/User/UserAvatarImage';
 import SettingIcon from '../assets/icons/iconSetting.svg';
 
 const Profile = ({ navigation }) => {
+  const uploadsAPI = new UploadsAPI();
   const auth = useSelector((state) => state.auth);
   const { account } = useSelector((state) => state.user);
 
@@ -31,7 +34,7 @@ const Profile = ({ navigation }) => {
         <View style={styles.avatarContainer}>
           <UserAvatarImage
             name={account?.name}
-            userId={auth.id}
+            src={`${uploadsAPI.userAvatar(account?.avatar)}`}
             width={150}
             height={150}
           />

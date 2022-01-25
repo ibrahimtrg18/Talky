@@ -9,6 +9,8 @@ import { SafeAreaView, Pressable, View, StyleSheet } from 'react-native';
 // libraries
 import { useSelector, useDispatch } from 'react-redux';
 import BottomSheet from '@gorhom/bottom-sheet';
+// apis
+import UploadsAPI from '../apis/UploadsAPI';
 // components
 import Text from '../components/Text';
 import Button from '../components/Button';
@@ -28,6 +30,7 @@ import * as Theme from '../utils/theme';
 import SearchIcon from '../assets/icons/iconSearch.svg';
 
 const Home = ({ navigation }) => {
+  const uploadsAPI = new UploadsAPI();
   const [query, setQuery] = useState('');
   const bottomSheetRef = useRef(null);
   const searchRef = useRef(null);
@@ -79,7 +82,13 @@ const Home = ({ navigation }) => {
       <View style={styles.header}>
         <View style={styles.headerUser}>
           <Pressable onPress={() => navigation.navigate('Profile')}>
-            <UserAvatarImage name={account?.name} userId={auth.id} />
+            <UserAvatarImage
+              name={account?.name}
+              src={`${uploadsAPI.userAvatar(account?.avatar)}`}
+              textSize={16}
+              width={normalize(32)}
+              height={normalize(32)}
+            />
           </Pressable>
           <Text style={styles.headerUserName}>{!!account && account.name}</Text>
         </View>

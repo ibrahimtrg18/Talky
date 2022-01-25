@@ -3,8 +3,6 @@ import React, { useState, useEffect } from 'react';
 import { View, Image, Dimensions, StyleSheet } from 'react-native';
 // components
 import Text from '../../components/Text';
-// apis
-import UserAPI from '../../apis/UserAPI';
 // utils
 import { normalize } from '../../utils/normalize';
 import * as Theme from '../../utils/theme';
@@ -14,11 +12,10 @@ import { getFirstCharacter } from '../../helpers/commons';
 const UserAvatarImage = (props) => {
   const {
     name = '?',
-    userId,
+    src,
     textSize = 20,
     backgroundColor = Theme.primary,
   } = props;
-  const userAPI = new UserAPI();
   const { width, height } = Dimensions.get('window');
   const [firstLetterName, setFirstLetterName] = useState('');
 
@@ -46,7 +43,7 @@ const UserAvatarImage = (props) => {
       ) : (
         <Image
           source={{
-            uri: `${userAPI.accountAvatar()}?userId=${userId}`,
+            uri: src,
           }}
           style={[
             styles.userAvatar,
