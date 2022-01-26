@@ -13,6 +13,7 @@ import Config from 'react-native-config';
 import { useDispatch, useSelector } from 'react-redux';
 import io from 'socket.io-client';
 // components
+import AppBar from '../components/AppBar';
 import Text from '../components/Text';
 import Button from '../components/Button';
 import Input from '../components/Input';
@@ -37,7 +38,7 @@ const Conversion = ({ navigation, route }) => {
 
   const auth = useSelector((state) => state.auth);
   const conversation = useSelector((state) => state.conversation);
-  const chats = useSelector((state) => Object.values(state.conversation.chat));
+  const chats = useSelector((state) => Object.values(state.conversation.chats));
 
   const socket = io(Config.SOCKET_URL, {
     extraHeaders: {
@@ -46,10 +47,12 @@ const Conversion = ({ navigation, route }) => {
     transports: ['websocket'],
   });
 
-  socket.on('connect_error', (err) => console.error(err));
-  socket.on('connect_failed', (err) => console.error(err));
-
   useEffect(() => {
+    socket.on('connection', () => console.log('connection'));
+
+    socket.on('connect_error', (err) => console.error(err));
+    socket.on('connect_failed', (err) => console.error(err));
+
     socket.on('createChat', async (data) => {
       dispatch(addConversationChat(data.data));
     });
@@ -135,11 +138,6 @@ const Conversion = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: normalize(12),
   },
   body: {
     flexGrow: 1,

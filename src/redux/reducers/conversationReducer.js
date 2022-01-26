@@ -6,7 +6,7 @@ import {
 } from '../actions';
 
 const INITIAL_STATE = {
-  chat: {},
+  chats: {},
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -14,12 +14,12 @@ export default (state = INITIAL_STATE, action) => {
     case FETCH_CONVERSATION:
       return { ...state, ...action.payload };
     case FETCH_CONVERSATION_CHAT:
-      return { ...state, chat: { ..._.mapKeys(action.payload.chats, 'id') } };
+      return { ...state, chats: { ..._.mapKeys(action.payload.chats, 'id') } };
     case ADD_CONVERSATION_CHAT:
       return {
         ...state,
         // using conversation inverted
-        chat: { [action.payload.id]: action.payload, ...state.chat },
+        chats: { [action.payload.id]: action.payload, ...state.chats },
       };
     default:
       return state;
