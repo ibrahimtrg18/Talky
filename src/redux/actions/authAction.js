@@ -4,7 +4,15 @@ import {
 } from '@react-native-google-signin/google-signin';
 import AuthAPI from '../../apis/AuthAPI';
 import { googleSigninConfig } from '../../utils/googleSigninConfig';
-import { storeData, getData, clearData } from '../../utils/storage';
+import {
+  storeData,
+  getData,
+  clearData,
+  ACCESS_TOKEN,
+  ID,
+  LOGIN_WITH,
+  GOOGLE,
+} from '../../utils/storage';
 
 export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
@@ -33,8 +41,9 @@ export const userLoginGoogle = () => async (dispatch) => {
 
     const res = await AuthAPI.googleLogin(user.idToken);
 
-    await storeData({ key: 'access_token', value: res.data.access_token });
-    await storeData({ key: 'id', value: res.data.id });
+    await storeData({ key: ACCESS_TOKEN, value: res.data.access_token });
+    await storeData({ key: ID, value: res.data.id });
+    await storeData({ key: LOGIN_WITH, value: GOOGLE });
 
     const auth = {
       id: res.data.id,
@@ -58,10 +67,10 @@ const signOutGoogle = async () => {
 
 export const userIsSignIn = () => async (dispatch) => {
   try {
-    if (await getData('access_token')) {
+    if (await getData(ACCESS_TOKEN)) {
       const auth = {
-        id: await getData('id'),
-        access_token: await getData('access_token'),
+        id: await getData(ID),
+        access_token: await getData(ACCESS_TOKEN),
       };
 
       dispatch({ type: LOGIN, payload: auth });
@@ -76,8 +85,8 @@ export const userIsSignIn = () => async (dispatch) => {
 export const userLoginAccount = (payload) => async (dispatch, getState) => {
   try {
     const res = await AuthAPI.accountLogin(payload);
-    await storeData({ key: 'access_token', value: res.data.access_token });
-    await storeData({ key: 'id', value: res.data.id });
+    await storeData({ key: ACCESS_TOKEN, value: res.data.access_token });
+    await storeData({ key: ID, value: res.data.id });
 
     const auth = {
       id: res.data.id,
@@ -94,7 +103,7 @@ export const userLoginAccount = (payload) => async (dispatch, getState) => {
 
 export const userLogout = () => async (dispatch) => {
   try {
-    if ((await getData('login_with')) === 'google') {
+    if ((await getData(LOGIN_WITH)) === GOOGLE) {
       await signOutGoogle();
     }
     await clearData();

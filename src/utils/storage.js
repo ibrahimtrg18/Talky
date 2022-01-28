@@ -1,5 +1,10 @@
 import AsyncStorage from '@react-native-community/async-storage';
 
+export const ACCESS_TOKEN = 'ACCESS_TOKEN';
+export const ID = 'ID';
+export const LOGIN_WITH = 'LOGIN_WITH';
+export const GOOGLE = 'GOOGLE';
+
 export const storeData = async ({ key, value }) => {
   try {
     await AsyncStorage.setItem(key, value);
