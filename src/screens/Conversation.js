@@ -35,9 +35,13 @@ const Conversion = ({ navigation, route }) => {
   const { conversationId } = route.params;
   const dispatch = useDispatch();
   const [message, setMessage] = useState('');
+  const [otherUsersConversation, setOtherUserConversation] = useState([]);
 
   const auth = useSelector((state) => state.auth);
   const conversation = useSelector((state) => state.conversation);
+  const conversationUsers = useSelector((state) =>
+    Object.values(state.conversation.users),
+  );
   const chats = useSelector((state) => Object.values(state.conversation.chats));
 
   const socket = io(Config.SOCKET_URL, {
@@ -83,14 +87,18 @@ const Conversion = ({ navigation, route }) => {
     }
   };
 
+  useEffect(() => {
+    if (conversationUsers.length > 0) {
+      const filterConversation = conversationUsers.filter(
+        (user) => user.id !== auth.id,
+      );
+      setOtherUserConversation(filterConversation);
+    }
+  }, [conversationUsers.length]);
+
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <Pressable onPress={() => navigation.goBack()}>
-          <BackIcon width={28} height={28} style={{ marginRight: 8 }} />
-          {/* <Text>Back</Text> */}
-        </Pressable>
-      </View>
+      <AppBar showBack title={otherUsersConversation[0]?.name} />
       {/* <ScrollView style={styles.body}>
         {chats.map((chat) => (
           <Message key={chat.id} chat={chat} />

@@ -6,13 +6,14 @@ import {
 } from '../actions';
 
 const INITIAL_STATE = {
+  users: {},
   chats: {},
 };
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case FETCH_CONVERSATION:
-      return { ...state, ...action.payload };
+      return { ...state, users: { ..._.mapKeys(action.payload.users, 'id') } };
     case FETCH_CONVERSATION_CHAT:
       return { ...state, chats: { ..._.mapKeys(action.payload.chats, 'id') } };
     case ADD_CONVERSATION_CHAT:
