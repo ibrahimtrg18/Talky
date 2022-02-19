@@ -88,8 +88,8 @@ const Home = ({ navigation }) => {
               name={account?.name}
               src={`${uploadsAPI.userAvatar(account?.avatar)}`}
               textSize={12}
-              width={normalize(24)}
-              height={normalize(24)}
+              width={normalize(32)}
+              height={normalize(32)}
             />
           </Pressable>
         }

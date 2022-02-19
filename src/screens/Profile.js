@@ -35,17 +35,19 @@ const Profile = ({ navigation }) => {
           <UserAvatarImage
             name={account?.name}
             src={`${uploadsAPI.userAvatar(account?.avatar)}`}
-            width={150}
-            height={150}
+            width={normalize(120)}
+            height={normalize(120)}
+            textSize={40}
+            style={[styles.avatar]}
           />
-          <Text size={20} weight={700} style={styles.name}>
+          <Text size={16} weight={700} style={[styles.name]}>
             {account?.name}
           </Text>
-          <Text size={16} weight={400}>
-            {account?.email}
-          </Text>
-          <Text size={14} weight={300}>
+          <Text size={10} weight={500} style={[styles.friend]}>
             {account?.totalFriends || 0} Friends
+          </Text>
+          <Text size={10} weight={500} style={[styles.bio]}>
+            {account?.email}
           </Text>
         </View>
       </View>
@@ -66,11 +68,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   avatar: {
-    width: normalize(100),
-    height: normalize(100),
-    marginBottom: normalize(16),
-    alignItems: 'center',
-    resizeMode: 'contain',
+    marginBottom: normalize(10),
   },
   avatarText: {
     justifyContent: 'center',
@@ -78,6 +76,14 @@ const styles = StyleSheet.create({
   },
   name: {
     textTransform: 'capitalize',
+    marginBottom: normalize(4),
+  },
+  friend: {
+    marginBottom: normalize(4),
+    color: Theme.gray,
+  },
+  bio: {
+    marginBottom: normalize(4),
   },
 });
 

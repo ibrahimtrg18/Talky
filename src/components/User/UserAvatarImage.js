@@ -41,8 +41,8 @@ const UserAvatarImage = (props) => {
         }}
         style={[
           styles.userAvatar,
-          props.width && { width: normalize(props.width) },
-          props.height && { height: normalize(props.height) },
+          props.width && { width: props.width },
+          props.height && { height: props.height },
           { borderRadius: Math.round(width + height) / 2 },
           props.style,
         ]}
@@ -56,8 +56,8 @@ const UserAvatarImage = (props) => {
       style={[
         styles.userAvatar,
         styles.userAvatarText,
-        props.width && { width: normalize(props.width) },
-        props.height && { height: normalize(props.height) },
+        props.width && { width: props.width },
+        props.height && { height: props.height },
         { borderRadius: Math.round(width + height) / 2 },
         { backgroundColor },
         props.style,
@@ -72,8 +72,8 @@ const UserAvatarImage = (props) => {
 
 const styles = StyleSheet.create({
   userAvatar: {
-    width: normalize(50),
-    height: normalize(50),
+    width: 50,
+    height: 50,
   },
   userAvatarText: {
     alignItems: 'center',
