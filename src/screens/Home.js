@@ -81,15 +81,15 @@ const Home = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <AppBar
-        title={<Text>Home</Text>}
+        title="Home"
         leftContent={
           <Pressable onPress={() => navigation.navigate('Profile')}>
             <UserAvatarImage
               name={account?.name}
               src={`${uploadsAPI.userAvatar(account?.avatar)}`}
-              textSize={16}
-              width={normalize(32)}
-              height={normalize(32)}
+              textSize={12}
+              width={normalize(24)}
+              height={normalize(24)}
             />
           </Pressable>
         }
