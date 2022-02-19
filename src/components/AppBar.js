@@ -1,6 +1,6 @@
 // libraries
 import React from 'react';
-import { View, Pressable, StyleSheet } from 'react-native';
+import { View, Pressable, StyleSheet, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 // utils
 import { normalize } from '../utils/normalize';
@@ -31,43 +31,36 @@ const AppBar = (props) => {
       {...restProps}
       style={[styles.appBar, styles.appBarBoxShadow, customBackgroundColor]}
     >
-      <View style={styles.leftContent}>
+      <View style={[styles.leftContent]}>
         {showBack ? (
           <Pressable onPress={() => navigation.goBack()}>
-            <ChevronLeft
-              width={normalize(24)}
-              height={normalize(24)}
-              style={styles.icon}
-            />
+            <ChevronLeft width={normalize(24)} height={normalize(24)} />
           </Pressable>
         ) : (
-          leftContent && <View>{leftContent}</View>
+          leftContent && leftContent
         )}
       </View>
-      <View>
+      <View style={[styles.centerContent]}>
         {title ? (
           <Text weight={700} size={18}>
             {title}
           </Text>
         ) : (
-          centerContent && <View>{centerContent}</View>
+          centerContent && centerContent
         )}
       </View>
-      <View style={[styles.rightContent, styles.rightSpace]}>
-        {rightContent && rightContent}
-      </View>
+      <View style={[styles.rightContent]}>{rightContent && rightContent}</View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   appBar: {
-    height: normalize(48),
+    height: 65,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     zIndex: 1,
-    marginBottom: normalize(8),
   },
   appBarBoxShadow: {
     shadowColor: '#000000',
@@ -76,23 +69,25 @@ const styles = StyleSheet.create({
       height: 2,
     },
     shadowOpacity: 0.25,
-    shadowRadius: 4.84,
+    shadowRadius: 5,
     elevation: 2,
   },
-  icon: {},
-  leftContent: {
-    alignItems: 'flex-start',
+  centerContent: {
+    flex: 1,
     justifyContent: 'center',
-    marginLeft: normalize(16),
+    alignItems: 'center',
+  },
+  leftContent: {
+    position: 'absolute',
+    justifyContent: 'center',
+    left: 16,
+    zIndex: 2,
   },
   rightContent: {
-    alignItems: 'flex-end',
+    position: 'absolute',
     justifyContent: 'center',
-    marginRight: normalize(16),
-  },
-  rightSpace: {
-    width: normalize(32),
-    height: normalize(32),
+    right: 16,
+    zIndex: 2,
   },
 });
 
