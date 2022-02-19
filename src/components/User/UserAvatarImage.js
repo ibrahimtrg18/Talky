@@ -44,6 +44,7 @@ const UserAvatarImage = (props) => {
           props.width && { width: normalize(props.width) },
           props.height && { height: normalize(props.height) },
           { borderRadius: Math.round(width + height) / 2 },
+          props.style,
         ]}
         onError={(e) => onImageError(e)}
       />
@@ -59,6 +60,7 @@ const UserAvatarImage = (props) => {
         props.height && { height: normalize(props.height) },
         { borderRadius: Math.round(width + height) / 2 },
         { backgroundColor },
+        props.style,
       ]}
     >
       <Text color={Theme.white} size={textSize}>
