@@ -9,6 +9,7 @@ import {
   getData,
   clearData,
   ACCESS_TOKEN,
+  GOOGLE_ID_TOKEN,
   ID,
   LOGIN_WITH,
   GOOGLE,
@@ -16,6 +17,8 @@ import {
 
 export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
+
+GoogleSignin.configure(googleSigninConfig);
 
 const signInGoogle = async () => {
   try {
@@ -39,9 +42,14 @@ export const userLoginGoogle = () => async (dispatch) => {
     GoogleSignin.configure(googleSigninConfig);
     const user = await signInGoogle();
 
+    if (!user) {
+      return;
+    }
+
     const res = await AuthAPI.googleLogin(user.idToken);
 
     await storeData({ key: ACCESS_TOKEN, value: res.data.access_token });
+    await storeData({ key: GOOGLE_ID_TOKEN, value: user.idToken });
     await storeData({ key: ID, value: res.data.id });
     await storeData({ key: LOGIN_WITH, value: GOOGLE });
 
@@ -105,6 +113,11 @@ export const userLogout = () => async (dispatch) => {
   try {
     if ((await getData(LOGIN_WITH)) === GOOGLE) {
       await signOutGoogle();
+      if (await getData(GOOGLE_ID_TOKEN)) {
+        await GoogleSignin.clearCachedAccessToken(
+          await getData(GOOGLE_ID_TOKEN),
+        );
+      }
     }
     await clearData();
 

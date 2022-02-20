@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-community/async-storage';
 
 export const ACCESS_TOKEN = 'ACCESS_TOKEN';
+export const GOOGLE_ID_TOKEN = 'GOOGLE_ID_TOKEN';
 export const ID = 'ID';
 export const LOGIN_WITH = 'LOGIN_WITH';
 export const GOOGLE = 'GOOGLE';

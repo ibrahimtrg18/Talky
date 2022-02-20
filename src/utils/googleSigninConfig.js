@@ -8,4 +8,5 @@ export const googleSigninConfig = {
   webClientId: Config.GOOGLE_WEB_CLIENT_ID, // client ID of type WEB for your server (needed to verify user ID and offline access)
   androidClientId: Config.GOOGLE_ANDROID_CLIENT_ID,
   scopes: ['email', 'profile', 'openid'], // what API you want to access on behalf of the user, default is email and profile
+  forceCodeForRefreshToken: true,
 };
