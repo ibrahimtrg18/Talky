@@ -17,6 +17,7 @@ import Text from '../components/Text';
 import Button from '../components/Button';
 import Input from '../components/Input';
 import UserList from '../components/User/UserList';
+import ConversationList from '../components/Conversation/ConversationList';
 import UserAvatarImage from '../components/User/UserAvatarImage';
 // actions
 import {
@@ -74,10 +75,6 @@ const Home = ({ navigation }) => {
     }
   }, []);
 
-  const onUserConversationClick = ({ conversationId }) => {
-    navigation.navigate('Conversation', { conversationId });
-  };
-
   return (
     <SafeAreaView style={styles.container}>
       <AppBar
@@ -115,15 +112,7 @@ const Home = ({ navigation }) => {
       </View> */}
 
       {/* !Conversation */}
-      <View style={styles.conversationContainer}>
-        <UserList
-          users={userConversations}
-          type="conversation"
-          onUserClick={({ conversationId }) => {
-            onUserConversationClick({ conversationId });
-          }}
-        />
-      </View>
+      <ConversationList conversations={userConversations} />
 
       {/* !BottomSheet */}
       <BottomSheet

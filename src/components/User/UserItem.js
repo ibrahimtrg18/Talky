@@ -11,26 +11,24 @@ import * as Theme from '../../utils/theme';
 // icons
 import ChevronRightIcon from '../../assets/icons/iconChevronRight.svg';
 
-const UserItem = ({ user, onUserClick }) => {
+const UserItem = ({ user }) => {
   const uploadsAPI = new UploadsAPI();
 
   return (
-    <Pressable onPress={() => (onUserClick ? onUserClick() : null)}>
-      <View style={styles.userItem}>
-        <UserAvatarImage
-          name={user?.name}
-          src={`${uploadsAPI.userAvatar(user?.avatar)}`}
-        />
-        <View style={styles.userMid}>
-          <View style={styles.userMidHead}>
-            <Text style={styles.textTransform} color={Theme.text} size={16}>
-              {user.name}
-            </Text>
-          </View>
+    <View style={styles.userItem}>
+      <UserAvatarImage
+        name={user?.name}
+        src={`${uploadsAPI.userAvatar(user?.avatar)}`}
+      />
+      <View style={styles.userMid}>
+        <View style={styles.userMidHead}>
+          <Text style={styles.textTransform} color={Theme.text} size={16}>
+            {user.name}
+          </Text>
         </View>
-        <ChevronRightIcon width={24} height={24} />
       </View>
-    </Pressable>
+      <ChevronRightIcon width={24} height={24} />
+    </View>
   );
 };
 
