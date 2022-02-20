@@ -70,22 +70,22 @@ const Message = ({ chat, conversation }) => {
 
 const styles = StyleSheet.create({
   message: {
-    paddingVertical: 8,
-    paddingHorizontal: 16,
+    padding: normalize(10),
     marginBottom: 4,
     borderRadius: 8,
   },
   currentUserMessage: {
+    flex: 1,
     alignSelf: 'flex-end',
+    justifyContent: 'center',
+    alignItems: 'center',
     backgroundColor: Theme.primary,
     color: Theme.white,
-    elevation: 5,
   },
   otherUserMessage: {
     alignSelf: 'flex-start',
     backgroundColor: Theme.white,
     color: Theme.text,
-    elevation: 5,
   },
 });
 

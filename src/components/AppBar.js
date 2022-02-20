@@ -56,7 +56,7 @@ const AppBar = (props) => {
 
 const styles = StyleSheet.create({
   appBar: {
-    height: 65,
+    height: normalize(48),
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',

@@ -1,22 +1,14 @@
-import React, { useState, useRef, useEffect } from 'react';
-import {
-  SafeAreaView,
-  View,
-  // ScrollView,
-  // VirtualizedList,
-  FlatList,
-  Pressable,
-  StyleSheet,
-} from 'react-native';
+import { set } from 'lodash';
+import React, { useState, useEffect } from 'react';
+import { SafeAreaView, View, FlatList, StyleSheet } from 'react-native';
 // libraries
 import Config from 'react-native-config';
 import { useDispatch, useSelector } from 'react-redux';
 import io from 'socket.io-client';
 // components
 import AppBar from '../components/AppBar';
-import Button from '../components/Button';
-import Input from '../components/Input';
 import Message from '../components/Message';
+import Reply from '../components/Reply';
 // actions
 import {
   fetchConversationById,
@@ -25,12 +17,14 @@ import {
 } from '../redux/actions';
 // utils
 import { normalize } from '../utils/normalize';
+import * as Theme from '../utils/theme';
 
 const Conversion = ({ route }) => {
   const { conversationId } = route.params;
   const dispatch = useDispatch();
   const [message, setMessage] = useState('');
   const [otherUsersConversation, setOtherUserConversation] = useState([]);
+  const [numberOfLines, setNumberOfLines] = useState(1);
 
   const auth = useSelector((state) => state.auth);
   const conversation = useSelector((state) => state.conversation);
@@ -66,19 +60,28 @@ const Conversion = ({ route }) => {
     })();
   }, [conversationId]);
 
-  const onSendPress = () => {
+  const onSendReply = () => {
     try {
       if (message && message) {
         socket.emit('createChat', {
           conversation: {
             id: conversationId,
           },
+          type: 'TEXT',
           message,
         });
         setMessage('');
       }
     } catch (e) {
       console.error(e);
+    }
+  };
+
+  const onKeyPress = (event) => {
+    if (event.nativeEvent.key === 'Enter') {
+      if (numberOfLines <= 3) {
+        setNumberOfLines(numberOfLines + 1);
+      }
     }
   };
 
@@ -94,27 +97,6 @@ const Conversion = ({ route }) => {
   return (
     <SafeAreaView style={styles.container}>
       <AppBar showBack title={otherUsersConversation[0]?.name} />
-      {/* <ScrollView style={styles.body}>
-        {chats.map((chat) => (
-          <Message key={chat.id} chat={chat} />
-        ))}
-      </ScrollView> */}
-
-      {/* <VirtualizedList
-        style={styles.body}
-        data={chats}
-        initialNumToRender={10}
-        renderItem={({ item }) => (
-          <Message key={item.id} chat={item} conversation={conversation} />
-        )}
-        keyExtractor={(item) => item.id}
-        getItemCount={(data) => data.length}
-        getItem={(data, index) => {
-          return data[index];
-        }}
-        initialScrollIndex={chats.length - 1}
-        onScrollToIndexFailed={() => {}}
-      /> */}
       <FlatList
         style={styles.body}
         data={chats}
@@ -123,16 +105,16 @@ const Conversion = ({ route }) => {
         )}
         keyExtractor={(item) => item.id}
         inverted
-        // initialScrollIndex={chats.length - 1}
       />
       <View style={styles.footer}>
-        <Input
-          style={styles.input}
-          value={message}
+        <Reply
+          text={message}
+          onTextChange={(text) => setMessage(text)}
           placeholder="Message"
-          onChangeText={(text) => setMessage(text)}
+          onSendReply={onSendReply}
+          numberOfLines={numberOfLines}
+          onKeyPress={onKeyPress}
         />
-        <Button title="Send" style={styles.button} onPress={onSendPress} />
       </View>
     </SafeAreaView>
   );
@@ -141,6 +123,7 @@ const Conversion = ({ route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: Theme.white,
   },
   body: {
     flexGrow: 1,
@@ -149,10 +132,6 @@ const styles = StyleSheet.create({
   footer: {
     flexDirection: 'row',
   },
-  input: {
-    flex: 1,
-  },
-  button: {},
 });
 
 export default Conversion;

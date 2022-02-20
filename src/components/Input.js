@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
 // utils
 import { normalize } from '../utils/normalize';
@@ -9,7 +9,7 @@ import EyeIcon from '../assets/icons/iconEye.svg';
 
 const Input = React.forwardRef((props, ref) => {
   const {
-    size,
+    fontSize,
     weight,
     rounded,
     style,
@@ -22,7 +22,7 @@ const Input = React.forwardRef((props, ref) => {
   } = props;
   const [isFocus, setIsFocus] = useState(false);
 
-  const customFontSize = size && { fontSize: normalize(size) };
+  const customFontSize = fontSize && { fontSize: normalize(fontSize) };
   const customRounded = rounded && { borderRadius: rounded };
   const customWeight = getFontWeight(weight || 500);
 

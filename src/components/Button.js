@@ -7,18 +7,27 @@ import { normalize } from '../utils/normalize';
 import * as Theme from '../utils/theme';
 
 const CustomButton = (props) => {
-  const { rounded, style, textColor, disabled, ...restProps } = props;
+  const { title, icon, rounded, style, textColor, disabled, ...restProps } =
+    props;
 
   const customRounded = rounded && { borderRadius: rounded };
   const customTextColor = textColor && { color: textColor };
   const customDisabled = disabled && { backgroundColor: Theme.lightPrimary };
 
+  if (!title && !icon) {
+    return null;
+  }
+
   return (
     <Pressable
-      {...props}
+      {...restProps}
       style={[styles.button, customRounded, style, customDisabled]}
     >
-      <Text style={[styles.text, customTextColor]}>{props.title}</Text>
+      {icon ? (
+        icon
+      ) : (
+        <Text style={[styles.text, customTextColor]}>{title}</Text>
+      )}
     </Pressable>
   );
 };
