@@ -9,12 +9,24 @@ export const FIND_USER = 'FIND_USER';
 export const FETCH_USER_FRIENDS = 'FETCH_USER_FRIENDS';
 export const FETCH_USER_CONVERSATIONS = 'FETCH_USER_CONVERSATIONS';
 export const REGISTER_USER = 'REGISTER_USER';
+export const FETCH_USER = 'FETCH_USER';
 
 export const registerUser = (payload) => async (dispatch, getState) => {
   try {
     const userAPI = new UserAPI();
     const res = await userAPI.register(payload);
     dispatch({ type: REGISTER_USER, payload: res.data.access_token });
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+export const fetchUser = (id) => async (dispatch, getState) => {
+  try {
+    const { auth } = getState();
+    const userAPI = new UserAPI(auth.access_token);
+    const res = await userAPI.getOne(id);
+    dispatch({ type: FETCH_USER, payload: res.data });
   } catch (e) {
     console.error(e);
   }

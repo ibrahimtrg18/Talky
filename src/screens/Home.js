@@ -80,7 +80,14 @@ const Home = ({ navigation }) => {
       <AppBar
         title="Home"
         leftContent={
-          <Pressable onPress={() => navigation.navigate('Profile')}>
+          <Pressable
+            onPress={() =>
+              navigation.navigate('Profile', {
+                userId: auth.id,
+                isOwnProfile: true,
+              })
+            }
+          >
             <UserAvatarImage
               name={account?.name}
               src={`${uploadsAPI.userAvatar(account?.avatar)}`}

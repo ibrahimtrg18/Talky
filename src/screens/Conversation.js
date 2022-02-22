@@ -1,12 +1,19 @@
-import { set } from 'lodash';
+// libraries
 import React, { useState, useEffect } from 'react';
-import { SafeAreaView, View, FlatList, StyleSheet } from 'react-native';
+import {
+  SafeAreaView,
+  View,
+  FlatList,
+  Pressable,
+  StyleSheet,
+} from 'react-native';
 // libraries
 import Config from 'react-native-config';
 import { useDispatch, useSelector } from 'react-redux';
 import io from 'socket.io-client';
 // components
 import AppBar from '../components/AppBar';
+import UserAvatarImage from '../components/User/UserAvatarImage';
 import Message from '../components/Message';
 import Reply from '../components/Reply';
 // actions
@@ -18,10 +25,13 @@ import {
 // utils
 import { normalize } from '../utils/normalize';
 import * as Theme from '../utils/theme';
+// apis
+import UploadsAPI from '../apis/UploadsAPI';
 
-const Conversion = ({ route }) => {
+const Conversion = ({ navigation, route }) => {
   const { conversationId } = route.params;
   const dispatch = useDispatch();
+  const uploadsAPI = new UploadsAPI();
   const [message, setMessage] = useState('');
   const [otherUsersConversation, setOtherUserConversation] = useState([]);
   const [numberOfLines, setNumberOfLines] = useState(1);
@@ -96,7 +106,29 @@ const Conversion = ({ route }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <AppBar showBack title={otherUsersConversation[0]?.name} />
+      <AppBar
+        showBack
+        title={otherUsersConversation[0]?.name}
+        rightContent={
+          <Pressable
+            onPress={() =>
+              navigation.navigate('Profile', {
+                userId: otherUsersConversation[0]?.id,
+              })
+            }
+          >
+            <UserAvatarImage
+              name={otherUsersConversation[0]?.name}
+              src={`${uploadsAPI.userAvatar(
+                otherUsersConversation[0]?.avatar,
+              )}`}
+              textSize={12}
+              width={normalize(32)}
+              height={normalize(32)}
+            />
+          </Pressable>
+        }
+      />
       <FlatList
         style={styles.body}
         data={chats}
