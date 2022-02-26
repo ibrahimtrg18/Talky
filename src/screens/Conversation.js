@@ -1,5 +1,5 @@
 // libraries
-import React, { useState, useEffect } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import {
   SafeAreaView,
   View,
@@ -8,9 +8,7 @@ import {
   StyleSheet,
 } from 'react-native';
 // libraries
-import Config from 'react-native-config';
 import { useDispatch, useSelector } from 'react-redux';
-import io from 'socket.io-client';
 // components
 import AppBar from '../components/AppBar';
 import UserAvatarImage from '../components/User/UserAvatarImage';
@@ -25,6 +23,7 @@ import {
 // utils
 import { normalize } from '../utils/normalize';
 import * as Theme from '../utils/theme';
+import { Socket } from '../utils/socket';
 // apis
 import UploadsAPI from '../apis/UploadsAPI';
 
@@ -42,25 +41,16 @@ const Conversion = ({ navigation, route }) => {
     Object.values(state.conversation.users),
   );
   const chats = useSelector((state) => Object.values(state.conversation.chats));
-
-  const socket = io(Config.SOCKET_URL, {
-    extraHeaders: {
-      Authorization: 'Bearer ' + auth.access_token,
-    },
-    transports: ['websocket'],
-  });
+  const socket = useMemo(() => new Socket(auth.access_token), []);
 
   useEffect(() => {
-    socket.on('connection', () => console.log('connection'));
+    socket.initiateSocket();
 
-    socket.on('connect_error', (err) => console.error(err));
-    socket.on('connect_failed', (err) => console.error(err));
-
-    socket.on('createChat', async (data) => {
-      dispatch(addConversationChat(data.data));
+    socket.subscribeSocket('createChat', async (msg) => {
+      dispatch(addConversationChat(msg.data));
     });
 
-    return () => socket.on('disconnect', (err) => console.error(err));
+    return () => socket.disconnectSocket();
   }, []);
 
   useEffect(() => {
@@ -73,7 +63,7 @@ const Conversion = ({ navigation, route }) => {
   const onSendReply = () => {
     try {
       if (message && message) {
-        socket.emit('createChat', {
+        socket.sendSocket('createChat', {
           conversation: {
             id: conversationId,
           },
