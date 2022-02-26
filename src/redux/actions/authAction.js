@@ -39,7 +39,6 @@ const signInGoogle = async () => {
 
 export const userLoginGoogle = () => async (dispatch) => {
   try {
-    GoogleSignin.configure(googleSigninConfig);
     const user = await signInGoogle();
 
     if (!user) {
@@ -113,11 +112,6 @@ export const userLogout = () => async (dispatch) => {
   try {
     if ((await getData(LOGIN_WITH)) === GOOGLE) {
       await signOutGoogle();
-      if (await getData(GOOGLE_ID_TOKEN)) {
-        await GoogleSignin.clearCachedAccessToken(
-          await getData(GOOGLE_ID_TOKEN),
-        );
-      }
     }
     await clearData();
 

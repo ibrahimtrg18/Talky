@@ -27,7 +27,7 @@ const App = () => {
     (async () => {
       dispatch(userIsSignIn());
     })();
-  }, [dispatch]);
+  }, []);
 
   useEffect(() => {
     if (auth.access_token) {
