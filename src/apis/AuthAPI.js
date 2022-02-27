@@ -18,9 +18,7 @@ axios.interceptors.response.use(
 
 class Auth {
   static googleLogin(data) {
-    return axios.post('/user/google/login', null, {
-      headers: { token: data },
-    });
+    return axios.post('/user/google/login', data);
   }
 
   static accountLogin(data) {

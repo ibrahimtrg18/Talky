@@ -45,7 +45,10 @@ export const userLoginGoogle = () => async (dispatch) => {
       return;
     }
 
-    const res = await AuthAPI.googleLogin(user.idToken);
+    const res = await AuthAPI.googleLogin({
+      idToken: user.idToken,
+      serverAuthCode: user.serverAuthCode,
+    });
 
     await storeData({ key: ACCESS_TOKEN, value: res.data.access_token });
     await storeData({ key: GOOGLE_ID_TOKEN, value: user.idToken });
