@@ -42,7 +42,7 @@ const AppBar = (props) => {
       </View>
       <View style={[styles.centerContent]}>
         {title ? (
-          <Text weight={700} size={18}>
+          <Text weight={700} size={16}>
             {title}
           </Text>
         ) : (
