@@ -40,7 +40,14 @@ const AppBar = (props) => {
           leftContent && leftContent
         )}
       </View>
-      <View style={[styles.centerContent]}>
+      <View
+        style={[
+          styles.centerContent,
+          rightContent
+            ? { paddingHorizontal: normalize(32) }
+            : { paddingLeft: normalize(32) },
+        ]}
+      >
         {title ? (
           <Text weight={700} size={16}>
             {title}

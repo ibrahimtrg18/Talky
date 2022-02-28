@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 // screen
 import Home from './screens/Home';
+import Search from './screens/Search';
 import Login from './screens/Login';
 import LoginAccount from './screens/LoginAccount';
 import Conversation from './screens/Conversation';
@@ -38,10 +39,15 @@ const App = () => {
   return (
     <NavigationContainer>
       {auth.access_token ? (
-        <Stack.Navigator initialRouteName="Login">
+        <Stack.Navigator initialRouteName="Home">
           <Stack.Screen
             name="Home"
             component={Home}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Search"
+            component={Search}
             options={{ headerShown: false }}
           />
           <Stack.Screen

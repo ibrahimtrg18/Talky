@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Pressable, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 // apis
 import UploadsAPI from '../../apis/UploadsAPI';
 // components
@@ -13,42 +14,60 @@ import ChevronRightIcon from '../../assets/icons/iconChevronRight.svg';
 
 const UserItem = ({ user }) => {
   const uploadsAPI = new UploadsAPI();
+  const navigation = useNavigation();
+
+  const onClick = () => {
+    navigation.navigate('Profile', {
+      userId: user.id,
+    });
+  };
 
   return (
-    <View style={styles.userItem}>
-      <UserAvatarImage
-        name={user?.name}
-        src={`${uploadsAPI.userAvatar(user?.avatar)}`}
-      />
-      <View style={styles.userMid}>
-        <View style={styles.userMidHead}>
-          <Text style={styles.textTransform} color={Theme.text} size={16}>
+    <Pressable onPress={onClick} android_ripple={{ color: Theme.gray100 }}>
+      <View style={styles.userItemContainer}>
+        <UserAvatarImage
+          name={user?.name}
+          src={`${uploadsAPI.userAvatar(user?.avatar)}`}
+          width={normalize(48)}
+          height={normalize(48)}
+          style={[styles.userItemAvatar]}
+        />
+        <View style={styles.userItemMain}>
+          <Text
+            style={styles.userName}
+            color={Theme.text}
+            weight={600}
+            size={16}
+          >
             {user.name}
           </Text>
+          <Text
+            style={styles.userName}
+            color={Theme.dark}
+            weight={400}
+            size={14}
+          >
+            {user.statusFriend === 'ACCEPT' ? 'Friended' : 'Requesting'}
+          </Text>
         </View>
+        <ChevronRightIcon width={24} height={24} />
       </View>
-      <ChevronRightIcon width={24} height={24} />
-    </View>
+    </Pressable>
   );
 };
 
 const styles = StyleSheet.create({
-  userItem: {
+  userItemContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: normalize(8),
+    paddingVertical: normalize(12),
+    paddingHorizontal: normalize(20),
   },
-  userLeft: {
-    width: normalize(50),
-    height: normalize(50),
+  userItemAvatar: {
+    marginRight: normalize(16),
   },
-  userMid: {
+  userItemMain: {
     flex: 1,
-    paddingHorizontal: normalize(8),
-  },
-  userMidHead: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
   },
   userName: {
     textTransform: 'capitalize',

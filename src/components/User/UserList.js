@@ -2,11 +2,13 @@ import React from 'react';
 import { View, VirtualizedList, Text, StyleSheet } from 'react-native';
 // components
 import UserItem from './UserItem';
+// utils
+import { normalize } from '../../utils/normalize';
 
 const UserList = ({ users, message }) => {
   if (users && Array.isArray(users) && users.length > 0) {
     return (
-      <View style={styles.userList}>
+      <View style={styles.userListContainer}>
         <VirtualizedList
           data={users}
           initialNumToRender={4}
@@ -28,6 +30,10 @@ const UserList = ({ users, message }) => {
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  userListContainer: {
+    paddingVertical: normalize(8),
+  },
+});
 
 export default UserList;
