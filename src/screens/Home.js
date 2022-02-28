@@ -6,6 +6,7 @@ import React, {
   useCallback,
 } from 'react';
 import { SafeAreaView, Pressable, View, StyleSheet } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 // libraries
 import { useSelector, useDispatch } from 'react-redux';
 import BottomSheet from '@gorhom/bottom-sheet';
@@ -37,6 +38,7 @@ const Home = ({ navigation }) => {
   const bottomSheetRef = useRef(null);
   const searchRef = useRef(null);
 
+  const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
   const userSearch = useSelector((state) => Object.values(state.user.search));
@@ -47,7 +49,7 @@ const Home = ({ navigation }) => {
 
   useEffect(() => {
     dispatch(fetchUserConversations());
-  }, []);
+  }, [isFocused]);
 
   useEffect(() => {
     if (query) {

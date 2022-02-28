@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Pressable, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import moment from 'moment';
 // apis
 import UploadsAPI from '../../apis/UploadsAPI';
 // components
@@ -41,11 +42,11 @@ const ConversationItem = ({ conversation, user }) => {
               {user.name}
             </Text>
             <Text style={styles.time} color={Theme.gray} weight={400} size={10}>
-              time
+              {moment(conversation.updated_at).fromNow()}
             </Text>
           </View>
           <Text style={styles.body} color={Theme.dark} weight={400} size={14}>
-            Last Message
+            {conversation.lastMessage}
           </Text>
         </View>
         <ChevronRightIcon width={normalize(24)} height={normalize(24)} />
