@@ -11,7 +11,7 @@ import { getFirstCharacter } from '../../helpers/commons';
 
 const UserAvatarImage = (props) => {
   const {
-    name = '?',
+    name = '',
     src,
     textSize = 20,
     backgroundColor = Theme.primary,
@@ -23,50 +23,45 @@ const UserAvatarImage = (props) => {
     setFirstLetterName(getFirstCharacter(name));
   };
 
-  useEffect(() => {
-    if (!src) {
-      setFirstLetterName(getFirstCharacter(name));
-    }
-  }, [src, name]);
-
   if (!name) {
     return null;
   }
 
-  if (!firstLetterName) {
+  console.log({ src, name, firstLetterName });
+  if (firstLetterName) {
     return (
-      <Image
-        source={{
-          uri: src,
-        }}
+      <View
         style={[
           styles.userAvatar,
+          styles.userAvatarText,
           props.width && { width: props.width },
           props.height && { height: props.height },
           { borderRadius: Math.round(width + height) / 2 },
+          { backgroundColor },
           props.style,
         ]}
-        onError={(e) => onImageError(e)}
-      />
+      >
+        <Text color={Theme.white} size={textSize}>
+          {firstLetterName}
+        </Text>
+      </View>
     );
   }
 
   return (
-    <View
+    <Image
+      source={{
+        uri: src,
+      }}
       style={[
         styles.userAvatar,
-        styles.userAvatarText,
         props.width && { width: props.width },
         props.height && { height: props.height },
         { borderRadius: Math.round(width + height) / 2 },
-        { backgroundColor },
         props.style,
       ]}
-    >
-      <Text color={Theme.white} size={textSize}>
-        {firstLetterName}
-      </Text>
-    </View>
+      onError={(e) => onImageError(e)}
+    />
   );
 };
 
