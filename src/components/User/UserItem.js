@@ -22,6 +22,26 @@ const UserItem = ({ user }) => {
     });
   };
 
+  const renderDescription = (user) => {
+    const totalFriends = user.total_friends;
+
+    if (user.friends && Array.isArray(user.friends) && user.friends > 0) {
+      const friendStatus = user.friends[0]?.status || null;
+      if (friendStatus) {
+        switch (friendStatus) {
+          case 'AGREEMENT':
+            return 'Requesting';
+          case 'ACCEPT':
+            return 'Friend';
+          default:
+            return `${totalFriends} friends`;
+        }
+      }
+    } else {
+      return `${totalFriends} friends`;
+    }
+  };
+
   return (
     <Pressable onPress={onClick} android_ripple={{ color: Theme.gray100 }}>
       <View style={styles.userItemContainer}>
@@ -42,12 +62,12 @@ const UserItem = ({ user }) => {
             {user.name}
           </Text>
           <Text
-            style={styles.userName}
+            style={styles.userFriend}
             color={Theme.dark}
             weight={400}
             size={14}
           >
-            {user.statusFriend === 'ACCEPT' ? 'Friended' : 'Requesting'}
+            {renderDescription(user)}
           </Text>
         </View>
         <ChevronRightIcon width={24} height={24} />
