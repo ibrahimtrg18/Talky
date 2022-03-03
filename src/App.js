@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 // screen
 import Home from './screens/Home';
 import Search from './screens/Search';
+import Friend from './screens/Friend';
 import Login from './screens/Login';
 import LoginAccount from './screens/LoginAccount';
 import Conversation from './screens/Conversation';
@@ -48,6 +49,11 @@ const App = () => {
           <Stack.Screen
             name="Search"
             component={Search}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Friend"
+            component={Friend}
             options={{ headerShown: false }}
           />
           <Stack.Screen

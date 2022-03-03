@@ -1,10 +1,9 @@
 // libraries
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { View, Image, Dimensions, StyleSheet } from 'react-native';
 // components
 import Text from '../../components/Text';
 // utils
-import { normalize } from '../../utils/normalize';
 import * as Theme from '../../utils/theme';
 // helpers
 import { getFirstCharacter } from '../../helpers/commons';
@@ -27,7 +26,6 @@ const UserAvatarImage = (props) => {
     return null;
   }
 
-  console.log({ src, name, firstLetterName });
   if (firstLetterName) {
     return (
       <View

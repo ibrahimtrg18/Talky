@@ -67,7 +67,10 @@ const Home = ({ navigation }) => {
       <ConversationList conversations={userConversations} />
 
       {/* Float Button */}
-      <Pressable style={styles.floatButton}>
+      <Pressable
+        style={styles.floatButton}
+        onPress={() => navigation.navigate('Friend')}
+      >
         <MessageIcon width={normalize(24)} height={normalize(24)} />
       </Pressable>
     </SafeAreaView>
