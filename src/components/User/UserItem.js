@@ -61,14 +61,16 @@ const UserItem = ({ user }) => {
           >
             {user.name}
           </Text>
-          <Text
-            style={styles.userFriend}
-            color={Theme.dark}
-            weight={400}
-            size={14}
-          >
-            {renderDescription(user)}
-          </Text>
+          {user.total_friends && (
+            <Text
+              style={styles.userFriend}
+              color={Theme.dark}
+              weight={400}
+              size={14}
+            >
+              {renderDescription(user)}
+            </Text>
+          )}
         </View>
         <ChevronRightIcon width={24} height={24} />
       </View>
