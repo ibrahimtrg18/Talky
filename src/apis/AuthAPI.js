@@ -16,7 +16,7 @@ axios.interceptors.response.use(
   },
 );
 
-class Auth {
+class AuthAPI {
   static googleLogin(data) {
     return axios.post('/user/google/login', data);
   }
@@ -26,4 +26,4 @@ class Auth {
   }
 }
 
-export default Auth;
+export default AuthAPI;
